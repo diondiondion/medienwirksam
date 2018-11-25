@@ -1,0 +1,64 @@
+backend:
+  name: git-gateway
+  branch: master
+
+media_folder: static/media
+public_folder: /media
+
+collections:
+  - name: "artists"
+    label: "Artists"
+    label_singular: "Artist"
+    folder: "src/pages/artists"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "artist"}
+      - {label: "Name", name: "title", widget: "string"}
+      - {label: "Collaborator", name: "isCollaborator", widget: "boolean", default: false, required: false}
+
+  - name: "playlists"
+    label: "Playlists"
+    label_singular: "Playlist"
+    folder: "src/pages/playlists"
+    create: true
+    slug: "{{year}}-{{slug}}"
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "playlist"}
+      - {label: "Name", name: "title", widget: "string"}
+      - label: "Artists"
+        name: "artists"
+        widget: "list"
+        field: {label: "Artist", name: "artist", widget: "relation", collection: "artists", searchFields: ["title"], valueField: "title"}
+      - label: "Tracks"
+        name: "tracks"
+        widget: "list"
+        field: {label: "Track", name: "track", widget: "relation", collection: "tracks", searchFields: ["title", "filename"], valueField: "filename", displayFields: ["title"]}
+      - {label: "Date", name: "date", widget: "date", default: ""}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Description", name: "body", widget: "markdown", required: false}
+
+  - name: "tracks"
+    label: "Tracks"
+    label_singular: "Track"
+    folder: "src/pages/tracks"
+    create: true
+    extension: json
+    format: json
+    slug: "{{slug}}"
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "track"}
+      - {label: "Name", name: "title", widget: "string"}
+      - {label: "File name", name: "filename", widget: "string"}
+      - label: "Artists"
+        label_singular: "Artist"
+        name: "artists"
+        widget: "list"
+        field: {label: "Artist", name: "artist", widget: "relation", collection: "artists", searchFields: ["title"], valueField: "title"}
+      - label: "Producers"
+        label_singular: "Producer"
+        name: "producers"
+        widget: "list"
+        field: {label: "Producer", name: "producer", widget: "relation", collection: "artists", searchFields: ["title"], valueField: "title"}
+      - {label: "Date", name: "date", widget: "date", default: "", required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}

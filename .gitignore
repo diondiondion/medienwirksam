@@ -3,8 +3,11 @@
 node_modules
 .cache/
 # Build directory
-public/
+public/*
 !public/admin/
+public/admin/*
+!public/admin/config.yml
+
 static/admin/*.bundle.*
 .DS_Store
 yarn-error.log

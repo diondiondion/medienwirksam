@@ -31,7 +31,7 @@ collections:
       - label: "Tracks"
         name: "tracks"
         widget: "list"
-        field: {label: "Track", name: "track", widget: "relation", collection: "tracks", searchFields: ["title", "filename"], valueField: "filename", displayFields: ["title"]}
+        field: {label: "Track", name: "track", widget: "relation", collection: "tracks", searchFields: ["title", "filename"], valueField: "title"}
       - {label: "Year", name: "year", widget: "string"}
       - {label: "Tags", name: "tags", widget: "list", required: false}
       - {label: "Description", name: "body", widget: "markdown", required: false}

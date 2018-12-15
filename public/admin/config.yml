@@ -11,11 +11,9 @@ collections:
     label_singular: "Artist"
     folder: "src/pages/artists"
     create: true
-    slug: "{{slug}}"
+    format: yaml
     fields:
-      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "artist"}
       - {label: "Name", name: "title", widget: "string"}
-      - {label: "Collaborator", name: "isCollaborator", widget: "boolean", default: false, required: false}
 
   - name: "playlists"
     label: "Playlists"
@@ -24,12 +22,12 @@ collections:
     create: true
     slug: "{{year}}-{{slug}}"
     fields:
-      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "playlist"}
       - {label: "Name", name: "title", widget: "string"}
       - label: "Artists"
         name: "artists"
-        widget: "list"
-        field: {label: "Artist", name: "artist", widget: "relation", collection: "artists", searchFields: ["title"], valueField: "title"}
+        widget: "inline-select"
+        multiple: true
+        options: ["Medienwirksam", "EMC", "Reefer Maxxxx", "EAN", "oGUZe", "Dion", "Jouston"]
       - label: "Tracks"
         name: "tracks"
         widget: "list"
@@ -43,22 +41,26 @@ collections:
     label_singular: "Track"
     folder: "src/pages/tracks"
     create: true
-    extension: json
-    format: json
-    slug: "{{slug}}"
+    format: yaml
     fields:
-      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "track"}
       - {label: "Name", name: "title", widget: "string"}
       - {label: "File name", name: "filename", widget: "string"}
       - label: "Artists"
-        label_singular: "Artist"
         name: "artists"
-        widget: "list"
-        field: {label: "Artist", name: "artist", widget: "relation", collection: "artists", searchFields: ["title"], valueField: "title"}
+        widget: "inline-select"
+        multiple: true
+        options: ["Medienwirksam", "EMC", "Reefer Maxxxx", "EAN", "oGUZe", "Dion", "Jouston"]
+      - label: "Featuring"
+        name: "artists-feat"
+        widget: "select"
+        multiple: true
+        required: false
+        options: ["Medienwirksam", "EMC", "Reefer Maxxxx", "EAN", "oGUZe", "Amewu", "Affenfass", "Chlorophil", "EAN", "oGUZe", "Dion", "Jouston"]
       - label: "Producers"
         label_singular: "Producer"
         name: "producers"
-        widget: "list"
-        field: {label: "Producer", name: "producer", widget: "relation", collection: "artists", searchFields: ["title"], valueField: "title"}
+        widget: "inline-select"
+        multiple: true
+        options: ["Dion", "EAN", "Reefer Maxxxx", "Size1", "Chief Bob"]
       - {label: "Year", name: "year", widget: "string", default: "", required: false}
       - {label: "Tags", name: "tags", widget: "list", required: false}

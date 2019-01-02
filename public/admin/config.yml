@@ -2,6 +2,13 @@ backend:
   name: git-gateway
   branch: master
 
+media_library:
+  name: cloudinary
+  output_filename_only: true
+  config:
+    cloud_name: medienwirksam
+    api_key: 739486326669996
+
 media_folder: static/media
 public_folder: /media
 
@@ -44,7 +51,7 @@ collections:
     format: yaml
     fields:
       - {label: "Name", name: "title", widget: "string"}
-      - {label: "File name", name: "filename", widget: "string"}
+      - {label: "File name", name: "filename", widget: "file"}
       - label: "Artists"
         name: "artists"
         widget: "inline-select"

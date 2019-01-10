@@ -5,18 +5,18 @@ import Layout from '../components/layout'
 
 function IndexPage({data: {site, allMarkdownRemark: playlists}}) {
 	const {title, audioCdnRoot} = site.siteMetadata
-	const linkPrefix = `https://${audioCdnRoot}`
 	return (
 		<Layout>
 			<h1>{title}</h1>
-			<p>Welcome to your new Gatsby site.</p>
 			<p>Playlists: {playlists.totalCount}</p>
 			<ul>
 				{playlists.edges.map(({node: playlist}) => (
 					<li key={playlist.id}>
-						{playlist.frontmatter.title} (
-						{playlist.frontmatter.tracks.length} tracks)
-						<blockquote>
+						<Link to={`/playlist/${playlist.fields.slug}`}>
+							{playlist.frontmatter.title}
+						</Link>{' '}
+						({playlist.frontmatter.tracks.length} tracks)
+						{/* <blockquote>
 							{playlist.frontmatter.tracks.map(track => (
 								<p>
 									{track.title} (prod. by {track.producers})
@@ -27,7 +27,7 @@ function IndexPage({data: {site, allMarkdownRemark: playlists}}) {
 									/>
 								</p>
 							))}
-						</blockquote>
+						</blockquote> */}
 					</li>
 				))}
 			</ul>
@@ -51,14 +51,14 @@ export const query = graphql`
 			edges {
 				node {
 					id
+					fields {
+						slug
+					}
 					frontmatter {
 						title
 						artists
 						tracks {
 							title
-							artists
-							producers
-							filename
 						}
 					}
 				}

@@ -4,7 +4,7 @@ import {Link, graphql} from 'gatsby'
 import Layout from '../components/layout'
 
 function IndexPage({data: {site, allMarkdownRemark: playlists}}) {
-	const {title, audioCdnRoot} = site.siteMetadata
+	const {title} = site.siteMetadata
 	return (
 		<Layout>
 			<h1>{title}</h1>
@@ -16,22 +16,9 @@ function IndexPage({data: {site, allMarkdownRemark: playlists}}) {
 							{playlist.frontmatter.title}
 						</Link>{' '}
 						({playlist.frontmatter.tracks.length} tracks)
-						{/* <blockquote>
-							{playlist.frontmatter.tracks.map(track => (
-								<p>
-									{track.title} (prod. by {track.producers})
-									<br />
-									<audio
-										controls
-										src={linkPrefix + track.filename}
-									/>
-								</p>
-							))}
-						</blockquote> */}
 					</li>
 				))}
 			</ul>
-			<Link to="/page-2/">Go to page 2</Link>
 		</Layout>
 	)
 }

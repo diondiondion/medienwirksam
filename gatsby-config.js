@@ -1,10 +1,8 @@
 module.exports = {
 	siteMetadata: {
 		title: 'Medienwirksam',
-		audioCdnRoot:
-			'res.cloudinary.com/medienwirksam/video/upload/v1546451694/',
-		imageCdnRoot:
-			'res.cloudinary.com/medienwirksam/image/upload/v1546451694/',
+		audioCdnRoot: 'res.cloudinary.com/medienwirksam/video/upload/v1546451694/',
+		imageCdnRoot: 'res.cloudinary.com/medienwirksam/image/upload/v1546451694/',
 		altCdnRoot: 'medienwirksam-df6d.kxcdn.com',
 	},
 	mapping: {
@@ -12,6 +10,12 @@ module.exports = {
 	},
 	plugins: [
 		'gatsby-plugin-react-helmet',
+		{
+			resolve: `gatsby-plugin-layout`,
+			options: {
+				component: require.resolve(`./src/components/appWrapper/index.jsx`),
+			},
+		},
 		{
 			resolve: `gatsby-source-filesystem`,
 			options: {

@@ -12,21 +12,32 @@ function Playlist({data}) {
 
 	return (
 		<TrackContext.Consumer>
-			{({currentTrack, changeCurrentTrack}) => (
+			{({currentTrack, changeTrack}) => (
 				<Layout>
+					<Link to="/">Back</Link>
 					<h1>{playlist.title}</h1>
-					{currentTrack.title}
 					<ul>
-						{playlist.tracks.map(track => (
+						{playlist.tracks.map((track, index) => (
 							<li>
-								<a href={linkPrefix + track.filename}>{track.title}</a>
-								<button type="button" onClick={() => changeCurrentTrack(track)}>
+								<a
+									href={linkPrefix + track.filename}
+									style={
+										currentTrack && currentTrack.title === track.title
+											? {fontWeight: 'bold'}
+											: undefined
+									}
+								>
+									{track.title}
+								</a>
+								<button
+									type="button"
+									onClick={() => changeTrack(playlist, index)}
+								>
 									Play
 								</button>
 							</li>
 						))}
 					</ul>
-					<Link to="/">Back</Link>
 				</Layout>
 			)}
 		</TrackContext.Consumer>

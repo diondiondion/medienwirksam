@@ -5,19 +5,44 @@ export const TrackContext = React.createContext()
 
 class AppWrapper extends Component {
 	state = {
-		currentTrack: {
-			title: 'Walkman',
-			filename: '/walkman/13-plus-4.mp3',
-		},
+		currentPlaylist: undefined,
+		currentTrackIndex: undefined,
 	}
 
-	changeTrack = trackData => {
-		this.setState({currentTrack: trackData})
+	changeTrack = (playlistData, newTrackIndex) => {
+		this.setState({
+			currentTrackIndex: newTrackIndex,
+			currentPlaylist: playlistData,
+		})
+	}
+
+	goToNextTrack = () => {
+		const {currentTrackIndex, currentPlaylist} = this.state
+		const isLastTrack = currentTrackIndex === currentPlaylist.tracks.length - 1
+
+		this.setState({
+			currentTrackIndex: isLastTrack ? 0 : currentTrackIndex + 1,
+		})
+	}
+
+	goToPrevTrack = () => {
+		const {currentTrackIndex, currentPlaylist} = this.state
+		const isFirstTrack = currentTrackIndex === 0
+		const lastTrackIndex = currentPlaylist.tracks.length - 1
+
+		this.setState({
+			currentTrackIndex: isFirstTrack ? lastTrackIndex : currentTrackIndex - 1,
+		})
 	}
 
 	render() {
 		const {children} = this.props
-		const {currentTrack} = this.state
+		const {currentTrackIndex, currentPlaylist} = this.state
+
+		let currentTrack
+		if (currentPlaylist) {
+			currentTrack = currentPlaylist.tracks[currentTrackIndex]
+		}
 
 		return (
 			<>
@@ -35,11 +60,18 @@ class AppWrapper extends Component {
 						const {audioCdnRoot} = data.site.siteMetadata
 						return (
 							<>
-								<audio
-									controls
-									src={`https://${audioCdnRoot}${currentTrack.filename}`}
-								/>
-								({currentTrack.title})
+								{currentTrack && (
+									<>
+										<audio
+											controls
+											src={`https://${audioCdnRoot}${currentTrack.filename}`}
+										/>
+										<button onClick={this.goToPrevTrack}>&laquo;</button>(
+										{currentTrack.title} from '{currentPlaylist.title}')
+										<button onClick={this.goToNextTrack}>&raquo;</button>
+									</>
+								)}
+								{!currentTrack && <>Please select a track</>}
 							</>
 						)
 					}}
@@ -47,7 +79,8 @@ class AppWrapper extends Component {
 				<TrackContext.Provider
 					value={{
 						currentTrack,
-						changeCurrentTrack: this.changeTrack,
+						currentPlaylist,
+						changeTrack: this.changeTrack,
 					}}
 				>
 					{children}

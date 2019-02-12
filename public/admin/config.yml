@@ -29,7 +29,7 @@ collections:
     label_singular: Playlist
     folder: src/pages/playlists
     create: true
-    slug: {{year}}-{{slug}}
+    slug: '{{year}}-{{slug}}'
     fields:
       - label: Name
         name: title
@@ -60,10 +60,17 @@ collections:
             name: track
             widget: relation
             collection: tracks
-            searchFields: ['title', 'filename']
+            searchFields:
+              - title
+              - filename
             valueField: title
-      - {label: 'Year', name: 'year', widget: 'string'}
-      - {label: 'Tags', name: 'tags', widget: 'list', required: false}
+      - label: Year
+        name: year
+        widget: string
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
       - label: Description
         name: body
         widget: markdown
@@ -76,8 +83,12 @@ collections:
     create: true
     format: yaml
     fields:
-      - {label: 'Name', name: 'title', widget: 'string'}
-      - {label: 'File name', name: 'filename', widget: 'file'}
+      - label: Name
+        name: title
+        widget: string
+      - label: File name
+        name: filename
+        widget: file
       - label: Artists
         name: artists
         widget: inline-select
@@ -111,7 +122,7 @@ collections:
         name: producers
         widget: inline-select
         multiple: true
-        options: 
+        options:
           - Dion
           - EAN
           - Reefer Maxxxx

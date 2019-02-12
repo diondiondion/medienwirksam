@@ -13,61 +13,116 @@ media_folder: static/media
 public_folder: /media
 
 collections:
-  - name: "artists"
-    label: "Artists"
-    label_singular: "Artist"
-    folder: "src/pages/artists"
+  - name: artists
+    label: Artists
+    label_singular: Artist
+    folder: src/pages/artists
     create: true
     format: yaml
     fields:
-      - {label: "Name", name: "title", widget: "string"}
+      - label: Name
+        name: title
+        widget: string
 
-  - name: "playlists"
-    label: "Playlists"
-    label_singular: "Playlist"
-    folder: "src/pages/playlists"
+  - name: playlists
+    label: Playlists
+    label_singular: Playlist
+    folder: src/pages/playlists
     create: true
-    slug: "{{year}}-{{slug}}"
+    slug: {{year}}-{{slug}}
     fields:
-      - {label: "Name", name: "title", widget: "string"}
-      - label: "Artists"
-        name: "artists"
-        widget: "inline-select"
+      - label: Name
+        name: title
+        widget: string
+      - label: Front cover
+        name: frontCover
+        widget: file
+      - label: Back cover
+        name: backCover
+        widget: file
+      - label: Artists
+        name: artists
+        widget: inline-select
         multiple: true
-        options: ["Medienwirksam", "EMC", "Reefer Maxxxx", "EAN", "oGUZe", "Dion", "Jouston"]
-      - label: "Tracks"
-        name: "tracks"
-        widget: "list"
-        field: {label: "Track", name: "track", widget: "relation", collection: "tracks", searchFields: ["title", "filename"], valueField: "title"}
-      - {label: "Year", name: "year", widget: "string"}
-      - {label: "Tags", name: "tags", widget: "list", required: false}
-      - {label: "Description", name: "body", widget: "markdown", required: false}
+        options:
+          - Medienwirksam
+          - EMC
+          - Reefer Maxxxx
+          - EAN
+          - oGUZe
+          - Dion
+          - Jouston
+      - label: Tracks
+        name: tracks
+        widget: list
+        field:
+          - label: Track
+            name: track
+            widget: relation
+            collection: tracks
+            searchFields: ['title', 'filename']
+            valueField: title
+      - {label: 'Year', name: 'year', widget: 'string'}
+      - {label: 'Tags', name: 'tags', widget: 'list', required: false}
+      - label: Description
+        name: body
+        widget: markdown
+        required: false
 
-  - name: "tracks"
-    label: "Tracks"
-    label_singular: "Track"
-    folder: "src/pages/tracks"
+  - name: tracks
+    label: Tracks
+    label_singular: Track
+    folder: src/pages/tracks
     create: true
     format: yaml
     fields:
-      - {label: "Name", name: "title", widget: "string"}
-      - {label: "File name", name: "filename", widget: "file"}
-      - label: "Artists"
-        name: "artists"
-        widget: "inline-select"
+      - {label: 'Name', name: 'title', widget: 'string'}
+      - {label: 'File name', name: 'filename', widget: 'file'}
+      - label: Artists
+        name: artists
+        widget: inline-select
         multiple: true
-        options: ["Medienwirksam", "EMC", "Reefer Maxxxx", "EAN", "oGUZe", "Dion", "Jouston"]
-      - label: "Featuring"
-        name: "artists-feat"
-        widget: "select"
+        options:
+          - Medienwirksam
+          - EMC
+          - Reefer Maxxxx
+          - EAN
+          - oGUZe
+          - Dion
+          - Jouston
+      - label: Featuring
+        name: artists-feat
+        widget: select
         multiple: true
         required: false
-        options: ["Medienwirksam", "EMC", "Reefer Maxxxx", "EAN", "oGUZe", "Amewu", "Affenfass", "Chlorophil", "EAN", "oGUZe", "Dion", "Jouston"]
-      - label: "Producers"
-        label_singular: "Producer"
-        name: "producers"
-        widget: "inline-select"
+        options:
+          - Medienwirksam
+          - EMC
+          - Reefer Maxxxx
+          - EAN
+          - oGUZe
+          - Dion
+          - Jouston
+          - Amewu
+          - Affenfass
+          - Chlorophil
+      - label: Producers
+        label_singular: Producer
+        name: producers
+        widget: inline-select
         multiple: true
-        options: ["Dion", "EAN", "Reefer Maxxxx", "Size1", "Chief Bob"]
-      - {label: "Year", name: "year", widget: "string", default: "", required: false}
-      - {label: "Tags", name: "tags", widget: "list", required: false}
+        options: 
+          - Dion
+          - EAN
+          - Reefer Maxxxx
+          - Size1
+          - Chief Bob
+      - label: Year
+        name: year
+        widget: string
+        default: ''
+        required: false
+      - label: Tags
+        name: tags
+        widget: list
+        required: false

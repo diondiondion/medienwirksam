@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {StaticQuery, graphql} from 'gatsby'
+import {Persist} from 'react-persist'
 
 export const TrackContext = React.createContext()
 
@@ -65,6 +66,7 @@ class AppWrapper extends Component {
 										<audio
 											controls
 											src={`https://${audioCdnRoot}${currentTrack.filename}`}
+											onEnded={this.goToNextTrack}
 										/>
 										<button onClick={this.goToPrevTrack}>&laquo;</button>(
 										{currentTrack.title} from '{currentPlaylist.title}')
@@ -85,6 +87,12 @@ class AppWrapper extends Component {
 				>
 					{children}
 				</TrackContext.Provider>
+				<Persist
+					name="playlistState"
+					data={this.state}
+					debounce={500}
+					onMount={data => this.setState(data)}
+				/>
 			</>
 		)
 	}

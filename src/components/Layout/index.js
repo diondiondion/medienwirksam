@@ -1,9 +1,32 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {createGlobalStyle} from 'styled-components'
 import Helmet from 'react-helmet'
 import {StaticQuery, graphql} from 'gatsby'
 
-import './layout.css'
+import cssReset from '../../style/cssReset'
+import theme from '../../style/theme'
+
+const GlobalStyles = createGlobalStyle`
+	${cssReset}
+
+	html {
+		font-family: ${theme.fonts.default};
+		font-size: 22px;
+
+		color: ${theme.text};
+		background: ${theme.background};
+	}
+
+	h1 {
+		font-family: ${theme.fonts.label};
+		font-size: 3em;
+	}
+
+	a {
+		color: ${theme.links};
+	}
+`
 
 const Layout = ({children}) => (
 	<StaticQuery
@@ -27,6 +50,7 @@ const Layout = ({children}) => (
 				>
 					<html lang="en" />
 				</Helmet>
+				<GlobalStyles />
 				<div
 					style={{
 						margin: '0 auto',

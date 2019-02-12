@@ -1,0 +1,7 @@
+@font-face {
+	font-family: 'Impact Label Reversed';
+	font-style: normal;
+	font-weight: normal;
+	src: url('./Impact_Label_Reversed.woff2') format('woff2'),
+		url('./Impact_Label_Reversed.woff') format('woff');
+}

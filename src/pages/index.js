@@ -1,7 +1,8 @@
 import React from 'react'
-import {Link, graphql} from 'gatsby'
+import {graphql} from 'gatsby'
 
-import Layout from '../components/layout'
+import Layout from '@components/Layout'
+import PlaylistItem from '@components/PlaylistItem'
 
 function IndexPage({data: {site, allMarkdownRemark: playlists}}) {
 	const {title} = site.siteMetadata
@@ -12,10 +13,10 @@ function IndexPage({data: {site, allMarkdownRemark: playlists}}) {
 			<ul>
 				{playlists.edges.map(({node: playlist}) => (
 					<li key={playlist.id}>
-						<Link to={`/playlist/${playlist.fields.slug}`}>
-							{playlist.frontmatter.title}
-						</Link>{' '}
-						({playlist.frontmatter.tracks.length} tracks)
+						<PlaylistItem
+							playlist={playlist}
+							link={`/playlist/${playlist.fields.slug}`}
+						/>
 					</li>
 				))}
 			</ul>

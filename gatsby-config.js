@@ -9,13 +9,35 @@ module.exports = {
 		'MarkdownRemark.frontmatter.tracks': `TracksYaml.title`,
 	},
 	plugins: [
+		{
+			resolve: `gatsby-plugin-alias-imports`,
+			options: {
+				alias: {
+					'@assets': './src/assets',
+					'@components': './src/components',
+					'@pages': './src/pages',
+					'@style': './src/style',
+					'@templates': './src/templates',
+				},
+			},
+		},
 		'gatsby-plugin-react-helmet',
 		{
 			resolve: `gatsby-plugin-layout`,
 			options: {
-				component: require.resolve(`./src/components/appWrapper/index.jsx`),
+				component: require.resolve(`./src/components/AppWrapper/index.jsx`),
 			},
 		},
+		{
+			resolve: 'gatsby-plugin-web-font-loader',
+			options: {
+				custom: {
+					families: ['Impact Label Reversed'],
+					urls: `${__dirname}/src/assets/fonts/index.css`,
+				},
+			},
+		},
+		`gatsby-plugin-styled-components`,
 		{
 			resolve: `gatsby-source-filesystem`,
 			options: {
@@ -37,13 +59,13 @@ module.exports = {
 		{
 			resolve: `gatsby-plugin-manifest`,
 			options: {
-				name: 'gatsby-starter-default',
-				short_name: 'starter',
+				name: 'Medienwirksam',
+				short_name: 'MW',
 				start_url: '/',
 				background_color: '#663399',
 				theme_color: '#663399',
 				display: 'minimal-ui',
-				icon: 'src/images/gatsby-icon.png', // This path is relative to the root of the site.
+				icon: 'src/assets/images/gatsby-icon.png', // This path is relative to the root of the site.
 			},
 		},
 		{

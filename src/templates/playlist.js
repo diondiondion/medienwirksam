@@ -1,9 +1,8 @@
 import React from 'react'
 import {Link, graphql} from 'gatsby'
 
-import Layout from '../components/layout'
-
-import {TrackContext} from '../components/appWrapper'
+import Layout from '@components/Layout'
+import {TrackContext} from '@components/AppWrapper'
 
 function Playlist({data}) {
 	const {audioCdnRoot} = data.site.siteMetadata

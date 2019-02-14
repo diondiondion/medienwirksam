@@ -10,7 +10,8 @@ const cssReset = css`
 		box-sizing: inherit;
 	}
 	html,
-	body {
+	body,
+	figure {
 		margin: 0;
 		padding: 0;
 	}
@@ -28,11 +29,12 @@ const cssReset = css`
 	}
 	img,
 	svg {
-		display: inline-block;
 		vertical-align: middle;
 		border: none;
+		max-width: 100%;
 	}
 	svg {
+		display: inline-block;
 		fill: currentColor;
 		width: 1em;
 		height: 1em;

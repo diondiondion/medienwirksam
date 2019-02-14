@@ -5,7 +5,7 @@ import Layout from '@components/Layout'
 import PlaylistItem from '@components/PlaylistItem'
 
 function IndexPage({data: {site, allMarkdownRemark: playlists}}) {
-	const {title} = site.siteMetadata
+	const {title, imageCdnRoot} = site.siteMetadata
 	return (
 		<Layout>
 			<h1>{title}</h1>
@@ -15,6 +15,7 @@ function IndexPage({data: {site, allMarkdownRemark: playlists}}) {
 					<li key={playlist.id}>
 						<PlaylistItem
 							playlist={playlist}
+							imageCdnRoot={imageCdnRoot}
 							link={`/playlist/${playlist.fields.slug}`}
 						/>
 					</li>
@@ -32,6 +33,7 @@ export const query = graphql`
 			siteMetadata {
 				title
 				audioCdnRoot
+				imageCdnRoot
 			}
 		}
 		allMarkdownRemark {
@@ -45,6 +47,8 @@ export const query = graphql`
 					frontmatter {
 						title
 						artists
+						frontCover
+						backCover
 						tracks {
 							title
 						}

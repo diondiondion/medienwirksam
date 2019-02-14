@@ -9,21 +9,22 @@ const Wrapper = styled.article`
 	max-width: 600px;
 `
 
-const Image = styled.figure``
+const Figure = styled.figure`
+	max-width: 300px;
+`
 
 const Info = styled.div``
 
-function PlaylistItem({playlist, link}) {
+function PlaylistItem({playlist, link, imageCdnRoot}) {
 	const {
-		frontmatter: {title, artist, tracks},
+		frontmatter: {title, artist, tracks, frontCover},
 	} = playlist
+	const imageUrl = frontCover ? `https://${imageCdnRoot}${frontCover}` : null
 
 	return (
 		<Wrapper>
 			<TitleLabel>{title}</TitleLabel>
-			<Image>
-				<img src="" alt="" />
-			</Image>
+			<Figure>{imageUrl && <img src={imageUrl} alt="" />}</Figure>
 			<Info>
 				<strong>{artist}</strong>
 				<br />

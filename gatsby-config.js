@@ -33,7 +33,6 @@ module.exports = {
 			options: {
 				custom: {
 					families: ['Impact Label Reversed'],
-					urls: `${__dirname}/src/assets/fonts/index.css`,
 				},
 			},
 		},

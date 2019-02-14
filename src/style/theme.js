@@ -4,7 +4,7 @@ const theme = {
 	links: '#0081ff',
 	fonts: {
 		default: '"Courier New", Courier, monospace',
-		label: 'Impact Label Reversed',
+		label: 'Impact Label Reversed, "Courier New", Courier, monospace',
 	},
 }
 

@@ -1,5 +1,7 @@
 ---
 title: Walkman
+frontCover: walkman/Jouston-Walkman-Cover-front-web.png
+backCover: walkman/Jouston-Walkman-Cover-back-web.png
 artists:
   - Jouston
   - Dion
@@ -21,4 +23,3 @@ tracks:
   - Aussteigen bitte
 year: '2013'
 ---
-

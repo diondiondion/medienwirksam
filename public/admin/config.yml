@@ -37,9 +37,11 @@ collections:
       - label: Front cover
         name: frontCover
         widget: file
+        required: false
       - label: Back cover
         name: backCover
         widget: file
+        required: false
       - label: Artists
         name: artists
         widget: inline-select

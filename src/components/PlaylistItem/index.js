@@ -6,27 +6,44 @@ import TitleLabel from '@components/TitleLabel'
 
 const Wrapper = styled.article`
 	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: max-content;
+	grid-column-gap: 1.5rem;
 	max-width: 600px;
 `
 
-const Figure = styled.figure`
-	max-width: 300px;
+const Heading = styled.header`
+	grid-row: 1;
+	grid-column: 2;
+	margin-top: 3rem;
+	margin-left: -3rem;
+	margin-bottom: 0.5rem;
 `
 
-const Info = styled.div``
+const Figure = styled.figure`
+	grid-row: 1 / 3;
+	grid-column: 1;
+`
+
+const Info = styled.div`
+	grid-row: 2;
+	grid-column: 2;
+`
 
 function PlaylistItem({playlist, link, imageCdnRoot}) {
 	const {
-		frontmatter: {title, artist, tracks, frontCover},
+		frontmatter: {title, artists, tracks, frontCover},
 	} = playlist
 	const imageUrl = frontCover ? `https://${imageCdnRoot}${frontCover}` : null
 
 	return (
 		<Wrapper>
-			<TitleLabel>{title}</TitleLabel>
+			<Heading>
+				<TitleLabel>{title}</TitleLabel>
+			</Heading>
 			<Figure>{imageUrl && <img src={imageUrl} alt="" />}</Figure>
 			<Info>
-				<strong>{artist}</strong>
+				<strong>{artists}</strong>
 				<br />
 				{tracks.length} tracks
 				<br />

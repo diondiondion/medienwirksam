@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {Link, graphql} from 'gatsby'
 
 import Layout from '@components/Layout'
@@ -8,38 +8,34 @@ function Playlist({data}) {
 	const {audioCdnRoot} = data.site.siteMetadata
 	const playlist = data.markdownRemark.frontmatter
 	const linkPrefix = `https://${audioCdnRoot}`
+	const {currentTrack, changeTrack} = useContext(TrackContext)
 
 	return (
-		<TrackContext.Consumer>
-			{({currentTrack, changeTrack}) => (
-				<Layout>
-					<Link to="/">Back</Link>
-					<h1>{playlist.title}</h1>
-					<ul>
-						{playlist.tracks.map((track, index) => (
-							<li>
-								<a
-									href={linkPrefix + track.filename}
-									style={
-										currentTrack && currentTrack.title === track.title
-											? {fontWeight: 'bold'}
-											: undefined
-									}
-								>
-									{track.title}
-								</a>
-								<button
-									type="button"
-									onClick={() => changeTrack(playlist, index)}
-								>
-									Play
-								</button>
-							</li>
-						))}
-					</ul>
-				</Layout>
-			)}
-		</TrackContext.Consumer>
+		<Layout>
+			<Link to="/">Back</Link>
+			<h1>{playlist.title}</h1>
+			<ul>
+				{playlist.tracks.map((track, index) => {
+					const isPlaying = currentTrack && currentTrack.title === track.title
+					return (
+						<li>
+							<a
+								href={linkPrefix + track.filename}
+								style={isPlaying ? {fontWeight: 'bold'} : undefined}
+							>
+								{track.title}
+							</a>
+							<button
+								type="button"
+								onClick={() => changeTrack(playlist, index)}
+							>
+								Play
+							</button>
+						</li>
+					)
+				})}
+			</ul>
+		</Layout>
 	)
 }
 

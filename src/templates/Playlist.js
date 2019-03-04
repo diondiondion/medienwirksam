@@ -18,7 +18,7 @@ function Playlist({data}) {
 				{playlist.tracks.map((track, index) => {
 					const isPlaying = currentTrack && currentTrack.title === track.title
 					return (
-						<li>
+						<li key={track.title}>
 							<a
 								href={linkPrefix + track.filename}
 								style={isPlaying ? {fontWeight: 'bold'} : undefined}

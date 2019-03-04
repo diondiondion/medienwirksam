@@ -6,7 +6,7 @@ import Helmet from 'react-helmet'
 import cssReset from '../../style/cssReset'
 import theme from '../../style/theme'
 
-import useSiteMetaData from '@components/AppWrapper/useSiteMetaData'
+import useSiteMetaData from '@utils/useSiteMetaData'
 
 const GlobalStyles = createGlobalStyle`
 	${cssReset}

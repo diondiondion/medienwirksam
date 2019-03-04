@@ -10,6 +10,18 @@ module.exports = {
 	},
 	plugins: [
 		{
+			resolve: 'gatsby-plugin-eslint',
+			options: {
+				test: /\.js$|\.jsx$/,
+				exclude: /(node_modules|.cache|public)/,
+				stages: ['develop'],
+				options: {
+					emitWarning: true,
+					failOnError: false,
+				},
+			},
+		},
+		{
 			resolve: `gatsby-plugin-alias-imports`,
 			options: {
 				alias: {
@@ -18,6 +30,7 @@ module.exports = {
 					'@pages': './src/pages',
 					'@style': './src/style',
 					'@templates': './src/templates',
+					'@utils': './src/utils',
 				},
 			},
 		},

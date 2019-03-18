@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import {Persist} from 'react-persist'
+import {ThemeProvider} from 'styled-components'
+import theme from '@style/theme'
 
 import AudioPlayer from '@components/AudioPlayer'
 
@@ -27,18 +29,20 @@ function AppWrapper({children}) {
 
 	return (
 		<>
-			<TrackContext.Provider
-				value={{
-					currentTrack,
-					playlist,
-					changeTrack,
-					goToNextTrack,
-					goToPrevTrack,
-				}}
-			>
-				<AudioPlayer />
-				{children}
-			</TrackContext.Provider>
+			<ThemeProvider theme={theme}>
+				<TrackContext.Provider
+					value={{
+						currentTrack,
+						playlist,
+						changeTrack,
+						goToNextTrack,
+						goToPrevTrack,
+					}}
+				>
+					<AudioPlayer />
+					{children}
+				</TrackContext.Provider>
+			</ThemeProvider>
 			<Persist
 				name="playlistState"
 				data={{

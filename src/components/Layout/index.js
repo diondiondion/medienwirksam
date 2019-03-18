@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import {createGlobalStyle} from 'styled-components'
 import Helmet from 'react-helmet'
 
-import cssReset from '../../style/cssReset'
-import theme from '../../style/theme'
+import cssReset from '@style/cssReset'
+import theme from '@style/theme'
 
 import useSiteMetaData from '@utils/useSiteMetaData'
 

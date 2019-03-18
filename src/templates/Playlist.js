@@ -56,6 +56,7 @@ export const query = graphql`
 				year
 				frontCover
 				backCover
+				color
 				tracks {
 					title
 					artists

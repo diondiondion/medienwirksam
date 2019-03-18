@@ -1,5 +1,6 @@
 ---
 title: Direkt aus Kreuzberg
+color: '#ffe627'
 artists:
   - EMC
 tracks:
@@ -20,4 +21,3 @@ tracks:
   - Hadi Tschüss
 year: '2015'
 ---
-

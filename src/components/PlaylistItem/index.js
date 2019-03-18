@@ -32,14 +32,14 @@ const Info = styled.div`
 
 function PlaylistItem({playlist, link, imageCdnRoot}) {
 	const {
-		frontmatter: {title, artists, tracks, frontCover},
+		frontmatter: {title, artists, tracks, frontCover, color},
 	} = playlist
 	const imageUrl = frontCover ? `https://${imageCdnRoot}${frontCover}` : null
 
 	return (
 		<Wrapper>
 			<Heading>
-				<TitleLabel>{title}</TitleLabel>
+				<TitleLabel color={color}>{title}</TitleLabel>
 			</Heading>
 			<Figure>{imageUrl && <img src={imageUrl} alt="" />}</Figure>
 			<Info>

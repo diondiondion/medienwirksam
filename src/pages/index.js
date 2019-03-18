@@ -16,7 +16,7 @@ function IndexPage({data: {site, allMarkdownRemark: playlists}}) {
 						<PlaylistItem
 							playlist={playlist}
 							imageCdnRoot={imageCdnRoot}
-							link={`/playlist/${playlist.fields.slug}`}
+							link={`/playlist${playlist.fields.slug}`}
 						/>
 					</li>
 				))}
@@ -49,6 +49,7 @@ export const query = graphql`
 						artists
 						frontCover
 						backCover
+						color
 						tracks {
 							title
 						}

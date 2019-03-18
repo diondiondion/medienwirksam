@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import invert from 'invert-color'
 
 import theme from '@style/theme'
 import {fontSmoothing} from '@style/mixins'
@@ -24,14 +25,14 @@ const InnerText = styled.span`
 	box-decoration-break: clone;
 	-webkit-box-decoration-break: clone;
 
-	color: #000;
-	background-color: #ffe627;
+	color: ${p => invert(p.color, true) || '#000'};
+	background-color: ${p => p.color || '#ffe627'};
 `
 
-function TitleLabel({children, ...otherProps}) {
+function TitleLabel({children, color, ...otherProps}) {
 	return (
 		<Wrapper {...otherProps}>
-			<InnerText>{children}</InnerText>
+			<InnerText color={color}>{children}</InnerText>
 		</Wrapper>
 	)
 }

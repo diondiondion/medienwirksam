@@ -7,20 +7,26 @@ import formatTime from '@utils/formatTime'
 import theme from '@style/theme'
 import {TrackContext} from '@components/AppWrapper'
 import Slider from '@components/Slider'
+import ClearButton from '@components/ClearButton'
+import {
+	PlayIcon,
+	PauseIcon,
+	SkipIcon,
+	MuteIcon,
+	MutedIcon,
+} from '@components/icons'
 
 import useAudioPlayer from './useAudioPlayer'
 
 const Wrapper = styled.div`
 	display: flex;
+	align-items: center;
+	justify-content: center;
 
 	color: ${p => invert(p.highlightColor, true)};
 	background-color: ${p => p.highlightColor};
 
 	font-size: ${p => p.theme.typeScale.s}px;
-
-	& > * + * {
-		margin-left: 1em;
-	}
 `
 
 function AudioPlayer() {
@@ -45,11 +51,15 @@ function AudioPlayer() {
 				</div>
 			)}
 			<audio ref={audioRef} src={src} preload="auto" onEnded={goToNextTrack} />
-			<button onClick={goToPrevTrack}>&laquo;</button>
-			<button type="button" onClick={player.togglePlay}>
-				{player.isPlaying ? 'Pause' : 'Play'}
-			</button>
-			<button onClick={goToNextTrack}>&raquo;</button>
+			<ClearButton dimmed onClick={goToPrevTrack}>
+				<SkipIcon style={{transform: 'rotate(180deg)'}} />
+			</ClearButton>
+			<ClearButton onClick={player.togglePlay}>
+				{player.isPlaying ? <PauseIcon /> : <PlayIcon />}
+			</ClearButton>
+			<ClearButton dimmed onClick={goToNextTrack}>
+				<SkipIcon />
+			</ClearButton>
 			<p>
 				{formatTime(player.currentTime)}/{formatTime(player.duration)}
 			</p>
@@ -60,9 +70,9 @@ function AudioPlayer() {
 				max={player.duration}
 				onChange={e => player.seekTo(e.target.value)}
 			/>
-			<button type="button" onClick={player.toggleMute}>
-				{player.isMuted ? 'Unmute' : 'Mute'}
-			</button>
+			<ClearButton onClick={player.toggleMute}>
+				{player.isMuted ? <MutedIcon /> : <MuteIcon />}
+			</ClearButton>
 			<Slider
 				color={playlistColor}
 				value={player.volume}

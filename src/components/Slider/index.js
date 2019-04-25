@@ -29,6 +29,8 @@ const Input = styled.input.attrs({type: 'range'})`
 	appearance: none;
 	color: inherit;
 	background: transparent;
+	width: 100%;
+	height: 42px;
 
 	::-webkit-slider-runnable-track {
 		${trackStyle}

@@ -22,6 +22,7 @@ const Wrapper = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-wrap: wrap;
 
 	color: ${p => invert(p.highlightColor, true)};
 	background-color: ${p => p.highlightColor};
@@ -51,15 +52,17 @@ function AudioPlayer() {
 				</div>
 			)}
 			<audio ref={audioRef} src={src} preload="auto" onEnded={goToNextTrack} />
-			<ClearButton dimmed onClick={goToPrevTrack}>
-				<SkipIcon style={{transform: 'rotate(180deg)'}} />
-			</ClearButton>
-			<ClearButton onClick={player.togglePlay}>
-				{player.isPlaying ? <PauseIcon /> : <PlayIcon />}
-			</ClearButton>
-			<ClearButton dimmed onClick={goToNextTrack}>
-				<SkipIcon />
-			</ClearButton>
+			<div>
+				<ClearButton dimmed onClick={goToPrevTrack}>
+					<SkipIcon style={{transform: 'rotate(180deg)'}} />
+				</ClearButton>
+				<ClearButton onClick={player.togglePlay}>
+					{player.isPlaying ? <PauseIcon /> : <PlayIcon />}
+				</ClearButton>
+				<ClearButton dimmed onClick={goToNextTrack}>
+					<SkipIcon />
+				</ClearButton>
+			</div>
 			<p>
 				{formatTime(player.currentTime)}/{formatTime(player.duration)}
 			</p>
@@ -69,6 +72,7 @@ function AudioPlayer() {
 				min="0"
 				max={player.duration}
 				onChange={e => player.seekTo(e.target.value)}
+				style={{width: '200px'}}
 			/>
 			<ClearButton onClick={player.toggleMute}>
 				{player.isMuted ? <MutedIcon /> : <MuteIcon />}

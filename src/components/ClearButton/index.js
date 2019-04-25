@@ -4,6 +4,7 @@ import {getRgb} from '@utils/hexToRgb'
 
 const ClearButton = styled.button`
 	display: inline-block;
+	flex: none;
 	border: none;
 	padding: 0.5rem;
 

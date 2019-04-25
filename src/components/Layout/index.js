@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {createGlobalStyle} from 'styled-components'
-import Helmet from 'react-helmet'
+import {Helmet} from 'react-helmet'
 
 import cssReset from '@style/cssReset'
 import theme from '@style/theme'
@@ -40,9 +40,7 @@ function Layout({children}) {
 					{name: 'description', content: 'Sample'},
 					{name: 'keywords', content: 'sample, something'},
 				]}
-			>
-				<html lang="en" />
-			</Helmet>
+			/>
 			<GlobalStyles />
 			<div
 				style={{

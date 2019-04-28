@@ -1,10 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {createGlobalStyle} from 'styled-components'
+import styled, {createGlobalStyle} from 'styled-components'
 import {Helmet} from 'react-helmet'
 
 import cssReset from '@style/cssReset'
 import theme from '@style/theme'
+
+import logoImage from '@assets/images/logo.svg'
+import backgroundImage from '@assets/images/background-xl.jpg'
 
 import useSiteMetaData from '@utils/useSiteMetaData'
 
@@ -16,7 +19,11 @@ const GlobalStyles = createGlobalStyle`
 		font-size: 22px;
 
 		color: ${theme.text};
-		background: ${theme.background};
+		background-color: ${theme.background};
+		background-image: url(${backgroundImage});
+		background-size: 100% auto;
+		background-position: top;
+		background-repeat: no-repeat;
 	}
 
 	h1 {
@@ -29,6 +36,18 @@ const GlobalStyles = createGlobalStyle`
 	}
 `
 
+const PageWrapper = styled.div`
+	margin: 0 auto;
+	padding: 1rem;
+	max-width: 2000px;
+`
+
+const Logo = styled.img`
+	display: block;
+	margin: 1rem auto 2rem;
+	max-width: 730px;
+`
+
 function Layout({children}) {
 	const {title} = useSiteMetaData()
 
@@ -37,21 +56,15 @@ function Layout({children}) {
 			<Helmet
 				title={title}
 				meta={[
-					{name: 'description', content: 'Sample'},
-					{name: 'keywords', content: 'sample, something'},
+					{name: 'description', content: ''},
+					{name: 'keywords', content: ''},
 				]}
 			/>
 			<GlobalStyles />
-			<div
-				style={{
-					margin: '0 auto',
-					maxWidth: 960,
-					padding: '0px 1.0875rem 1.45rem',
-					paddingTop: 0,
-				}}
-			>
+			<PageWrapper>
+				<Logo src={logoImage} alt="Medienwirksam" />
 				{children}
-			</div>
+			</PageWrapper>
 		</>
 	)
 }

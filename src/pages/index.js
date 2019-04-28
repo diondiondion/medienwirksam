@@ -1,26 +1,47 @@
 import React from 'react'
 import {graphql} from 'gatsby'
+import styled from 'styled-components'
 
 import Layout from '@components/Layout'
 import PlaylistItem from '@components/PlaylistItem'
 
+const PlaylistGrid = styled.section`
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min-content, 600px));
+	grid-gap: ${p => p.theme.spacing.m};
+	justify-content: center;
+`
+
 function IndexPage({data: {site, allMarkdownRemark: playlists}}) {
-	const {title, imageCdnRoot} = site.siteMetadata
+	const {imageCdnRoot} = site.siteMetadata
 	return (
 		<Layout>
-			<h1>{title}</h1>
-			<p>Playlists: {playlists.totalCount}</p>
-			<ul>
+			<PlaylistGrid>
 				{playlists.edges.map(({node: playlist}) => (
-					<li key={playlist.id}>
-						<PlaylistItem
-							playlist={playlist}
-							imageCdnRoot={imageCdnRoot}
-							link={`/playlist${playlist.fields.slug}`}
-						/>
-					</li>
+					<PlaylistItem
+						key={playlist.id}
+						playlist={playlist}
+						imageCdnRoot={imageCdnRoot}
+						link={`/playlist${playlist.fields.slug}`}
+					/>
 				))}
-			</ul>
+				{playlists.edges.map(({node: playlist}) => (
+					<PlaylistItem
+						key={playlist.id}
+						playlist={playlist}
+						imageCdnRoot={imageCdnRoot}
+						link={`/playlist${playlist.fields.slug}`}
+					/>
+				))}
+				{playlists.edges.map(({node: playlist}) => (
+					<PlaylistItem
+						key={playlist.id}
+						playlist={playlist}
+						imageCdnRoot={imageCdnRoot}
+						link={`/playlist${playlist.fields.slug}`}
+					/>
+				))}
+			</PlaylistGrid>
 		</Layout>
 	)
 }

@@ -7,7 +7,6 @@ import {fontSmoothing} from '@style/mixins'
 
 const Wrapper = styled.h2`
 	display: block;
-	width: max-content;
 	max-width: 100%;
 	margin: 0;
 	margin-bottom: 0.5rem;

@@ -1,5 +1,6 @@
 ---
 title: Direkt aus Kreuzberg
+frontCover: direkt-aus-kreuzberg/EMC-Direkt-aus-Kreuzberg-Cover.jpg
 color: '#ffe627'
 artists:
   - EMC

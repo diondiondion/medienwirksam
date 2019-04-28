@@ -11,6 +11,11 @@ const theme = {
 		m: 22,
 		l: 29,
 	},
+	spacing: {
+		s: '0.5rem',
+		m: '1rem',
+		l: '2rem',
+	},
 }
 
 export default theme

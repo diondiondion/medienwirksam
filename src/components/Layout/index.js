@@ -48,7 +48,7 @@ const PageWrapper = styled.div`
 const Logo = styled.img`
 	display: block;
 	margin: 1rem auto 2rem;
-	max-width: 730px;
+	max-width: 100%;
 `
 
 function Layout({children}) {

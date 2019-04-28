@@ -27,19 +27,39 @@ const Wrapper = styled.div`
 
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: stretch;
 	flex-wrap: wrap;
+
+	padding: 0 0.5rem;
 
 	color: ${p => invert(p.highlightColor, true)};
 	background-color: ${p => p.highlightColor};
 
 	font-size: ${p => p.theme.typeScale.s}px;
+
+	& > :not(:first-child) {
+		margin-left: 0.5rem;
+	}
+`
+
+const TrackInfo = styled.div`
+	width: auto;
+	flex: 1 1 auto;
+`
+
+const VolumeSection = styled.div`
+	display: flex;
+	align-items: center;
+
+	@media (max-width: 800px) {
+		display: none;
+	}
 `
 
 function AudioPlayer() {
 	const audioRef = useRef(null)
 	const player = useAudioPlayer(audioRef)
-	const {audioCdnRoot} = useSiteMetaData()
+	const {audioCdnRoot, imageCdnRoot} = useSiteMetaData()
 	const {currentTrack, goToNextTrack, goToPrevTrack, playlist} = useContext(
 		TrackContext
 	)
@@ -48,16 +68,26 @@ function AudioPlayer() {
 		? `https://${audioCdnRoot}${currentTrack.filename}`
 		: ''
 
+	const imageSrc =
+		playlist && playlist.frontCover
+			? `https://${imageCdnRoot}${playlist.frontCover}`
+			: null
+
 	return (
 		<Wrapper highlightColor={playlistColor}>
-			{currentTrack && (
-				<div>
-					<strong>{currentTrack.title}</strong>
-					<br />
-					{currentTrack.artists}
-				</div>
-			)}
+			<img src={imageSrc} alt="" width="56" height="56" />
 			<audio ref={audioRef} src={src} preload="auto" onEnded={goToNextTrack} />
+			<TrackInfo>
+				{currentTrack ? (
+					<div>
+						<strong>{currentTrack.title}</strong>
+						<br />
+						{currentTrack.artists}
+					</div>
+				) : (
+					<div>Kein Track ausgewählt</div>
+				)}
+			</TrackInfo>
 			<div>
 				<ClearButton dimmed onClick={goToPrevTrack}>
 					<SkipIcon style={{transform: 'rotate(180deg)'}} />
@@ -78,20 +108,22 @@ function AudioPlayer() {
 				min="0"
 				max={player.duration}
 				onChange={e => player.seekTo(e.target.value)}
-				style={{width: '200px'}}
+				style={{flex: '1 1 200px'}}
 			/>
-			<ClearButton onClick={player.toggleMute}>
-				{player.isMuted ? <MutedIcon /> : <MuteIcon />}
-			</ClearButton>
-			<Slider
-				color={playlistColor}
-				value={player.volume}
-				min="0"
-				max="1"
-				step="0.05"
-				onChange={e => player.setVolume(e.target.value)}
-				style={{width: '100px'}}
-			/>
+			<VolumeSection>
+				<ClearButton onClick={player.toggleMute}>
+					{player.isMuted ? <MutedIcon /> : <MuteIcon />}
+				</ClearButton>
+				<Slider
+					color={playlistColor}
+					value={player.volume}
+					min="0"
+					max="1"
+					step="0.05"
+					onChange={e => player.setVolume(e.target.value)}
+					style={{width: '100px'}}
+				/>
+			</VolumeSection>
 		</Wrapper>
 	)
 }

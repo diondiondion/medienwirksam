@@ -40,9 +40,14 @@ const CoverLink = styled(Link)`
 	text-indent: 100%;
 `
 
+const Dimmed = styled.span`
+	font-style: italic;
+	opacity: 0.75;
+`
+
 function PlaylistItem({playlist, link, imageCdnRoot}) {
 	const {
-		frontmatter: {title, artists, tracks, frontCover, color},
+		frontmatter: {title, artists, year, tracks, frontCover, color},
 	} = playlist
 	const imageUrl = frontCover ? `https://${imageCdnRoot}${frontCover}` : null
 
@@ -55,8 +60,12 @@ function PlaylistItem({playlist, link, imageCdnRoot}) {
 				</Heading>
 				<strong>{artists.join(' und ')}</strong>
 				<br />
-				{tracks.length} tracks
-				<br />
+				<Dimmed>
+					{year}
+					<br />
+					{tracks.length} tracks
+					<br />
+				</Dimmed>
 				<CoverLink to={link}>View</CoverLink>
 			</Info>
 		</Wrapper>

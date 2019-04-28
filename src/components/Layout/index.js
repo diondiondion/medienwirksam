@@ -41,7 +41,7 @@ const GlobalStyles = createGlobalStyle`
 const PageWrapper = styled.div`
 	margin: 0 auto;
 	padding: 1rem;
-	padding-bottom: 5rem;
+	padding-bottom: 8rem;
 	max-width: 2000px;
 `
 
@@ -49,6 +49,7 @@ const Logo = styled.img`
 	display: block;
 	margin: 1rem auto 2rem;
 	max-width: 100%;
+	height: auto;
 `
 
 function Layout({children}) {

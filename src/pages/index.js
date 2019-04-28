@@ -55,6 +55,7 @@ export const query = graphql`
 						frontCover
 						backCover
 						color
+						year
 						tracks {
 							title
 						}

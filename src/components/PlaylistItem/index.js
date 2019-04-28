@@ -5,6 +5,7 @@ import {Link} from 'gatsby'
 import TitleLabel from '@components/TitleLabel'
 
 const Wrapper = styled.article`
+	position: relative;
 	display: flex;
 	flex-wrap: wrap;
 `
@@ -29,6 +30,16 @@ const Heading = styled.header`
 	}
 `
 
+const CoverLink = styled(Link)`
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	overflow: hidden;
+	text-indent: 100%;
+`
+
 function PlaylistItem({playlist, link, imageCdnRoot}) {
 	const {
 		frontmatter: {title, artists, tracks, frontCover, color},
@@ -42,11 +53,11 @@ function PlaylistItem({playlist, link, imageCdnRoot}) {
 				<Heading>
 					<TitleLabel color={color}>{title}</TitleLabel>
 				</Heading>
-				<strong>{artists}</strong>
+				<strong>{artists.join(' und ')}</strong>
 				<br />
 				{tracks.length} tracks
 				<br />
-				<Link to={link}>View</Link>
+				<CoverLink to={link}>View</CoverLink>
 			</Info>
 		</Wrapper>
 	)

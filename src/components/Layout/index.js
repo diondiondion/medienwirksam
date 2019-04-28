@@ -24,6 +24,8 @@ const GlobalStyles = createGlobalStyle`
 		background-size: 100% auto;
 		background-position: top;
 		background-repeat: no-repeat;
+
+		overflow-y: scroll;
 	}
 
 	h1 {
@@ -39,6 +41,7 @@ const GlobalStyles = createGlobalStyle`
 const PageWrapper = styled.div`
 	margin: 0 auto;
 	padding: 1rem;
+	padding-bottom: 5rem;
 	max-width: 2000px;
 `
 
@@ -62,7 +65,7 @@ function Layout({children}) {
 			/>
 			<GlobalStyles />
 			<PageWrapper>
-				<Logo src={logoImage} alt="Medienwirksam" />
+				<Logo src={logoImage} alt="Medienwirksam" width="730" height="92" />
 				{children}
 			</PageWrapper>
 		</>

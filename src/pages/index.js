@@ -25,22 +25,6 @@ function IndexPage({data: {site, allMarkdownRemark: playlists}}) {
 						link={`/playlist${playlist.fields.slug}`}
 					/>
 				))}
-				{playlists.edges.map(({node: playlist}) => (
-					<PlaylistItem
-						key={playlist.id}
-						playlist={playlist}
-						imageCdnRoot={imageCdnRoot}
-						link={`/playlist${playlist.fields.slug}`}
-					/>
-				))}
-				{playlists.edges.map(({node: playlist}) => (
-					<PlaylistItem
-						key={playlist.id}
-						playlist={playlist}
-						imageCdnRoot={imageCdnRoot}
-						link={`/playlist${playlist.fields.slug}`}
-					/>
-				))}
 			</PlaylistGrid>
 		</Layout>
 	)

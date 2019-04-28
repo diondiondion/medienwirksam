@@ -5,29 +5,28 @@ import {Link} from 'gatsby'
 import TitleLabel from '@components/TitleLabel'
 
 const Wrapper = styled.article`
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: max-content;
-	grid-column-gap: 1.5rem;
-	max-width: 600px;
-`
-
-const Heading = styled.header`
-	grid-row: 1;
-	grid-column: 2;
-	margin-top: 3rem;
-	margin-left: -3rem;
-	margin-bottom: 0.5rem;
+	display: flex;
+	flex-wrap: wrap;
 `
 
 const Figure = styled.figure`
-	grid-row: 1 / 3;
-	grid-column: 1;
+	flex: 1 0 200px;
 `
 
 const Info = styled.div`
-	grid-row: 2;
-	grid-column: 2;
+	flex: 1 1 50%;
+	padding-left: 1.5rem;
+`
+
+const Heading = styled.header`
+	margin-top: -0.5rem;
+	margin-left: -0.5rem;
+	margin-bottom: 1rem;
+
+	@media (min-width: 459px) {
+		margin-top: 2.5rem;
+		margin-left: -2.5rem;
+	}
 `
 
 function PlaylistItem({playlist, link, imageCdnRoot}) {
@@ -38,11 +37,11 @@ function PlaylistItem({playlist, link, imageCdnRoot}) {
 
 	return (
 		<Wrapper>
-			<Heading>
-				<TitleLabel color={color}>{title}</TitleLabel>
-			</Heading>
 			<Figure>{imageUrl && <img src={imageUrl} alt="" />}</Figure>
 			<Info>
+				<Heading>
+					<TitleLabel color={color}>{title}</TitleLabel>
+				</Heading>
 				<strong>{artists}</strong>
 				<br />
 				{tracks.length} tracks

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled, {createGlobalStyle} from 'styled-components'
 import {Helmet} from 'react-helmet'
+import {Link} from 'gatsby'
 
 import cssReset from '@style/cssReset'
 import theme from '@style/theme'
@@ -16,7 +17,7 @@ const GlobalStyles = createGlobalStyle`
 
 	html {
 		font-family: ${theme.fonts.default};
-		font-size: 22px;
+		font-size: 16px;
 
 		color: ${theme.text};
 		background-color: ${theme.background};
@@ -26,6 +27,10 @@ const GlobalStyles = createGlobalStyle`
 		background-repeat: no-repeat;
 
 		overflow-y: scroll;
+
+		@media (min-width: 800px) {
+			font-size: 22px;
+		}
 	}
 
 	h1 {
@@ -66,7 +71,9 @@ function Layout({children}) {
 			/>
 			<GlobalStyles />
 			<PageWrapper>
-				<Logo src={logoImage} alt="Medienwirksam" width="730" height="92" />
+				<Link to="/">
+					<Logo src={logoImage} alt="Medienwirksam" width="730" height="92" />
+				</Link>
 				{children}
 			</PageWrapper>
 		</>

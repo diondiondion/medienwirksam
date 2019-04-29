@@ -7,9 +7,9 @@ const theme = {
 		label: 'Impact Label Reversed, "Courier New", Courier, monospace',
 	},
 	typeScale: {
-		s: 18,
-		m: 22,
-		l: 29,
+		s: '0.8rem',
+		m: '1rem',
+		l: '1.6rem',
 	},
 	spacing: {
 		s: '0.5rem',

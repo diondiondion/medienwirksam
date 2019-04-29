@@ -35,7 +35,7 @@ const Wrapper = styled.div`
 	color: ${p => invert(p.highlightColor, true)};
 	background-color: ${p => p.highlightColor};
 
-	font-size: ${p => p.theme.typeScale.s}px;
+	font-size: ${p => p.theme.typeScale.m};
 
 	& > :not(:first-child) {
 		margin-left: 0.5rem;

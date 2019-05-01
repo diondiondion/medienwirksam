@@ -28,7 +28,7 @@ const GlobalStyles = createGlobalStyle`
 
 		overflow-y: scroll;
 
-		@media (min-width: 800px) {
+		@media (min-width: ${theme.breakpoints.m}) {
 			font-size: 22px;
 		}
 	}

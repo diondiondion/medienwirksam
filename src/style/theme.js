@@ -16,6 +16,10 @@ const theme = {
 		m: '1rem',
 		l: '2rem',
 	},
+	breakpoints: {
+		s: '500px',
+		m: '800px',
+	},
 }
 
 export default theme

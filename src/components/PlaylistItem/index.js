@@ -11,7 +11,11 @@ const Wrapper = styled.article`
 `
 
 const Figure = styled.figure`
-	flex: 1 0 200px;
+	flex: 1 0 140px;
+
+	@media (min-width: ${p => p.theme.breakpoints.m}) {
+		flex-basis: 200px;
+	}
 `
 
 const Info = styled.div`
@@ -20,13 +24,12 @@ const Info = styled.div`
 `
 
 const Heading = styled.header`
-	margin-top: -0.5rem;
-	margin-left: -0.5rem;
+	margin-top: 1rem;
+	margin-left: -2.5rem;
 	margin-bottom: 1rem;
 
-	@media (min-width: 459px) {
-		margin-top: 2.5rem;
-		margin-left: -2.5rem;
+	@media (min-width: ${p => p.theme.breakpoints.m}) {
+		margin-top: 2rem;
 	}
 `
 

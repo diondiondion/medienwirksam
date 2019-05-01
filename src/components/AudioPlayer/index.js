@@ -1,4 +1,4 @@
-import React, {useContext, useRef} from 'react'
+import React, {useContext, useRef, useEffect, useMemo} from 'react'
 import styled from 'styled-components'
 import invert from 'invert-color'
 
@@ -45,8 +45,10 @@ const Wrapper = styled.div`
 `
 
 const TrackInfo = styled.div`
-	width: auto;
-	flex: 1 1 auto;
+	flex: 1 1 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 `
 
 const VolumeSection = styled.div`
@@ -57,6 +59,35 @@ const VolumeSection = styled.div`
 		display: none;
 	}
 `
+
+function useMediaSession({
+	title,
+	artist,
+	album,
+	artwork,
+	nextTrack,
+	previousTrack,
+}) {
+	useEffect(() => {
+		if ('mediaSession' in navigator) {
+			navigator.mediaSession.metadata = new MediaMetadata({
+				title,
+				artist,
+				album,
+				artwork,
+			})
+			navigator.mediaSession.setActionHandler('nexttrack', nextTrack)
+			navigator.mediaSession.setActionHandler('previoustrack', previousTrack)
+		}
+
+		return function cleanUp() {
+			if ('mediaSession' in navigator) {
+				navigator.mediaSession.setActionHandler('nexttrack', null)
+				navigator.mediaSession.setActionHandler('previoustrack', null)
+			}
+		}
+	}, [title, artist, album, artwork, nextTrack, previousTrack])
+}
 
 function AudioPlayer({autoPlay}) {
 	const audioRef = useRef(null)
@@ -75,6 +106,20 @@ function AudioPlayer({autoPlay}) {
 			? `https://${imageCdnRoot}${playlist.frontCover}`
 			: null
 
+	useMediaSession(
+		useMemo(
+			() => ({
+				title: currentTrack && currentTrack.title,
+				artist: currentTrack && currentTrack.artists,
+				album: playlist && playlist.title,
+				artwork: [{src: imageSrc, sizes: '128x128', type: 'image/jpg'}],
+				skip: goToNextTrack,
+				prev: goToPrevTrack,
+			}),
+			[currentTrack, playlist, imageSrc, goToNextTrack, goToPrevTrack]
+		)
+	)
+
 	return (
 		<Wrapper highlightColor={playlistColor}>
 			<img src={imageSrc} alt="" width="56" height="56" />
@@ -87,13 +132,13 @@ function AudioPlayer({autoPlay}) {
 			/>
 			<TrackInfo>
 				{currentTrack ? (
-					<div>
+					<>
 						<strong>{currentTrack.title}</strong>
 						<br />
 						{currentTrack.artists}
-					</div>
+					</>
 				) : (
-					<div>Kein Track ausgewählt</div>
+					<>Kein Track ausgewählt</>
 				)}
 			</TrackInfo>
 			<div>

@@ -10,19 +10,23 @@ export const TrackContext = React.createContext()
 function AppWrapper({children}) {
 	const [playlist, setPlaylist] = useState(undefined)
 	const [trackIndex, setTrackIndex] = useState(0)
+	const [autoPlay, setAutoPlay] = useState(false)
 	const currentTrack = playlist ? playlist.tracks[trackIndex] : undefined
 
 	function goToNextTrack() {
+		setAutoPlay(true)
 		setTrackIndex((trackIndex + 1) % playlist.tracks.length)
 	}
 
 	function goToPrevTrack() {
+		setAutoPlay(true)
 		setTrackIndex(
 			trackIndex !== 0 ? trackIndex - 1 : playlist.tracks.length - 1
 		)
 	}
 
 	function changeTrack(playlistData, newTrackIndex) {
+		setAutoPlay(true)
 		setTrackIndex(newTrackIndex)
 		setPlaylist(playlistData)
 	}
@@ -39,7 +43,7 @@ function AppWrapper({children}) {
 						goToPrevTrack,
 					}}
 				>
-					<AudioPlayer />
+					<AudioPlayer autoPlay={autoPlay} />
 					{children}
 				</TrackContext.Provider>
 			</ThemeProvider>
@@ -51,6 +55,7 @@ function AppWrapper({children}) {
 				}}
 				debounce={500}
 				onMount={data => {
+					setAutoPlay(false)
 					setPlaylist(data.playlist)
 					setTrackIndex(data.trackIndex)
 				}}

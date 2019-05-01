@@ -56,7 +56,7 @@ const VolumeSection = styled.div`
 	}
 `
 
-function AudioPlayer() {
+function AudioPlayer({autoPlay}) {
 	const audioRef = useRef(null)
 	const player = useAudioPlayer(audioRef)
 	const {audioCdnRoot, imageCdnRoot} = useSiteMetaData()
@@ -76,7 +76,13 @@ function AudioPlayer() {
 	return (
 		<Wrapper highlightColor={playlistColor}>
 			<img src={imageSrc} alt="" width="56" height="56" />
-			<audio ref={audioRef} src={src} preload="auto" onEnded={goToNextTrack} />
+			<audio
+				ref={audioRef}
+				src={src}
+				autoPlay={autoPlay}
+				preload="auto"
+				onEnded={goToNextTrack}
+			/>
 			<TrackInfo>
 				{currentTrack ? (
 					<div>

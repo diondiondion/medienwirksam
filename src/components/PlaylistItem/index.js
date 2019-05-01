@@ -20,7 +20,7 @@ const Figure = styled.figure`
 
 const Info = styled.div`
 	flex: 1 1 50%;
-	padding-left: 1.5rem;
+	padding-left: 1.25rem;
 `
 
 const Heading = styled.header`

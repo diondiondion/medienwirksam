@@ -12,7 +12,7 @@ const Wrapper = styled.h2`
 	margin-bottom: 0.5rem;
 
 	font-family: ${theme.fonts.label};
-	font-size: 1.4rem;
+	font-size: 1.4em;
 	text-transform: uppercase;
 
 	transform: rotate(-3deg);

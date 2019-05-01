@@ -60,35 +60,6 @@ const VolumeSection = styled.div`
 	}
 `
 
-function useMediaSession({
-	title,
-	artist,
-	album,
-	artwork,
-	nextTrack,
-	previousTrack,
-}) {
-	useEffect(() => {
-		if ('mediaSession' in navigator) {
-			navigator.mediaSession.metadata = new MediaMetadata({
-				title,
-				artist,
-				album,
-				artwork,
-			})
-			navigator.mediaSession.setActionHandler('nexttrack', nextTrack)
-			navigator.mediaSession.setActionHandler('previoustrack', previousTrack)
-		}
-
-		return function cleanUp() {
-			if ('mediaSession' in navigator) {
-				navigator.mediaSession.setActionHandler('nexttrack', null)
-				navigator.mediaSession.setActionHandler('previoustrack', null)
-			}
-		}
-	}, [title, artist, album, artwork, nextTrack, previousTrack])
-}
-
 function AudioPlayer({autoPlay}) {
 	const audioRef = useRef(null)
 	const player = useAudioPlayer(audioRef)
@@ -106,19 +77,18 @@ function AudioPlayer({autoPlay}) {
 			? `https://${imageCdnRoot}${playlist.frontCover}`
 			: null
 
-	useMediaSession(
-		useMemo(
-			() => ({
+	useEffect(() => {
+		if ('mediaSession' in navigator) {
+			navigator.mediaSession.metadata = new MediaMetadata({
 				title: currentTrack && currentTrack.title,
 				artist: currentTrack && currentTrack.artists,
 				album: playlist && playlist.title,
-				artwork: [{src: imageSrc, sizes: '128x128', type: 'image/jpg'}],
-				skip: goToNextTrack,
-				prev: goToPrevTrack,
-			}),
-			[currentTrack, playlist, imageSrc, goToNextTrack, goToPrevTrack]
-		)
-	)
+				artwork: [{src: imageSrc, type: 'image/jpg'}],
+			})
+			navigator.mediaSession.setActionHandler('nexttrack', goToNextTrack)
+			navigator.mediaSession.setActionHandler('previoustrack', goToPrevTrack)
+		}
+	}, [currentTrack, playlist, imageSrc, goToNextTrack, goToPrevTrack])
 
 	return (
 		<Wrapper highlightColor={playlistColor}>

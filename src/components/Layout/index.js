@@ -50,7 +50,7 @@ const GlobalStyles = createGlobalStyle`
 const PageWrapper = styled.div`
 	margin: 0 auto;
 	padding: 1rem;
-	padding-bottom: 8rem;
+	padding-bottom: 12rem;
 	max-width: 2000px;
 `
 

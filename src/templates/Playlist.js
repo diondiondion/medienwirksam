@@ -1,39 +1,90 @@
-import React, {useContext} from 'react'
+import React, {useContext, useCallback} from 'react'
 import {graphql} from 'gatsby'
+import styled from 'styled-components'
 
-import Layout from '@components/Layout'
 import {TrackContext} from '@components/AppWrapper'
+import Layout from '@components/Layout'
+import TitleLabel from '@components/TitleLabel'
+
+const AlbumInfo = styled.p`
+	padding: 0 ${p => p.theme.spacing.s};
+`
+
+const PlaylistWrapper = styled.ol`
+	margin: 0;
+	padding: ${p => p.theme.spacing.m};
+
+	background-color: ${p => p.theme.panel};
+	box-shadow: 0 0 30px #ffffff2b;
+`
+
+const PlaylistRow = styled.li`
+	list-style: none;
+`
+
+const PlaylistTrack = styled.a`
+	display: block;
+	padding: 5px 0;
+
+	font-size: 18px;
+	color: inherit;
+	text-decoration: none;
+
+	${p =>
+		p.isPlaying &&
+		`
+		font-weight: bold;
+	`}
+`
 
 function Playlist({data}) {
-	const {audioCdnRoot} = data.site.siteMetadata
-	const playlist = data.markdownRemark.frontmatter
-	const linkPrefix = `https://${audioCdnRoot}`
 	const {currentTrack, changeTrack} = useContext(TrackContext)
+	const {audioCdnRoot, imageCdnRoot} = data.site.siteMetadata
+
+	const playlist = data.markdownRemark.frontmatter
+	const {title, artists, year, tracks, frontCover, color} = playlist
+
+	const audioLinkPrefix = `https://${audioCdnRoot}`
+
+	const imageUrl = frontCover ? `https://${imageCdnRoot}${frontCover}` : null
+
+	const playTrack = useCallback(
+		(e, trackIndex) => {
+			e.preventDefault()
+			changeTrack(playlist, trackIndex)
+		},
+		[changeTrack, playlist]
+	)
 
 	return (
 		<Layout>
-			<h1>{playlist.title}</h1>
-			<ul>
+			<figure>{imageUrl && <img src={imageUrl} alt="" />}</figure>
+			<TitleLabel as="h1" color={color}>
+				{title}
+			</TitleLabel>
+			<AlbumInfo>
+				<strong>{artists.join(' und ')}</strong>
+				<br />
+				{year}
+				<br />
+				{tracks.length} tracks
+			</AlbumInfo>
+			<PlaylistWrapper>
 				{playlist.tracks.map((track, index) => {
 					const isPlaying = currentTrack && currentTrack.title === track.title
 					return (
-						<li key={track.title}>
-							<a
-								href={linkPrefix + track.filename}
-								style={isPlaying ? {fontWeight: 'bold'} : undefined}
+						<PlaylistRow key={track.title}>
+							<PlaylistTrack
+								isPlaying={isPlaying}
+								href={audioLinkPrefix + track.filename}
+								onClick={e => playTrack(e, index)}
 							>
 								{track.title}
-							</a>
-							<button
-								type="button"
-								onClick={() => changeTrack(playlist, index)}
-							>
-								Play
-							</button>
-						</li>
+							</PlaylistTrack>
+						</PlaylistRow>
 					)
 				})}
-			</ul>
+			</PlaylistWrapper>
 		</Layout>
 	)
 }
@@ -45,6 +96,7 @@ export const query = graphql`
 		site {
 			siteMetadata {
 				audioCdnRoot
+				imageCdnRoot
 			}
 		}
 		markdownRemark(fields: {slug: {eq: $slug}}) {

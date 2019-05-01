@@ -1,6 +1,7 @@
 const theme = {
 	text: '#fff',
 	background: '#030926',
+	panel: '#000000',
 	links: '#0081ff',
 	fonts: {
 		default: '"Courier New", Courier, monospace',

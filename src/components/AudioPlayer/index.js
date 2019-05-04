@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useEffect, useMemo} from 'react'
+import React, {useContext, useRef, useEffect} from 'react'
 import styled from 'styled-components'
 import invert from 'invert-color'
 
@@ -30,7 +30,7 @@ const Wrapper = styled.div`
 	justify-content: stretch;
 	flex-wrap: wrap;
 
-	padding: 0 0.5rem;
+	padding: 0.5rem;
 
 	color: ${p => invert(p.highlightColor, true)};
 	background-color: ${p => p.highlightColor};
@@ -64,7 +64,7 @@ function AudioPlayer({autoPlay}) {
 	const audioRef = useRef(null)
 	const player = useAudioPlayer(audioRef)
 	const {audioCdnRoot, imageCdnRoot} = useSiteMetaData()
-	const {currentTrack, goToNextTrack, goToPrevTrack, playlist} = useContext(
+	const {currentTrack, playlist, goToNextTrack, goToPrevTrack} = useContext(
 		TrackContext
 	)
 	const playlistColor = playlist ? playlist.color : theme.background
@@ -79,6 +79,7 @@ function AudioPlayer({autoPlay}) {
 
 	useEffect(() => {
 		if ('mediaSession' in navigator) {
+			/* eslint-disable-next-line no-undef */
 			navigator.mediaSession.metadata = new MediaMetadata({
 				title: currentTrack && currentTrack.title,
 				artist: currentTrack && currentTrack.artists,

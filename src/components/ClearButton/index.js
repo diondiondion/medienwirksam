@@ -7,6 +7,11 @@ const ClearButton = styled.button`
 	flex: none;
 	border: none;
 	padding: 0.5rem;
+	${p =>
+		p.smallPadding &&
+		`
+		padding: 0.25rem;
+	`}
 
 	color: inherit;
 	background-color: transparent;

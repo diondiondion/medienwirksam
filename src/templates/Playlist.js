@@ -42,6 +42,7 @@ function Playlist({data}) {
 	const {audioCdnRoot, imageCdnRoot} = data.site.siteMetadata
 
 	const playlist = data.markdownRemark.frontmatter
+	const {slug} = data.markdownRemark.fields
 	const {title, artists, year, tracks, frontCover, color} = playlist
 
 	const audioLinkPrefix = `https://${audioCdnRoot}`
@@ -51,9 +52,13 @@ function Playlist({data}) {
 	const playTrack = useCallback(
 		(e, trackIndex) => {
 			e.preventDefault()
-			changeTrack(playlist, trackIndex)
+			const playlistWithSlug = {
+				...playlist,
+				slug,
+			}
+			changeTrack(playlistWithSlug, trackIndex)
 		},
-		[changeTrack, playlist]
+		[changeTrack, playlist, slug]
 	)
 
 	return (
@@ -101,6 +106,9 @@ export const query = graphql`
 		}
 		markdownRemark(fields: {slug: {eq: $slug}}) {
 			html
+			fields {
+				slug
+			}
 			frontmatter {
 				title
 				artists

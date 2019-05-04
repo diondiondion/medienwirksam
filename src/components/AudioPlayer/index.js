@@ -1,4 +1,5 @@
 import React, {useContext, useRef, useEffect} from 'react'
+import {Link} from 'gatsby'
 import styled from 'styled-components'
 import invert from 'invert-color'
 
@@ -35,27 +36,48 @@ const Wrapper = styled.div`
 	color: ${p => invert(p.highlightColor, true)};
 	background-color: ${p => p.highlightColor};
 
-	& > :not(:first-child) {
-		margin-left: 0.5rem;
-	}
-
 	@media (min-width: ${theme.breakpoints.m}) {
 		font-size: 18px;
+	}
+
+	.hideOnMobile {
+		@media (max-width: 540px) {
+			display: none;
+		}
+	}
+
+	.hideOnTablet {
+		@media (max-width: 800px) {
+			display: none;
+		}
 	}
 `
 
 const TrackInfo = styled.div`
-	flex: 1 1 200px;
+	flex: 1 1 160px;
+	margin-left: 0.5rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 `
 
+const ButtonSection = styled.div`
+	@media (min-width: 800px) {
+		flex: 1 1 auto;
+		text-align: center;
+	}
+`
+
+const ProgressReadout = styled.div`
+	padding: 0 1rem;
+`
+
 const VolumeSection = styled.div`
 	display: flex;
 	align-items: center;
+	padding-left: 1rem;
 
-	@media (max-width: 800px) {
+	@media (max-width: 960px) {
 		display: none;
 	}
 `
@@ -93,7 +115,11 @@ function AudioPlayer({autoPlay}) {
 
 	return (
 		<Wrapper highlightColor={playlistColor}>
-			<img src={imageSrc} alt="" width="56" height="56" />
+			{playlist && (
+				<Link to={playlist ? `/playlist${playlist.slug}` : null}>
+					<img src={imageSrc} alt="" width="56" height="56" />
+				</Link>
+			)}
 			<audio
 				ref={audioRef}
 				src={src}
@@ -112,20 +138,20 @@ function AudioPlayer({autoPlay}) {
 					<>Kein Track ausgewählt</>
 				)}
 			</TrackInfo>
-			<div>
-				<ClearButton dimmed onClick={goToPrevTrack}>
+			<ButtonSection>
+				<ClearButton dimmed className="hideOnMobile" onClick={goToPrevTrack}>
 					<SkipIcon style={{transform: 'rotate(180deg)'}} />
 				</ClearButton>
-				<ClearButton onClick={player.togglePlay}>
+				<ClearButton smallPadding onClick={player.togglePlay}>
 					{player.isPlaying ? <PauseIcon /> : <PlayIcon />}
 				</ClearButton>
-				<ClearButton dimmed onClick={goToNextTrack}>
+				<ClearButton dimmed className="hideOnMobile" onClick={goToNextTrack}>
 					<SkipIcon />
 				</ClearButton>
-			</div>
-			<p>
+			</ButtonSection>
+			<ProgressReadout className="hideOnTablet">
 				{formatTime(player.currentTime)}/{formatTime(player.duration)}
-			</p>
+			</ProgressReadout>
 			<Slider
 				color={playlistColor}
 				value={player.currentTime}
@@ -133,8 +159,9 @@ function AudioPlayer({autoPlay}) {
 				max={player.duration}
 				onChange={e => player.seekTo(e.target.value)}
 				style={{flex: '1 1 200px'}}
+				className="hideOnTablet"
 			/>
-			<VolumeSection>
+			<VolumeSection className="hideOnTablet">
 				<ClearButton onClick={player.toggleMute}>
 					{player.isMuted ? <MutedIcon /> : <MuteIcon />}
 				</ClearButton>

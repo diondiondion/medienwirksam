@@ -1,13 +1,15 @@
 import React, {useContext, useRef, useEffect} from 'react'
 import {Link} from 'gatsby'
-import styled from 'styled-components'
-import invert from 'invert-color'
+import styled, {css} from 'styled-components'
+
+import {getRgb} from '@utils/hexToRgb'
 
 import useSiteMetaData from '@utils/useSiteMetaData'
 import formatTime from '@utils/formatTime'
 import theme from '@style/theme'
 import {TrackContext} from '@components/AppWrapper'
 import Slider from '@components/Slider'
+import ThemeSection from '@components/ThemeSection'
 import ClearButton from '@components/ClearButton'
 import {
 	PlayIcon,
@@ -33,8 +35,8 @@ const Wrapper = styled.div`
 
 	padding: 0.5rem;
 
-	color: ${p => invert(p.highlightColor, true)};
-	background-color: ${p => p.highlightColor};
+	color: ${p => p.theme.highlight.color};
+	background-color: ${p => p.theme.highlight.background};
 
 	@media (min-width: ${theme.breakpoints.m}) {
 		font-size: 18px;
@@ -68,6 +70,52 @@ const ButtonSection = styled.div`
 	}
 `
 
+const SongPositionSection = styled.div`
+	flex: 0;
+
+	@media (min-width: 800px) {
+		position: relative;
+		flex: 1 1 200px;
+	}
+`
+
+const progressStyles = css`
+	background-color: rgba(${p => getRgb(p.theme.highlight.color)}, 0.25);
+
+	&::-webkit-progress-bar {
+		background: rgba(${p => getRgb(p.theme.highlight.color)}, 0.25);
+	}
+
+	&::-moz-progress-bar {
+		background: ${p => p.theme.highlight.color};
+	}
+
+	&::-webkit-progress-value {
+		background: ${p => p.theme.highlight.color};
+	}
+
+	&::-ms-fill {
+		background: ${p => p.theme.highlight.color};
+	}
+`
+
+const ProgressBar = styled.progress`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	z-index: -1;
+	border: 0;
+
+	@media (min-width: 800px) {
+		top: calc(50% - 3px);
+		height: 6px;
+	}
+
+	${progressStyles}
+`
+
 const ProgressReadout = styled.div`
 	padding: 0 1rem;
 `
@@ -80,6 +128,22 @@ const VolumeSection = styled.div`
 	@media (max-width: 960px) {
 		display: none;
 	}
+`
+
+const VolumeSliderWrapper = styled.div`
+	position: relative;
+`
+
+const VolumeProgressBar = styled.progress`
+	position: absolute;
+	top: calc(50% - 3px);
+	left: 0;
+	width: 100%;
+	height: 6px;
+	z-index: -1;
+	border: 0;
+
+	${progressStyles}
 `
 
 function AudioPlayer({autoPlay}) {
@@ -114,68 +178,80 @@ function AudioPlayer({autoPlay}) {
 	}, [currentTrack, playlist, imageSrc, goToNextTrack, goToPrevTrack])
 
 	return (
-		<Wrapper highlightColor={playlistColor}>
-			{playlist && (
-				<Link to={playlist ? `/playlist${playlist.slug}` : null}>
-					<img src={imageSrc} alt="" width="56" height="56" />
-				</Link>
-			)}
-			<audio
-				ref={audioRef}
-				src={src}
-				autoPlay={autoPlay}
-				preload="auto"
-				onEnded={goToNextTrack}
-			/>
-			<TrackInfo>
-				{currentTrack ? (
-					<>
-						<strong>{currentTrack.title}</strong>
-						<br />
-						{currentTrack.artists}
-					</>
-				) : (
-					<>Kein Track ausgewählt</>
-				)}
-			</TrackInfo>
-			<ButtonSection>
-				<ClearButton dimmed className="hideOnMobile" onClick={goToPrevTrack}>
-					<SkipIcon style={{transform: 'rotate(180deg)'}} />
-				</ClearButton>
-				<ClearButton smallPadding onClick={player.togglePlay}>
-					{player.isPlaying ? <PauseIcon /> : <PlayIcon />}
-				</ClearButton>
-				<ClearButton dimmed className="hideOnMobile" onClick={goToNextTrack}>
-					<SkipIcon />
-				</ClearButton>
-			</ButtonSection>
-			<ProgressReadout className="hideOnTablet">
-				{formatTime(player.currentTime)}/{formatTime(player.duration)}
-			</ProgressReadout>
-			<Slider
-				color={playlistColor}
-				value={player.currentTime}
-				min="0"
-				max={player.duration}
-				onChange={e => player.seekTo(e.target.value)}
-				style={{flex: '1 1 200px'}}
-				className="hideOnTablet"
-			/>
-			<VolumeSection className="hideOnTablet">
-				<ClearButton onClick={player.toggleMute}>
-					{player.isMuted ? <MutedIcon /> : <MuteIcon />}
-				</ClearButton>
-				<Slider
-					color={playlistColor}
-					value={player.volume}
-					min="0"
-					max="1"
-					step="0.05"
-					onChange={e => player.setVolume(e.target.value)}
-					style={{width: '100px'}}
+		<ThemeSection color={playlistColor}>
+			<Wrapper highlightColor={playlistColor}>
+				<audio
+					ref={audioRef}
+					src={src}
+					autoPlay={autoPlay}
+					preload="auto"
+					onEnded={goToNextTrack}
 				/>
-			</VolumeSection>
-		</Wrapper>
+				{playlist && (
+					<Link to={playlist ? `/playlist${playlist.slug}` : null}>
+						<img src={imageSrc} alt="" width="56" height="56" />
+					</Link>
+				)}
+				<TrackInfo>
+					{currentTrack ? (
+						<>
+							<strong>{currentTrack.title}</strong>
+							<br />
+							{currentTrack.artists}
+						</>
+					) : (
+						<>Kein Track ausgewählt</>
+					)}
+				</TrackInfo>
+				<ButtonSection>
+					<ClearButton dimmed className="hideOnMobile" onClick={goToPrevTrack}>
+						<SkipIcon style={{transform: 'rotate(180deg)'}} />
+					</ClearButton>
+					<ClearButton smallPadding onClick={player.togglePlay}>
+						{player.isPlaying ? <PauseIcon /> : <PlayIcon />}
+					</ClearButton>
+					<ClearButton dimmed className="hideOnMobile" onClick={goToNextTrack}>
+						<SkipIcon />
+					</ClearButton>
+				</ButtonSection>
+				<ProgressReadout className="hideOnTablet">
+					{formatTime(player.currentTime)}/{formatTime(player.duration)}
+				</ProgressReadout>
+				<SongPositionSection>
+					<ProgressBar
+						value={player.currentTime}
+						min="0"
+						max={player.duration}
+					/>
+					<Slider
+						withTrack={false}
+						color={playlistColor}
+						value={player.currentTime}
+						min="0"
+						max={player.duration}
+						onChange={e => player.seekTo(e.target.value)}
+						className="hideOnTablet"
+					/>
+				</SongPositionSection>
+				<VolumeSection className="hideOnTablet">
+					<ClearButton onClick={player.toggleMute}>
+						{player.isMuted ? <MutedIcon /> : <MuteIcon />}
+					</ClearButton>
+					<VolumeSliderWrapper>
+						<VolumeProgressBar value={player.volume} min="0" max="1" />
+						<Slider
+							color={playlistColor}
+							value={player.volume}
+							min="0"
+							max="1"
+							step="0.05"
+							onChange={e => player.setVolume(e.target.value)}
+							style={{width: '100px'}}
+						/>
+					</VolumeSliderWrapper>
+				</VolumeSection>
+			</Wrapper>
+		</ThemeSection>
 	)
 }
 

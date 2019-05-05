@@ -38,6 +38,7 @@ const ClearButton = styled.button`
 		color: ${p => p.theme.background};
 		background-color: ${p => p.theme.text};
 		opacity: 1;
+		outline: none;
 	}
 
 	& svg {

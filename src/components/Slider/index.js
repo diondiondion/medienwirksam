@@ -6,16 +6,28 @@ import ThemeSection from '@components/ThemeSection'
 import {getRgb} from '@utils/hexToRgb'
 
 const trackStyle = css`
-	background-color: rgba(${p => getRgb(p.theme.highlight.color)}, 0.25);
-	height: 7px;
+	background: linear-gradient(
+			to left,
+			${p => {
+				const gradientColor = getRgb(p.theme.highlight.color)
+				return `
+				rgba(${gradientColor}, 0.25),
+				rgba(${gradientColor}, 0.25)
+			`
+			}}
+		)
+		no-repeat 50% 50%;
+	background-size: 100% 6px;
 `
 
 const thumbStyle = css`
-	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
-	border: 1px solid rgba(0, 0, 0, 0.33);
 	height: 42px;
 	width: 20px;
+
+	border: 1px solid rgba(0, 0, 0, 0.33);
 	border-radius: 0;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+
 	background-color: ${p => p.theme.highlight.background};
 	background-image: linear-gradient(to left, currentColor, currentColor);
 	background-size: 2px 20px;
@@ -25,25 +37,34 @@ const thumbStyle = css`
 `
 
 const Input = styled.input.attrs({type: 'range'})`
-	-webkit-appearance: none;
-	appearance: none;
-	color: inherit;
-	background: transparent;
+	display: block;
 	width: 100%;
 	height: 42px;
 
+	-webkit-appearance: none;
+	appearance: none;
+
+	color: inherit;
+	background: transparent;
+
+	:focus {
+		outline: 4px solid ${p => p.theme.highlight.color};
+		outline-offset: 6px;
+	}
+
 	::-webkit-slider-runnable-track {
-		${trackStyle}
+		${p => p.withTrack && trackStyle}
 		-webkit-appearance: none;
 	}
 	::-webkit-slider-thumb {
 		${thumbStyle}
 		-webkit-appearance: none;
-		margin-top: -19px;
 	}
 
 	::-moz-range-track {
-		${trackStyle}
+		min-height: 6px;
+		background-color: transparent;
+		${p => p.withTrack && trackStyle}
 	}
 	::-moz-range-thumb {
 		${thumbStyle}
@@ -58,6 +79,7 @@ function Slider({color, ...otherProps}) {
 }
 Slider.defaultProps = {
 	color: '#000000',
+	withTrack: true,
 }
 
 export default Slider

@@ -12,6 +12,8 @@ import backgroundImage from '@assets/images/background-xl.jpg'
 
 import useSiteMetaData from '@utils/useSiteMetaData'
 
+import 'focus-visible'
+
 const GlobalStyles = createGlobalStyle`
 	${cssReset}
 
@@ -44,6 +46,14 @@ const GlobalStyles = createGlobalStyle`
 
 	a {
 		color: ${theme.links};
+	}
+
+	*:focus:not(:focus-visible) {
+		outline: none;
+	}
+
+	*:focus:not(.focus-visible) {
+		outline: none;
 	}
 `
 

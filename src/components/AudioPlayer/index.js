@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useEffect} from 'react'
+import React, {useContext, useRef, useEffect, useState} from 'react'
 import {Link} from 'gatsby'
 import styled, {css} from 'styled-components'
 
@@ -70,13 +70,31 @@ const ButtonSection = styled.div`
 	}
 `
 
-const SongPositionSection = styled.div`
-	flex: 0;
+const MobileDrawer = styled.div`
+	position: relative;
+	flex: 1 1 200px;
 
-	@media (min-width: 800px) {
-		position: relative;
-		flex: 1 1 200px;
+	@media (max-width: 800px) {
+		position: absolute;
+		bottom: 100%;
+		left: 0;
+		z-index: -1;
+
+		width: 100%;
+		padding: 0.5rem;
+
+		background-color: ${p => p.theme.highlight.background};
+
+		${p =>
+			!p.isOpen &&
+			css`
+				transform: translateY(calc(100% - 2px));
+			`}
 	}
+`
+
+const SongPositionWrapper = styled.div`
+	position: relative;
 `
 
 const progressStyles = css`
@@ -99,18 +117,37 @@ const progressStyles = css`
 	}
 `
 
-const ProgressBar = styled.progress`
+const SongPositionSlider = styled(Slider)`
+	position: relative;
+	z-index: 1;
+
+	@media (max-width: 800px) {
+		${p =>
+			p.isHidden &&
+			`
+			display: none;
+		`}
+	}
+`
+
+const SongProgressBar = styled.progress`
 	position: absolute;
-	top: 0;
+	top: calc(50% - 3px);
 	left: 0;
 	width: 100%;
-	height: 2px;
-	z-index: -1;
+	height: 6px;
+	z-index: 0;
 	border: 0;
 
-	@media (min-width: 800px) {
-		top: calc(50% - 3px);
-		height: 6px;
+	@media (max-width: 800px) {
+		${p =>
+			!p.isCollapsed &&
+			`
+			top: -0.5rem;
+			left: -0.5rem;
+			width: calc(100% + 1rem);
+			height: 2px;
+		`}
 	}
 
 	${progressStyles}
@@ -147,6 +184,7 @@ const VolumeProgressBar = styled.progress`
 `
 
 function AudioPlayer({autoPlay}) {
+	const [isMobileDrawerOpen, setMobileDrawerOpenState] = useState(false)
 	const audioRef = useRef(null)
 	const player = useAudioPlayer(audioRef)
 	const {audioCdnRoot, imageCdnRoot} = useSiteMetaData()
@@ -195,7 +233,11 @@ function AudioPlayer({autoPlay}) {
 				<TrackInfo>
 					{currentTrack ? (
 						<>
-							<strong>{currentTrack.title}</strong>
+							<strong
+								onClick={() => setMobileDrawerOpenState(!isMobileDrawerOpen)}
+							>
+								{currentTrack.title}
+							</strong>
 							<br />
 							{currentTrack.artists}
 						</>
@@ -217,22 +259,25 @@ function AudioPlayer({autoPlay}) {
 				<ProgressReadout className="hideOnTablet">
 					{formatTime(player.currentTime)}/{formatTime(player.duration)}
 				</ProgressReadout>
-				<SongPositionSection>
-					<ProgressBar
-						value={player.currentTime}
-						min="0"
-						max={player.duration}
-					/>
-					<Slider
-						withTrack={false}
-						color={playlistColor}
-						value={player.currentTime}
-						min="0"
-						max={player.duration}
-						onChange={e => player.seekTo(e.target.value)}
-						className="hideOnTablet"
-					/>
-				</SongPositionSection>
+				<MobileDrawer isOpen={isMobileDrawerOpen}>
+					<SongPositionWrapper>
+						<SongProgressBar
+							isCollapsed={isMobileDrawerOpen}
+							value={player.currentTime}
+							min="0"
+							max={player.duration}
+						/>
+						<SongPositionSlider
+							isHidden={!isMobileDrawerOpen}
+							withTrack={false}
+							color={playlistColor}
+							value={player.currentTime}
+							min="0"
+							max={player.duration}
+							onChange={e => player.seekTo(e.target.value)}
+						/>
+					</SongPositionWrapper>
+				</MobileDrawer>
 				<VolumeSection className="hideOnTablet">
 					<ClearButton onClick={player.toggleMute}>
 						{player.isMuted ? <MutedIcon /> : <MuteIcon />}

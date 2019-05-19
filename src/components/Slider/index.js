@@ -69,6 +69,9 @@ const Input = styled.input.attrs({type: 'range'})`
 	::-moz-range-thumb {
 		${thumbStyle}
 	}
+	::-moz-focus-outer {
+		border: none;
+	}
 `
 function Slider({color, ...otherProps}) {
 	return (

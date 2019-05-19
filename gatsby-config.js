@@ -5,9 +5,6 @@ module.exports = {
 		imageCdnRoot: 'res.cloudinary.com/medienwirksam/image/upload/v1546451694/',
 		altCdnRoot: 'medienwirksam-df6d.kxcdn.com',
 	},
-	mapping: {
-		'MarkdownRemark.frontmatter.tracks': `TracksYaml.title`,
-	},
 	plugins: [
 		{
 			resolve: 'gatsby-plugin-eslint',
@@ -55,13 +52,6 @@ module.exports = {
 			options: {
 				name: `playlists`,
 				path: `${__dirname}/src/pages/playlists`,
-			},
-		},
-		{
-			resolve: `gatsby-source-filesystem`,
-			options: {
-				name: `tracks`,
-				path: `${__dirname}/src/pages/tracks`,
 			},
 		},
 		`gatsby-transformer-remark`,

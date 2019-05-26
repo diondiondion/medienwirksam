@@ -24,6 +24,10 @@ const Info = styled.div`
 	padding-left: 1.25rem;
 `
 
+const Metadata = styled.div`
+	display: inline-block;
+`
+
 const Heading = styled.header`
 	margin-top: 1rem;
 	margin-left: -2.5rem;
@@ -69,7 +73,7 @@ function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 					</Flipped>
 				</Heading>
 				<Flipped stagger flipId={`playlistInfo-${slug}`}>
-					<div>
+					<Metadata>
 						<strong>{artists.join(' und ')}</strong>
 						<br />
 						<Dimmed>
@@ -78,7 +82,7 @@ function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 							{tracks.length} tracks
 							<br />
 						</Dimmed>
-					</div>
+					</Metadata>
 				</Flipped>
 				<CoverLink to={link}>View</CoverLink>
 			</Info>

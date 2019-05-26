@@ -6,7 +6,7 @@ import theme from '@style/theme'
 import {fontSmoothing} from '@style/mixins'
 
 const Wrapper = styled.h2`
-	display: block;
+	display: inline-block;
 	max-width: 100%;
 	margin: 0;
 	margin-bottom: 0.5rem;

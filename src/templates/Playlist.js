@@ -28,6 +28,7 @@ const PageLayout = styled.main`
 		grid-template-rows: auto;
 		grid-gap: ${p => p.theme.spacing.l};
 		justify-content: center;
+		align-items: flex-start;
 	}
 	@media (min-width: ${p => p.theme.breakpoints.m}) {
 		grid-gap: ${p => p.theme.spacing.xxl};
@@ -45,8 +46,13 @@ const PlaylistInfo = styled.div`
 	}
 `
 
+const Header = styled.header`
+	width: 80%;
+`
+
 const Metadata = styled.p`
-	padding: 0 ${p => p.theme.spacing.s};
+	display: inline-block;
+	margin: ${p => p.theme.spacing.m} ${p => p.theme.spacing.s};
 `
 
 const PlaylistWrapper = styled.ol`
@@ -117,11 +123,13 @@ function Playlist({data}) {
 					<Flipped stagger="reverse" flipId={`playlistImage-${slug}`}>
 						<figure>{imageUrl && <img src={imageUrl} alt="" />}</figure>
 					</Flipped>
-					<Flipped stagger="reverse" flipId={`playlistTitle-${slug}`}>
-						<TitleLabel as="h1" color={color}>
-							{title}
-						</TitleLabel>
-					</Flipped>
+					<Header>
+						<Flipped stagger="reverse" flipId={`playlistTitle-${slug}`}>
+							<TitleLabel as="h1" color={color}>
+								{title}
+							</TitleLabel>
+						</Flipped>
+					</Header>
 					<Flipped stagger="reverse" flipId={`playlistInfo-${slug}`}>
 						<Metadata>
 							<strong>{artists.join(' und ')}</strong>

@@ -74,10 +74,10 @@ module.exports = {
 				name: 'Medienwirksam',
 				short_name: 'MW',
 				start_url: '/',
-				background_color: '#663399',
-				theme_color: '#663399',
-				display: 'minimal-ui',
-				icon: 'src/assets/images/gatsby-icon.png', // This path is relative to the root of the site.
+				background_color: '#030926',
+				theme_color: '#030926',
+				display: 'standalone',
+				icon: 'src/assets/images/favicon.png', // This path is relative to the root of the site.
 			},
 		},
 		{

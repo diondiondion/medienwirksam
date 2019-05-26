@@ -48,7 +48,20 @@ function AppWrapper({children}) {
 					<AudioPlayer autoPlay={autoPlay} />
 					<Location>
 						{({location}) => (
-							<Flipper flipKey={location.key}>{children}</Flipper>
+							<Flipper
+								flipKey={location.key}
+								staggerConfig={{
+									default: {
+										speed: 0.5,
+									},
+									reverse: {
+										reverse: true,
+										speed: 0.5,
+									},
+								}}
+							>
+								{children}
+							</Flipper>
 						)}
 					</Location>
 				</TrackContext.Provider>

@@ -57,21 +57,27 @@ function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 
 	return (
 		<Wrapper>
-			<Flipped flipId={`playlistImage-${slug}`}>
+			<Flipped stagger flipId={`playlistImage-${slug}`}>
 				<Figure>{imageUrl && <img src={imageUrl} alt="" />}</Figure>
 			</Flipped>
 			<Info>
 				<Heading>
-					<TitleLabel color={color}>{title}</TitleLabel>
+					<Flipped stagger flipId={`playlistTitle-${slug}`}>
+						<TitleLabel color={color}>{title}</TitleLabel>
+					</Flipped>
 				</Heading>
-				<strong>{artists.join(' und ')}</strong>
-				<br />
-				<Dimmed>
-					{year}
-					<br />
-					{tracks.length} tracks
-					<br />
-				</Dimmed>
+				<Flipped stagger flipId={`playlistInfo-${slug}`}>
+					<div>
+						<strong>{artists.join(' und ')}</strong>
+						<br />
+						<Dimmed>
+							{year}
+							<br />
+							{tracks.length} tracks
+							<br />
+						</Dimmed>
+					</div>
+				</Flipped>
 				<CoverLink to={link}>View</CoverLink>
 			</Info>
 		</Wrapper>

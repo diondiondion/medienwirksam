@@ -18,6 +18,7 @@ const theme = {
 		m: '1rem',
 		l: '1.5rem',
 		xl: '2rem',
+		xxl: '4rem',
 	},
 	breakpoints: {
 		xs: '380px',

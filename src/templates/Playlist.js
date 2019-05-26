@@ -1,11 +1,25 @@
 import React, {useContext, useCallback} from 'react'
 import {graphql} from 'gatsby'
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 import {Flipped} from 'react-flip-toolkit'
 
 import {TrackContext} from '@components/AppWrapper'
 import Layout from '@components/Layout'
 import TitleLabel from '@components/TitleLabel'
+
+const fadeInFromLeft = keyframes`
+	from {
+		opacity: 0;
+		transform: translateX(-50px);
+	}
+`
+
+const fadeInFromTop = keyframes`
+	from {
+		opacity: 0;
+		transform: translateY(-50px);
+	}
+`
 
 const PageLayout = styled.main`
 	@media (min-width: ${p => p.theme.breakpoints.s}) {
@@ -15,6 +29,9 @@ const PageLayout = styled.main`
 		grid-gap: ${p => p.theme.spacing.l};
 		justify-content: center;
 	}
+	@media (min-width: ${p => p.theme.breakpoints.m}) {
+		grid-gap: ${p => p.theme.spacing.xxl};
+	}
 `
 
 const PlaylistInfo = styled.div`
@@ -22,6 +39,10 @@ const PlaylistInfo = styled.div`
 	max-width: 340px;
 	margin: 0 auto;
 	grid-column: left;
+
+	@media (min-width: ${p => p.theme.breakpoints.s}) {
+		margin-top: ${p => p.theme.spacing.l};
+	}
 `
 
 const Metadata = styled.p`
@@ -35,6 +56,13 @@ const PlaylistWrapper = styled.ol`
 
 	background-color: ${p => p.theme.panel};
 	box-shadow: 0 0 30px #ffffff2b;
+
+	animation: ${fadeInFromTop} 250ms backwards ease-out 250ms;
+	transform-origin: 0 0;
+
+	@media (min-width: ${p => p.theme.breakpoints.s}) {
+		animation-name: ${fadeInFromLeft};
+	}
 `
 
 const PlaylistRow = styled.li`
@@ -84,19 +112,23 @@ function Playlist({data}) {
 		<Layout>
 			<PageLayout>
 				<PlaylistInfo>
-					<Flipped flipId={`playlistImage-${slug}`}>
+					<Flipped stagger="reverse" flipId={`playlistImage-${slug}`}>
 						<figure>{imageUrl && <img src={imageUrl} alt="" />}</figure>
 					</Flipped>
-					<TitleLabel as="h1" color={color}>
-						{title}
-					</TitleLabel>
-					<Metadata>
-						<strong>{artists.join(' und ')}</strong>
-						<br />
-						{year}
-						<br />
-						{tracks.length} tracks
-					</Metadata>
+					<Flipped stagger="reverse" flipId={`playlistTitle-${slug}`}>
+						<TitleLabel as="h1" color={color}>
+							{title}
+						</TitleLabel>
+					</Flipped>
+					<Flipped stagger="reverse" flipId={`playlistInfo-${slug}`}>
+						<Metadata>
+							<strong>{artists.join(' und ')}</strong>
+							<br />
+							{year}
+							<br />
+							{tracks.length} tracks
+						</Metadata>
+					</Flipped>
 				</PlaylistInfo>
 				<PlaylistWrapper>
 					{playlist.tracks.map((track, index) => {

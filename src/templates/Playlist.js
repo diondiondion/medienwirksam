@@ -6,11 +6,29 @@ import {TrackContext} from '@components/AppWrapper'
 import Layout from '@components/Layout'
 import TitleLabel from '@components/TitleLabel'
 
-const AlbumInfo = styled.p`
+const PageLayout = styled.main`
+	@media (min-width: ${p => p.theme.breakpoints.s}) {
+		display: grid;
+		grid-template-columns: [left] minmax(0, 340px) [right] minmax(0, 540px);
+		grid-template-rows: auto;
+		grid-gap: ${p => p.theme.spacing.l};
+		justify-content: center;
+	}
+`
+
+const PlaylistInfo = styled.div`
+	width: 100%;
+	max-width: 340px;
+	margin: 0 auto;
+	grid-column: left;
+`
+
+const Metadata = styled.p`
 	padding: 0 ${p => p.theme.spacing.s};
 `
 
 const PlaylistWrapper = styled.ol`
+	grid-column: right;
 	margin: 0;
 	padding: ${p => p.theme.spacing.m};
 
@@ -63,33 +81,37 @@ function Playlist({data}) {
 
 	return (
 		<Layout>
-			<figure>{imageUrl && <img src={imageUrl} alt="" />}</figure>
-			<TitleLabel as="h1" color={color}>
-				{title}
-			</TitleLabel>
-			<AlbumInfo>
-				<strong>{artists.join(' und ')}</strong>
-				<br />
-				{year}
-				<br />
-				{tracks.length} tracks
-			</AlbumInfo>
-			<PlaylistWrapper>
-				{playlist.tracks.map((track, index) => {
-					const isPlaying = currentTrack && currentTrack.title === track.title
-					return (
-						<PlaylistRow key={track.title}>
-							<PlaylistTrack
-								isPlaying={isPlaying}
-								href={audioLinkPrefix + track.filename}
-								onClick={e => playTrack(e, index)}
-							>
-								{track.title}
-							</PlaylistTrack>
-						</PlaylistRow>
-					)
-				})}
-			</PlaylistWrapper>
+			<PageLayout>
+				<PlaylistInfo>
+					<figure>{imageUrl && <img src={imageUrl} alt="" />}</figure>
+					<TitleLabel as="h1" color={color}>
+						{title}
+					</TitleLabel>
+					<Metadata>
+						<strong>{artists.join(' und ')}</strong>
+						<br />
+						{year}
+						<br />
+						{tracks.length} tracks
+					</Metadata>
+				</PlaylistInfo>
+				<PlaylistWrapper>
+					{playlist.tracks.map((track, index) => {
+						const isPlaying = currentTrack && currentTrack.title === track.title
+						return (
+							<PlaylistRow key={track.title}>
+								<PlaylistTrack
+									isPlaying={isPlaying}
+									href={audioLinkPrefix + track.filename}
+									onClick={e => playTrack(e, index)}
+								>
+									{track.title}
+								</PlaylistTrack>
+							</PlaylistRow>
+						)
+					})}
+				</PlaylistWrapper>
+			</PageLayout>
 		</Layout>
 	)
 }

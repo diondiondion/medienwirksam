@@ -72,12 +72,12 @@ const Logo = styled.img`
 `
 
 function Layout({children}) {
-	const {title} = useSiteMetaData()
+	const {title: siteTitle} = useSiteMetaData()
 
 	return (
 		<>
 			<Helmet
-				title={title}
+				title={siteTitle}
 				meta={[
 					{name: 'description', content: ''},
 					{name: 'keywords', content: ''},

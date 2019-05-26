@@ -1,6 +1,7 @@
 import React, {useContext, useCallback} from 'react'
 import {graphql} from 'gatsby'
 import styled from 'styled-components'
+import {Flipped} from 'react-flip-toolkit'
 
 import {TrackContext} from '@components/AppWrapper'
 import Layout from '@components/Layout'
@@ -83,7 +84,9 @@ function Playlist({data}) {
 		<Layout>
 			<PageLayout>
 				<PlaylistInfo>
-					<figure>{imageUrl && <img src={imageUrl} alt="" />}</figure>
+					<Flipped flipId={`playlistImage-${slug}`}>
+						<figure>{imageUrl && <img src={imageUrl} alt="" />}</figure>
+					</Flipped>
 					<TitleLabel as="h1" color={color}>
 						{title}
 					</TitleLabel>

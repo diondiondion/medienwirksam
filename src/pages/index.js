@@ -22,6 +22,7 @@ function IndexPage({data: {site, allMarkdownRemark: playlists}}) {
 						key={playlist.id}
 						playlist={playlist}
 						imageCdnRoot={imageCdnRoot}
+						slug={playlist.fields.slug}
 						link={`/playlist${playlist.fields.slug}`}
 					/>
 				))}

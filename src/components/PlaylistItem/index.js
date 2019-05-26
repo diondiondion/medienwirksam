@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'gatsby'
+import {Flipped} from 'react-flip-toolkit'
 
 import TitleLabel from '@components/TitleLabel'
 
@@ -48,7 +49,7 @@ const Dimmed = styled.span`
 	opacity: 0.75;
 `
 
-function PlaylistItem({playlist, link, imageCdnRoot}) {
+function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 	const {
 		frontmatter: {title, artists, year, tracks, frontCover, color},
 	} = playlist
@@ -56,7 +57,9 @@ function PlaylistItem({playlist, link, imageCdnRoot}) {
 
 	return (
 		<Wrapper>
-			<Figure>{imageUrl && <img src={imageUrl} alt="" />}</Figure>
+			<Flipped flipId={`playlistImage-${slug}`}>
+				<Figure>{imageUrl && <img src={imageUrl} alt="" />}</Figure>
+			</Flipped>
 			<Info>
 				<Heading>
 					<TitleLabel color={color}>{title}</TitleLabel>

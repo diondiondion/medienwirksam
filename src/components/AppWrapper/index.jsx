@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import {Persist} from 'react-persist'
+import {Flipper} from 'react-flip-toolkit'
+import {Location} from '@reach/router'
 import {ThemeProvider} from 'styled-components'
 import theme from '@style/theme'
 
@@ -44,7 +46,11 @@ function AppWrapper({children}) {
 					}}
 				>
 					<AudioPlayer autoPlay={autoPlay} />
-					{children}
+					<Location>
+						{({location}) => (
+							<Flipper flipKey={location.key}>{children}</Flipper>
+						)}
+					</Location>
 				</TrackContext.Provider>
 			</ThemeProvider>
 			<Persist

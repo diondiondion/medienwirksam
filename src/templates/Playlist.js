@@ -118,8 +118,8 @@ export const query = graphql`
 				color
 				tracks {
 					title
+					artists
 					producers
-					artists_feat
 					filename
 				}
 			}

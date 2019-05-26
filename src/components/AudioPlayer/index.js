@@ -239,10 +239,7 @@ function AudioPlayer({autoPlay}) {
 								{currentTrack.title}
 							</strong>
 							<br />
-							{playlist.artists}
-							{currentTrack.artists_feat && (
-								<> feat. {currentTrack.artists_feat}</>
-							)}
+							{currentTrack.artists}
 						</>
 					) : (
 						<>Kein Track ausgewählt</>

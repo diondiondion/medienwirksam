@@ -198,7 +198,7 @@ function AudioPlayer({autoPlay}) {
 
 	const imageSrc =
 		playlist && playlist.frontCover
-			? `https://${imageCdnRoot}${playlist.frontCover}`
+			? `https://${imageCdnRoot}w_340/${playlist.frontCover}`
 			: null
 
 	useEffect(() => {

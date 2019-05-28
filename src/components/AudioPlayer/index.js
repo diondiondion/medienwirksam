@@ -239,9 +239,9 @@ function AudioPlayer({autoPlay}) {
 								{currentTrack.title}
 							</strong>
 							<br />
-							{currentTrack.artists}
+							{currentTrack.artists.join(' und ')}
 							{currentTrack.artists_feat && (
-								<> ft. {currentTrack.artists_feat}</>
+								<> ft. {currentTrack.artists_feat.join(', ')}</>
 							)}
 						</>
 					) : (

@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled, {createGlobalStyle} from 'styled-components'
 import {Helmet} from 'react-helmet'
-import {Link} from 'gatsby'
 
 import cssReset from '@style/cssReset'
 import theme from '@style/theme'

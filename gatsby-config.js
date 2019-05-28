@@ -38,7 +38,7 @@ module.exports = {
 		{
 			resolve: `gatsby-plugin-layout`,
 			options: {
-				component: require.resolve(`./src/components/AppWrapper/index.jsx`),
+				component: require.resolve(`./src/components/AppWrapper/index.js`),
 			},
 		},
 		{

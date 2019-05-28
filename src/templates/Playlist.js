@@ -1,9 +1,11 @@
 import React, {useContext, useCallback} from 'react'
-import {graphql} from 'gatsby'
+import {Link, graphql} from 'gatsby'
 import styled, {keyframes} from 'styled-components'
 import {Flipped} from 'react-flip-toolkit'
 
 import {TrackContext} from '@components/AppWrapper'
+import ClearButton from '@components/ClearButton'
+import {BackIcon, PlayIcon} from '@components/icons'
 import Layout from '@components/Layout'
 import TitleLabel from '@components/TitleLabel'
 
@@ -18,6 +20,35 @@ const fadeInFromTop = keyframes`
 	from {
 		opacity: 0;
 		transform: translateY(-50px);
+	}
+`
+
+const fadeInFromRight = keyframes`
+	from {
+		opacity: 0;
+		transform: translateX(50px);
+	}
+`
+
+const BackLink = styled(Link)`
+	display: inline-block;
+	margin-bottom: ${p => p.theme.spacing.m};
+	color: ${p => p.theme.text};
+	text-decoration: none;
+	font-weight: bold;
+	font-size: ${p => p.theme.typeScale.s};
+
+	animation: ${fadeInFromRight} 250ms backwards ease-out 250ms;
+
+	&:hover,
+	&.focus-visible {
+		text-decoration: underline;
+	}
+
+	& > svg {
+		margin-right: 0.5rem;
+		font-size: 1.8em;
+		vertical-align: -0.3em;
 	}
 `
 
@@ -40,10 +71,6 @@ const PlaylistInfo = styled.div`
 	max-width: 340px;
 	margin: 0 auto;
 	grid-column: left;
-
-	@media (min-width: ${p => p.theme.breakpoints.s}) {
-		margin-top: ${p => p.theme.spacing.l};
-	}
 `
 
 const Header = styled.header`
@@ -55,7 +82,8 @@ const Metadata = styled.p`
 	margin: ${p => p.theme.spacing.m} ${p => p.theme.spacing.s};
 `
 
-const PlaylistWrapper = styled.ol`
+const TracklistContainer = styled.section`
+	position: relative;
 	grid-column: right;
 	margin: 0;
 	padding: ${p => p.theme.spacing.m};
@@ -71,11 +99,16 @@ const PlaylistWrapper = styled.ol`
 	}
 `
 
-const PlaylistRow = styled.li`
+const Tracklist = styled.ol`
+	margin: 0;
+	padding: 0;
+`
+
+const TracklistItem = styled.li`
 	list-style: none;
 `
 
-const PlaylistTrack = styled.a`
+const Track = styled.a`
 	display: block;
 	padding: 5px 0;
 
@@ -87,7 +120,19 @@ const PlaylistTrack = styled.a`
 		p.isPlaying &&
 		`
 		font-weight: bold;
+		padding-left: ${p.theme.spacing.m};
 	`}
+`
+
+const PositionedClearButton = styled(ClearButton)`
+	position: absolute;
+	top: -${p => p.theme.spacing.l};
+	right: ${p => p.theme.spacing.m};
+	transform: rotate(-3deg);
+
+	@media (min-width: ${p => p.theme.breakpoints.s}) {
+		top: -${p => p.theme.spacing.s};
+	}
 `
 
 function Playlist({data}) {
@@ -116,12 +161,24 @@ function Playlist({data}) {
 		[changeTrack, playlist, slug]
 	)
 
+	const isCurrentPlaylist =
+		currentTrack &&
+		playlist.tracks.find(track => track.title === currentTrack.title)
+
 	return (
-		<Layout>
+		<Layout withoutLogo>
 			<PageLayout>
 				<PlaylistInfo>
+					<BackLink to="/">
+						<BackIcon />
+						zurück
+					</BackLink>
 					<Flipped stagger="reverse" flipId={`playlistImage-${slug}`}>
-						<figure>{imageUrl && <img src={imageUrl} alt="" />}</figure>
+						<figure>
+							{imageUrl && (
+								<img src={imageUrl} alt="" width="340" height="340" />
+							)}
+						</figure>
 					</Flipped>
 					<Header>
 						<Flipped stagger="reverse" flipId={`playlistTitle-${slug}`}>
@@ -140,22 +197,34 @@ function Playlist({data}) {
 						</Metadata>
 					</Flipped>
 				</PlaylistInfo>
-				<PlaylistWrapper>
-					{playlist.tracks.map((track, index) => {
-						const isPlaying = currentTrack && currentTrack.title === track.title
-						return (
-							<PlaylistRow key={track.title}>
-								<PlaylistTrack
-									isPlaying={isPlaying}
-									href={audioLinkPrefix + track.filename}
-									onClick={e => playTrack(e, index)}
-								>
-									{track.title}
-								</PlaylistTrack>
-							</PlaylistRow>
-						)
-					})}
-				</PlaylistWrapper>
+				<TracklistContainer>
+					{!isCurrentPlaylist && (
+						<PositionedClearButton
+							smallPadding
+							color={color}
+							onClick={e => playTrack(e, 0)}
+						>
+							<PlayIcon />
+						</PositionedClearButton>
+					)}
+					<Tracklist>
+						{playlist.tracks.map((track, index) => {
+							const isPlaying =
+								currentTrack && currentTrack.title === track.title
+							return (
+								<TracklistItem key={track.title}>
+									<Track
+										isPlaying={isPlaying}
+										href={audioLinkPrefix + track.filename}
+										onClick={e => playTrack(e, index)}
+									>
+										{track.title}
+									</Track>
+								</TracklistItem>
+							)
+						})}
+					</Tracklist>
+				</TracklistContainer>
 			</PageLayout>
 		</Layout>
 	)

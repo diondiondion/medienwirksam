@@ -14,7 +14,7 @@ const ClearButton = styled.button`
 	`}
 
 	color: inherit;
-	background-color: transparent;
+	background-color: ${p => (p.color ? p.color : 'transparent')};
 
 	-moz-appearance: none;
 	-webkit-appearance: none;
@@ -30,7 +30,10 @@ const ClearButton = styled.button`
 	transition: all 0.15s ease;
 
 	&:hover {
-		background-color: rgba(${p => getRgb(p.theme.background)}, 0.1);
+		background-color: ${p =>
+			p.color
+				? `rgba(${getRgb(p.color)}, 0.9)`
+				: `rgba(${getRgb(p.theme.background)}, 0.1)`};
 		opacity: 1;
 	}
 

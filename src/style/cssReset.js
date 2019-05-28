@@ -32,6 +32,7 @@ const cssReset = css`
 		vertical-align: middle;
 		border: none;
 		max-width: 100%;
+		height: auto;
 	}
 	svg {
 		display: inline-block;

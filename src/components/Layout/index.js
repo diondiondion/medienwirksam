@@ -58,7 +58,7 @@ const GlobalStyles = createGlobalStyle`
 `
 
 const PageWrapper = styled.div`
-	margin: 0 auto;
+	margin: 1rem auto 0;
 	padding: 1rem;
 	padding-bottom: 12rem;
 	max-width: 2000px;
@@ -66,12 +66,12 @@ const PageWrapper = styled.div`
 
 const Logo = styled.img`
 	display: block;
-	margin: 1rem auto 2rem;
+	margin: 0 auto 2rem;
 	max-width: 100%;
 	height: auto;
 `
 
-function Layout({children}) {
+function Layout({children, withoutLogo}) {
 	const {title: siteTitle} = useSiteMetaData()
 
 	return (
@@ -85,9 +85,9 @@ function Layout({children}) {
 			/>
 			<GlobalStyles />
 			<PageWrapper>
-				<Link to="/">
+				{!withoutLogo && (
 					<Logo src={logoImage} alt="Medienwirksam" width="730" height="92" />
-				</Link>
+				)}
 				{children}
 			</PageWrapper>
 		</>
@@ -96,6 +96,7 @@ function Layout({children}) {
 
 Layout.propTypes = {
 	children: PropTypes.node.isRequired,
+	withoutLogo: PropTypes.bool,
 }
 
 export default Layout

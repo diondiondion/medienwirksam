@@ -42,7 +42,7 @@ export const query = graphql`
 				imageCdnRoot
 			}
 		}
-		allMarkdownRemark {
+		allMarkdownRemark(sort: {fields: [frontmatter___year], order: DESC}) {
 			totalCount
 			edges {
 				node {

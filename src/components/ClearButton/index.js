@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import invert from 'invert-color'
 
 import {getRgb} from '@utils/hexToRgb'
 
@@ -13,7 +14,7 @@ const ClearButton = styled.button`
 		padding: 0.25rem;
 	`}
 
-	color: inherit;
+	color: ${p => (p.color ? invert(p.color, true) : 'inherit')};
 	background-color: ${p => (p.color ? p.color : 'transparent')};
 
 	-moz-appearance: none;

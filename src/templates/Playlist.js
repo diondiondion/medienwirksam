@@ -116,6 +116,10 @@ const Track = styled.a`
 	color: inherit;
 	text-decoration: none;
 
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
 	${p =>
 		p.isPlaying &&
 		`
@@ -163,7 +167,7 @@ function Playlist({data}) {
 
 	const isCurrentPlaylist =
 		currentTrack &&
-		playlist.tracks.find(track => track.title === currentTrack.title)
+		playlist.tracks.find(track => track && track.title === currentTrack.title)
 
 	return (
 		<Layout withoutLogo>
@@ -209,6 +213,13 @@ function Playlist({data}) {
 					)}
 					<Tracklist>
 						{playlist.tracks.map((track, index) => {
+							if (!track)
+								return (
+									<TracklistItem key={index}>
+										Track {index + 1} nicht gefunden
+									</TracklistItem>
+								)
+
 							const isPlaying =
 								currentTrack && currentTrack.title === track.title
 							return (
@@ -219,6 +230,13 @@ function Playlist({data}) {
 										onClick={e => playTrack(e, index)}
 									>
 										{track.title}
+
+										{track.artists_feat && (
+											<span style={{opacity: 0.6}}>
+												{' '}
+												ft. {track.artists_feat.join(', ')}
+											</span>
+										)}
 									</Track>
 								</TracklistItem>
 							)

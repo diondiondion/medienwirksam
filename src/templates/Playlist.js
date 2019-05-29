@@ -150,7 +150,7 @@ function Playlist({data}) {
 	const audioLinkPrefix = `https://${audioCdnRoot}`
 
 	const imageUrl = frontCover
-		? `https://${imageCdnRoot}w_340/${frontCover}`
+		? `https://${imageCdnRoot}w_340,h_340,c_fill/${frontCover}`
 		: null
 
 	const playTrack = useCallback(

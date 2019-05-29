@@ -1,5 +1,6 @@
 ---
 title: Stabile Seitenlage
+frontCover: stabile-seitenlage/front-cover.jpg
 color: '#ffb700'
 artists:
   - Medienwirksam

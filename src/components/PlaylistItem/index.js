@@ -58,7 +58,7 @@ function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 		frontmatter: {title, artists, year, tracks, frontCover, color},
 	} = playlist
 	const imageUrl = frontCover
-		? `https://${imageCdnRoot}w_340/${frontCover}`
+		? `https://${imageCdnRoot}w_340,h_340,c_fill/${frontCover}`
 		: null
 
 	return (

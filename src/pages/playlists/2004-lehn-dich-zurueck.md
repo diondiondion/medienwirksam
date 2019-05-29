@@ -1,5 +1,6 @@
 ---
 title: Lehn dich zurück
+frontCover: lehn-dich-zurueck/front-cover.jpg
 color: '#FFE627'
 artists:
   - Reefer Maxxx

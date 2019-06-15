@@ -70,13 +70,13 @@ const Logo = styled.img`
 	height: auto;
 `
 
-function Layout({children, withoutLogo}) {
+function Layout({children, pageTitle, withoutLogo}) {
 	const {title: siteTitle} = useSiteMetaData()
 
 	return (
 		<>
 			<Helmet
-				title={siteTitle}
+				title={pageTitle ? `${pageTitle} - ${siteTitle}` : siteTitle}
 				meta={[
 					{name: 'description', content: ''},
 					{name: 'keywords', content: ''},
@@ -95,6 +95,7 @@ function Layout({children, withoutLogo}) {
 
 Layout.propTypes = {
 	children: PropTypes.node.isRequired,
+	pageTitle: PropTypes.string,
 	withoutLogo: PropTypes.bool,
 }
 

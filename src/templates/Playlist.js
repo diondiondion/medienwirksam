@@ -165,12 +165,14 @@ function Playlist({data}) {
 		[changeTrack, playlist, slug]
 	)
 
+	const playlistArtists = artists.join(' und ')
+
 	const isCurrentPlaylist =
 		currentTrack &&
 		playlist.tracks.find(track => track && track.title === currentTrack.title)
 
 	return (
-		<Layout withoutLogo>
+		<Layout withoutLogo pageTitle={`${title} - ${playlistArtists}`}>
 			<PageLayout>
 				<PlaylistInfo>
 					<BackLink to="/">
@@ -193,7 +195,7 @@ function Playlist({data}) {
 					</Header>
 					<Flipped stagger="reverse" flipId={`playlistInfo-${slug}`}>
 						<Metadata>
-							<strong>{artists.join(' und ')}</strong>
+							<strong>{playlistArtists}</strong>
 							<br />
 							{year}
 							<br />

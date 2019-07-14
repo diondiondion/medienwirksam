@@ -106,6 +106,7 @@ const Tracklist = styled.ol`
 
 const TracklistItem = styled.li`
 	list-style: none;
+	counter-increment: track-counter;
 `
 
 const Track = styled.a`
@@ -124,8 +125,19 @@ const Track = styled.a`
 		p.isPlaying &&
 		`
 		font-weight: bold;
-		padding-left: ${p.theme.spacing.m};
 	`}
+
+	&:before {
+		display: inline-block;
+		content: counter(track-counter) ' ';
+		width: 3ch;
+
+		${p =>
+			p.isPlaying &&
+			`
+			margin-right: ${p.theme.spacing.m};
+		`}
+	}
 `
 
 const PositionedClearButton = styled(ClearButton)`

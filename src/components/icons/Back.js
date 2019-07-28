@@ -9,6 +9,7 @@ function BackIcon(props) {
 			width="30"
 			height="30"
 			viewBox="0 0 30 30"
+			aria-hidden="true"
 		>
 			<path
 				d="M-6173.251-992.63l17.035-9.939v7.4h7.45l-.765,6h-6.685v6.479Z"

@@ -9,6 +9,7 @@ function PauseIcon(props) {
 			width="45"
 			height="45"
 			viewBox="0 0 30 30"
+			aria-hidden="true"
 		>
 			<path
 				d="M-7348-1950h-6v-16h6v16Zm-10,0h-6v-16h6v16Z"

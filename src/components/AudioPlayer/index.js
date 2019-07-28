@@ -21,6 +21,16 @@ import {
 
 import useAudioPlayer from './useAudioPlayer'
 
+const VisuallyHidden = styled.span`
+	position: absolute;
+	overflow: hidden;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	clip: rect(0 0 0 0);
+	border: 0;
+`
+
 const Wrapper = styled.div`
 	position: fixed;
 	bottom: 0;
@@ -239,6 +249,7 @@ function AudioPlayer({autoPlay}) {
 					</Link>
 				)}
 				<TrackInfo>
+					<VisuallyHidden>Aktueller Track:</VisuallyHidden>
 					{currentTrack ? (
 						<>
 							<strong
@@ -247,6 +258,7 @@ function AudioPlayer({autoPlay}) {
 								{currentTrack.title}
 							</strong>
 							<br />
+							<VisuallyHidden>von</VisuallyHidden>
 							{currentTrack.artists.join(' und ')}
 							{currentTrack.artists_feat && (
 								<> ft. {currentTrack.artists_feat.join(', ')}</>
@@ -261,11 +273,16 @@ function AudioPlayer({autoPlay}) {
 						dimmed
 						className="hideOnMobile"
 						onClick={rewind}
-						aria-label="Zum vorherigen Track wechseln"
+						aria-label="Zum Anfang oder zum vorherigen Track wechseln"
 					>
 						<SkipIcon style={{transform: 'rotate(180deg)'}} />
 					</ClearButton>
-					<ClearButton smallPadding onClick={player.togglePlay}>
+					<ClearButton
+						smallPadding
+						onClick={player.togglePlay}
+						aria-label="Abspielen"
+						aria-pressed={player.isPlaying}
+					>
 						{player.isPlaying ? <PauseIcon /> : <PlayIcon />}
 					</ClearButton>
 					<ClearButton
@@ -287,6 +304,7 @@ function AudioPlayer({autoPlay}) {
 							value={player.currentTime}
 							min="0"
 							max={player.duration}
+							aria-label="Spielfortschritt"
 						/>
 						<SongPositionSlider
 							isHidden={!isMobileDrawerOpen}
@@ -296,15 +314,21 @@ function AudioPlayer({autoPlay}) {
 							min="0"
 							max={player.duration}
 							onChange={e => player.seekTo(e.target.value)}
+							aria-label="Spielfortschritt ändern"
 						/>
 					</SongPositionWrapper>
 				</MobileDrawer>
 				<VolumeSection className="hideOnTablet">
-					<ClearButton onClick={player.toggleMute}>
+					<ClearButton onClick={player.toggleMute} aria-label="Stumm schalten">
 						{player.isMuted ? <MutedIcon /> : <MuteIcon />}
 					</ClearButton>
 					<VolumeSliderWrapper>
-						<VolumeProgressBar value={player.volume} min="0" max="1" />
+						<VolumeProgressBar
+							value={player.volume}
+							min="0"
+							max="1"
+							aria-label="Lautstärke"
+						/>
 						<Slider
 							color={playlistColor}
 							value={player.volume}
@@ -313,6 +337,7 @@ function AudioPlayer({autoPlay}) {
 							step="0.05"
 							onChange={e => player.setVolume(e.target.value)}
 							style={{width: '100px'}}
+							aria-label="Lautstärke ändern"
 						/>
 					</VolumeSliderWrapper>
 				</VolumeSection>

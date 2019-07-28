@@ -11,7 +11,7 @@ const Wrapper = styled.article`
 	flex-wrap: wrap;
 `
 
-const Figure = styled.figure`
+const ImageContainer = styled.div`
 	flex: 1 0 140px;
 
 	@media (min-width: ${p => p.theme.breakpoints.m}) {
@@ -64,9 +64,9 @@ function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 	return (
 		<Wrapper>
 			<Flipped stagger flipId={`playlistImage-${slug}`}>
-				<Figure>
+				<ImageContainer>
 					{imageUrl && <img src={imageUrl} alt="" width="235" height="235" />}
-				</Figure>
+				</ImageContainer>
 			</Flipped>
 			<Info>
 				<Heading>

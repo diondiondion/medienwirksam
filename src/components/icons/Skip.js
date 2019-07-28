@@ -9,6 +9,7 @@ function SkipIcon(props) {
 			width="30"
 			height="30"
 			viewBox="0 0 30 30"
+			aria-hidden="true"
 		>
 			<path
 				d="M-7273-1955v-5.454l-10,5.454v-12l10,5.454V-1967h3v12Z"

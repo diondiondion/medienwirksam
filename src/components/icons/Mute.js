@@ -9,6 +9,7 @@ function MuteIcon(props) {
 			width="30"
 			height="30"
 			viewBox="0 0 30 30"
+			aria-hidden="true"
 		>
 			<path
 				d="M-6169.556-988.393H-6174v-8h4.443l6.608-6.607v21.212Z"

@@ -201,6 +201,14 @@ function AudioPlayer({autoPlay}) {
 			? `https://${imageCdnRoot}w_340/${playlist.frontCover}`
 			: null
 
+	function rewind() {
+		if (player && player.currentTime > 2) {
+			player.seekTo(0)
+		} else {
+			goToPrevTrack()
+		}
+	}
+
 	useEffect(() => {
 		if ('mediaSession' in navigator) {
 			/* eslint-disable-next-line no-undef */
@@ -227,7 +235,7 @@ function AudioPlayer({autoPlay}) {
 				/>
 				{playlist && (
 					<Link to={playlist ? `/playlist${playlist.slug}` : null}>
-						<img src={imageSrc} alt="" width="56" height="56" />
+						<img src={imageSrc} alt={playlist.title} width="56" height="56" />
 					</Link>
 				)}
 				<TrackInfo>
@@ -249,13 +257,23 @@ function AudioPlayer({autoPlay}) {
 					)}
 				</TrackInfo>
 				<ButtonSection>
-					<ClearButton dimmed className="hideOnMobile" onClick={goToPrevTrack}>
+					<ClearButton
+						dimmed
+						className="hideOnMobile"
+						onClick={rewind}
+						aria-label="Zum vorherigen Track wechseln"
+					>
 						<SkipIcon style={{transform: 'rotate(180deg)'}} />
 					</ClearButton>
 					<ClearButton smallPadding onClick={player.togglePlay}>
 						{player.isPlaying ? <PauseIcon /> : <PlayIcon />}
 					</ClearButton>
-					<ClearButton dimmed className="hideOnMobile" onClick={goToNextTrack}>
+					<ClearButton
+						dimmed
+						className="hideOnMobile"
+						onClick={goToNextTrack}
+						aria-label="Track überspringen"
+					>
 						<SkipIcon />
 					</ClearButton>
 				</ButtonSection>

@@ -64,7 +64,9 @@ function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 	return (
 		<Wrapper>
 			<Flipped stagger flipId={`playlistImage-${slug}`}>
-				<Figure>{imageUrl && <img src={imageUrl} alt="" />}</Figure>
+				<Figure>
+					{imageUrl && <img src={imageUrl} alt="" width="235" height="235" />}
+				</Figure>
 			</Flipped>
 			<Info>
 				<Heading>

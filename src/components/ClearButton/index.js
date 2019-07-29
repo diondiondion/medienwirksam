@@ -38,7 +38,7 @@ const ClearButton = styled.button`
 		opacity: 1;
 	}
 
-	&:focus {
+	&.focus-visible {
 		color: ${p => p.theme.background};
 		background-color: ${p => p.theme.text};
 		opacity: 1;

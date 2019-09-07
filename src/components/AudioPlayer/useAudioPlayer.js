@@ -1,4 +1,5 @@
 import {useEffect, useReducer} from 'react'
+import useInterval from '../../utils/useInterval'
 
 function useForceUpdate() {
 	const [, forceUpdate] = useReducer(e => e + 1, 0)
@@ -80,6 +81,8 @@ function useAudioPlayer(ref) {
 	const isPlaying = audio && !(audio.paused || audio.ended)
 	const isMuted = Number(volume.current) === 0
 	const hasMetadata = audio && !isNaN(audio.duration)
+
+	useInterval(forceUpdate, isPlaying ? 1000 : null)
 
 	function seekTo(time) {
 		if (!hasMetadata) return null

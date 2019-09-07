@@ -12224,10 +12224,10 @@ react-fast-compare@^2.0.2:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
-react-flip-toolkit@^6.6.3:
-  version "6.6.3"
-  resolved "https://registry.yarnpkg.com/react-flip-toolkit/-/react-flip-toolkit-6.6.3.tgz#5f6304abcfdcb267d7ab7f2a1971919b1526ce34"
-  integrity sha512-CfHjXzRQIdGCVY4p+jBApO5BDCUK9YnlgvB89JYyS4oyiEkB866/qc0RrT3Bo+6H3WctqQvJqDUo873oUxy8hA==
+react-flip-toolkit@^7.0.5:
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/react-flip-toolkit/-/react-flip-toolkit-7.0.5.tgz#1ccc8869a3388cda824a54de41562eba04fed87c"
+  integrity sha512-zMWUzwtciCqot50V2+6Ac6K23ZN4mzb2f8idYA03emRcxAzDkMQceD/+ZWDDKRRi2DdK3dhOT5tuCbNZ1pdUSA==
   dependencies:
     rematrix "0.2.2"
 

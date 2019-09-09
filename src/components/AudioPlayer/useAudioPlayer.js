@@ -1,9 +1,30 @@
-import {useEffect, useReducer} from 'react'
-import useInterval from '../../utils/useInterval'
+import {useEffect, useReducer, useRef} from 'react'
 
 function useForceUpdate() {
 	const [, forceUpdate] = useReducer(e => e + 1, 0)
 	return forceUpdate
+}
+
+function useFullSecondTimeout(callback, currentTime) {
+	const lastFullSecond = useRef(0)
+
+	// The ontimeupdate event triggers at kind of random
+	// sub-second intervals which can lead to an unevenly
+	// updating time readout. The following makes sure to
+	// update the time on every full second
+	useEffect(() => {
+		const currentFullSecond = Math.floor(currentTime)
+		const shouldScheduleUpdate = currentFullSecond !== lastFullSecond.current
+
+		if (shouldScheduleUpdate) {
+			const delay = 1 - (currentTime % 1)
+			lastFullSecond.current = currentFullSecond
+
+			const timeout = setTimeout(callback, delay)
+
+			return () => clearTimeout(timeout)
+		}
+	}, [currentTime, callback])
 }
 
 const initialVolume = {
@@ -81,8 +102,9 @@ function useAudioPlayer(ref) {
 	const isPlaying = audio && !(audio.paused || audio.ended)
 	const isMuted = Number(volume.current) === 0
 	const hasMetadata = audio && !isNaN(audio.duration)
+	const currentTime = hasMetadata ? audio.currentTime : 0
 
-	useInterval(forceUpdate, isPlaying ? 1000 : null)
+	useFullSecondTimeout(forceUpdate, currentTime)
 
 	function seekTo(time) {
 		if (!hasMetadata) return null
@@ -125,12 +147,12 @@ function useAudioPlayer(ref) {
 			value: volume,
 		})
 	}
-
+	console.log('Updating', currentTime)
 	const playerObject = {
 		isPlaying,
 		isMuted,
 		duration: hasMetadata ? audio.duration : 0,
-		currentTime: hasMetadata ? audio.currentTime : 0,
+		currentTime,
 		volume: volume.current,
 		seekTo,
 		skipBy,

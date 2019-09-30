@@ -2,17 +2,20 @@ import React from 'react'
 import {graphql} from 'gatsby'
 
 import Layout from '@components/Layout'
-import PlaylistItem, {PlaylistGrid} from '@components/PlaylistItem'
 import Filter from '@components/Filter'
+import PlaylistItem, {PlaylistGrid} from '@components/PlaylistItem'
 
-function IndexPage({data}) {
+function Artist({data}) {
+	// const {currentTrack, changeTrack} = useContext(TrackContext)
+	const {imageCdnRoot, title: pageTitle} = data.site.siteMetadata
+	const {title: artistName} = data.artistsYaml
 	const playlists = data.allMarkdownRemark.edges
 	const artists = data.allArtistsYaml.nodes
-	const {imageCdnRoot} = data.site.siteMetadata
+	const currentArtist = data.artistsYaml
 
 	return (
-		<Layout>
-			<Filter artists={artists} />
+		<Layout pageTitle={`${artistName} - ${pageTitle}`}>
+			<Filter artists={artists} selectedArtist={currentArtist.title} />
 			<PlaylistGrid>
 				{playlists.map(({node: playlist}) => (
 					<PlaylistItem
@@ -28,26 +31,36 @@ function IndexPage({data}) {
 	)
 }
 
-export default IndexPage
+export default Artist
 
 export const query = graphql`
-	query {
+	query($slug: String!, $artistFilter: [String!]) {
 		site {
 			siteMetadata {
-				title
 				audioCdnRoot
 				imageCdnRoot
+				title
+			}
+		}
+		artistsYaml(fields: {slug: {eq: $slug}}) {
+			title
+			fields {
+				slug
 			}
 		}
 		allArtistsYaml(sort: {fields: title, order: ASC}) {
 			nodes {
 				title
+				isMedienwirksam
 				fields {
 					slug
 				}
 			}
 		}
-		allMarkdownRemark(sort: {fields: [frontmatter___year], order: DESC}) {
+		allMarkdownRemark(
+			filter: {frontmatter: {artists: {in: $artistFilter}}}
+			sort: {fields: [frontmatter___year], order: DESC}
+		) {
 			totalCount
 			edges {
 				node {

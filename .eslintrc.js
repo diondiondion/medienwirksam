@@ -10,6 +10,7 @@ module.exports = {
 		strict: 0,
 		'prettier/prettier': 'error',
 		'react/prop-types': [1, {skipUndeclared: true}],
+		'no-unused-vars': [2, {ignoreRestSiblings: true}],
 		'react-hooks/rules-of-hooks': 'error',
 		'react-hooks/exhaustive-deps': 'warn',
 	},

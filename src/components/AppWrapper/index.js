@@ -6,6 +6,7 @@ import {ThemeProvider} from 'styled-components'
 import theme from '@style/theme'
 
 import AudioPlayer from '@components/AudioPlayer'
+import {BackLinkProvider} from '@components/useBackLink'
 
 export const TrackContext = React.createContext()
 
@@ -45,25 +46,27 @@ function AppWrapper({children}) {
 						goToPrevTrack,
 					}}
 				>
-					<AudioPlayer autoPlay={autoPlay} />
 					<Location>
 						{({location}) => (
-							<Flipper
-								flipKey={location.key}
-								staggerConfig={{
-									default: {
-										speed: 0.5,
-									},
-									reverse: {
-										reverse: true,
-										speed: 0.5,
-									},
-								}}
-							>
-								{children}
-							</Flipper>
+							<BackLinkProvider pathname={location.pathname}>
+								<Flipper
+									flipKey={location.key}
+									staggerConfig={{
+										default: {
+											speed: 0.5,
+										},
+										reverse: {
+											reverse: true,
+											speed: 0.5,
+										},
+									}}
+								>
+									{children}
+								</Flipper>
+							</BackLinkProvider>
 						)}
 					</Location>
+					<AudioPlayer autoPlay={autoPlay} />
 				</TrackContext.Provider>
 			</ThemeProvider>
 			<Persist

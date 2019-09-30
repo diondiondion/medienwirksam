@@ -65,7 +65,7 @@ const PageWrapper = styled.div`
 
 const Logo = styled.img`
 	display: block;
-	margin: 0 auto 2rem;
+	margin: 0 auto ${theme.spacing.l};
 	max-width: 100%;
 	height: auto;
 `

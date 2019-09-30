@@ -14,6 +14,8 @@ const theme = {
 		l: '1.6rem',
 	},
 	spacing: {
+		xxs: '0.15rem',
+		xs: '0.25rem',
 		s: '0.5rem',
 		m: '1rem',
 		l: '1.5rem',

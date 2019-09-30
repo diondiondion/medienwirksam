@@ -53,6 +53,13 @@ module.exports = {
 		{
 			resolve: `gatsby-source-filesystem`,
 			options: {
+				name: `artists`,
+				path: `${__dirname}/src/pages/artists`,
+			},
+		},
+		{
+			resolve: `gatsby-source-filesystem`,
+			options: {
 				name: `playlists`,
 				path: `${__dirname}/src/pages/playlists`,
 			},

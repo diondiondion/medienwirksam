@@ -4,6 +4,7 @@ import {Link} from 'gatsby'
 import {Flipped} from 'react-flip-toolkit'
 
 import TitleLabel from '@components/TitleLabel'
+import PlaylistGrid from './PlaylistGrid'
 
 const Wrapper = styled.article`
 	position: relative;
@@ -91,5 +92,7 @@ function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 		</Wrapper>
 	)
 }
+
+export {PlaylistGrid}
 
 export default PlaylistItem

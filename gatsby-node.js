@@ -3,8 +3,8 @@ const {createFilePath} = require(`gatsby-source-filesystem`)
 
 exports.onCreateNode = ({node, getNode, actions}) => {
 	const {createNodeField} = actions
-
-	if (node.internal.type === `MarkdownRemark`) {
+	const {type} = node.internal
+	if (type === `MarkdownRemark` || type === `ArtistsYaml`) {
 		const slug = createFilePath({node, getNode, basePath: `pages`})
 		createNodeField({node, name: `slug`, value: slug})
 	}
@@ -20,6 +20,18 @@ exports.createPages = ({graphql, actions}) => {
 						fields {
 							slug
 						}
+						frontmatter {
+							title
+						}
+					}
+				}
+			}
+			allArtistsYaml(sort: {fields: title, order: ASC}) {
+				nodes {
+					title
+					isMedienwirksam
+					fields {
+						slug
 					}
 				}
 			}
@@ -30,6 +42,18 @@ exports.createPages = ({graphql, actions}) => {
 				path: `/playlist${node.fields.slug}`,
 				component: path.resolve(`./src/templates/Playlist.js`),
 				context: {slug: node.fields.slug},
+			})
+		})
+		result.data.allArtistsYaml.nodes.forEach(artist => {
+			const artistFilter = [artist.title]
+			if (artist.isMedienwirksam) {
+				artistFilter.push('Medienwirksam')
+			}
+			console.log(artistFilter)
+			createPage({
+				path: `/artist${artist.fields.slug}`,
+				component: path.resolve(`./src/templates/Artist.js`),
+				context: {artistFilter, slug: artist.fields.slug},
 			})
 		})
 	})

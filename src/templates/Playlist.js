@@ -8,6 +8,7 @@ import ClearButton from '@components/ClearButton'
 import {BackIcon, PlayIcon} from '@components/icons'
 import Layout from '@components/Layout'
 import TitleLabel from '@components/TitleLabel'
+import useBackLink from '@components/useBackLink'
 
 const fadeInFromLeft = keyframes`
 	from {
@@ -152,8 +153,9 @@ const PositionedClearButton = styled(ClearButton)`
 `
 
 function Playlist({data}) {
+	const backLink = useBackLink()
 	const {currentTrack, changeTrack} = useContext(TrackContext)
-	const {audioCdnRoot, imageCdnRoot} = data.site.siteMetadata
+	const {audioCdnRoot, imageCdnRoot, title: pageTitle} = data.site.siteMetadata
 
 	const playlist = data.markdownRemark.frontmatter
 	const {slug} = data.markdownRemark.fields
@@ -184,10 +186,13 @@ function Playlist({data}) {
 		playlist.tracks.find(track => track && track.title === currentTrack.title)
 
 	return (
-		<Layout withoutLogo pageTitle={`${title} - ${playlistArtists}`}>
+		<Layout
+			withoutLogo
+			pageTitle={`${title} - ${playlistArtists} - ${pageTitle}`}
+		>
 			<PageLayout>
 				<PlaylistInfo>
-					<BackLink to="/">
+					<BackLink to={backLink}>
 						<BackIcon />
 						zurück
 					</BackLink>
@@ -270,6 +275,7 @@ export const query = graphql`
 			siteMetadata {
 				audioCdnRoot
 				imageCdnRoot
+				title
 			}
 		}
 		markdownRemark(fields: {slug: {eq: $slug}}) {

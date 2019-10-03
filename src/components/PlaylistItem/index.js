@@ -1,9 +1,11 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 import {Link} from 'gatsby'
 import {Flipped} from 'react-flip-toolkit'
 
 import TitleLabel from '@components/TitleLabel'
+import {TrackContext} from '@components/AppWrapper'
+import {IsPlayingIcon} from '@components/icons'
 import PlaylistGrid from './PlaylistGrid'
 
 const Wrapper = styled.article`
@@ -54,6 +56,12 @@ const Dimmed = styled.span`
 	opacity: 0.75;
 `
 
+const PlayingIndicator = styled(IsPlayingIcon)`
+	width: ${p => p.theme.spacing.m};
+	height: ${p => p.theme.spacing.m};
+	margin-right: ${p => p.theme.spacing.xs};
+`
+
 function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 	const {
 		frontmatter: {title, artists, year, tracks, frontCover, color},
@@ -61,6 +69,11 @@ function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 	const imageUrl = frontCover
 		? `https://${imageCdnRoot}w_340,h_340,c_fill/${frontCover}`
 		: null
+
+	const {playlist: playingPlaylist} = useContext(TrackContext)
+
+	const isPlaying = playingPlaylist && playingPlaylist.title === title
+	console.log(playingPlaylist, playlist)
 
 	return (
 		<Wrapper>
@@ -72,7 +85,10 @@ function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 			<Info>
 				<Heading>
 					<Flipped stagger flipId={`playlistTitle-${slug}`}>
-						<TitleLabel color={color}>{title}</TitleLabel>
+						<TitleLabel color={color}>
+							{isPlaying && <PlayingIndicator />}
+							{title}
+						</TitleLabel>
 					</Flipped>
 				</Heading>
 				<Flipped stagger flipId={`playlistInfo-${slug}`}>

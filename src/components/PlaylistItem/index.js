@@ -73,7 +73,6 @@ function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 	const {playlist: playingPlaylist} = useContext(TrackContext)
 
 	const isPlaying = playingPlaylist && playingPlaylist.title === title
-	console.log(playingPlaylist, playlist)
 
 	return (
 		<Wrapper>

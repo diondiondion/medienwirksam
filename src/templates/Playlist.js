@@ -2,10 +2,11 @@ import React, {useContext, useCallback} from 'react'
 import {Link, graphql} from 'gatsby'
 import styled, {keyframes} from 'styled-components'
 import {Flipped} from 'react-flip-toolkit'
+import invert from 'invert-color'
 
 import {TrackContext} from '@components/AppWrapper'
 import ClearButton from '@components/ClearButton'
-import {BackIcon, PlayIcon} from '@components/icons'
+import {BackIcon, PlayIcon, IsPlayingIcon} from '@components/icons'
 import Layout from '@components/Layout'
 import TitleLabel from '@components/TitleLabel'
 import useBackLink from '@components/useBackLink'
@@ -111,34 +112,51 @@ const TracklistItem = styled.li`
 `
 
 const Track = styled.a`
-	display: block;
+	position: relative;
+	z-index: 0;
+	display: inline-block;
+	vertical-align: middle;
+	max-width: 100%;
 	padding: 5px 0;
 
 	font-size: 18px;
-	color: inherit;
+	color: ${p => (p.isPlaying ? invert(p.contrastColor, true) : 'inherit')};
 	text-decoration: none;
-
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
 
 	${p =>
 		p.isPlaying &&
 		`
 		font-weight: bold;
 	`}
+`
+
+const TrackTitle = styled.span`
+	display: inline-block;
+	vertical-align: top;
+	max-width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 
 	&:before {
 		display: inline-block;
 		content: counter(track-counter) ' ';
 		width: 3ch;
-
-		${p =>
-			p.isPlaying &&
-			`
-			margin-right: ${p.theme.spacing.m};
-		`}
 	}
+`
+
+const TrackHighlight = styled.span`
+	position: absolute;
+	top: 0;
+	left: -${p => p.theme.spacing.xl};
+	right: -${p => p.theme.spacing.s};
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	padding-left: ${p => p.theme.spacing.s};
+	z-index: -1;
+	background-color: ${p => p.color};
+	transform: rotate(${(Math.random() * 3 - 1.5).toFixed(2)}deg);
 `
 
 const PositionedClearButton = styled(ClearButton)`
@@ -154,7 +172,9 @@ const PositionedClearButton = styled(ClearButton)`
 
 function Playlist({data}) {
 	const backLink = useBackLink()
-	const {currentTrack, changeTrack} = useContext(TrackContext)
+	const {currentTrack, changeTrack, playlist: currentPlaylist} = useContext(
+		TrackContext
+	)
 	const {audioCdnRoot, imageCdnRoot, title: pageTitle} = data.site.siteMetadata
 
 	const playlist = data.markdownRemark.frontmatter
@@ -181,9 +201,7 @@ function Playlist({data}) {
 
 	const playlistArtists = artists.join(' und ')
 
-	const isCurrentPlaylist =
-		currentTrack &&
-		playlist.tracks.find(track => track && track.title === currentTrack.title)
+	const isCurrentPlaylist = currentPlaylist && currentPlaylist.title === title
 
 	return (
 		<Layout
@@ -247,14 +265,22 @@ function Playlist({data}) {
 										isPlaying={isPlaying}
 										href={audioLinkPrefix + track.filename}
 										onClick={e => playTrack(e, index)}
+										contrastColor={color}
 									>
-										{track.title}
+										<TrackTitle>
+											{track.title}
 
-										{track.artists_feat && (
-											<span style={{opacity: 0.6}}>
-												{' '}
-												ft. {track.artists_feat.join(', ')}
-											</span>
+											{track.artists_feat && (
+												<span style={{opacity: 0.6}}>
+													{' '}
+													ft. {track.artists_feat.join(', ')}
+												</span>
+											)}
+										</TrackTitle>
+										{isPlaying && (
+											<TrackHighlight color={color}>
+												<IsPlayingIcon />
+											</TrackHighlight>
 										)}
 									</Track>
 								</TracklistItem>

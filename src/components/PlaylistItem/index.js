@@ -60,6 +60,7 @@ const PlayingIndicator = styled(IsPlayingIcon)`
 	width: ${p => p.theme.spacing.m};
 	height: ${p => p.theme.spacing.m};
 	margin-right: ${p => p.theme.spacing.xs};
+	vertical-align: -${p => p.theme.spacing.xxs};
 `
 
 function PlaylistItem({playlist, link, slug, imageCdnRoot}) {

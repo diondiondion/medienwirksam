@@ -1,7 +1,7 @@
 import React, {useContext, useCallback} from 'react'
 import {Link, graphql} from 'gatsby'
 import styled, {keyframes} from 'styled-components'
-import {Flipped} from 'react-flip-toolkit'
+import {Flipper, Flipped} from 'react-flip-toolkit'
 import invert from 'invert-color'
 
 import {TrackContext} from '@components/AppWrapper'
@@ -57,7 +57,7 @@ const BackLink = styled(Link)`
 const PageLayout = styled.main`
 	@media (min-width: ${p => p.theme.breakpoints.s}) {
 		display: grid;
-		grid-template-columns: [left] minmax(0, 340px) [right] minmax(0, 540px);
+		grid-template-columns: [left] minmax(0, 340px) [right] minmax(100px, 540px);
 		grid-template-rows: auto;
 		grid-gap: ${p => p.theme.spacing.l};
 		justify-content: center;
@@ -248,45 +248,49 @@ function Playlist({data}) {
 							<PlayIcon />
 						</PositionedClearButton>
 					)}
-					<Tracklist>
-						{playlist.tracks.map((track, index) => {
-							if (!track)
+					<Flipper flipKey={currentTrack && currentTrack.title}>
+						<Tracklist>
+							{playlist.tracks.map((track, index) => {
+								if (!track)
+									return (
+										<TracklistItem key={index}>
+											Track {index + 1} nicht gefunden
+										</TracklistItem>
+									)
+
+								const isPlaying =
+									currentTrack && currentTrack.title === track.title
 								return (
-									<TracklistItem key={index}>
-										Track {index + 1} nicht gefunden
+									<TracklistItem key={track.title}>
+										<Track
+											isPlaying={isPlaying}
+											href={audioLinkPrefix + track.filename}
+											onClick={e => playTrack(e, index)}
+											contrastColor={color}
+										>
+											<TrackTitle>
+												{track.title}
+
+												{track.artists_feat && (
+													<span style={{opacity: 0.6}}>
+														{' '}
+														ft. {track.artists_feat.join(', ')}
+													</span>
+												)}
+											</TrackTitle>
+											{isPlaying && (
+												<Flipped flipId="trackHighlight">
+													<TrackHighlight key={track.title} color={color}>
+														<IsPlayingIcon />
+													</TrackHighlight>
+												</Flipped>
+											)}
+										</Track>
 									</TracklistItem>
 								)
-
-							const isPlaying =
-								currentTrack && currentTrack.title === track.title
-							return (
-								<TracklistItem key={track.title}>
-									<Track
-										isPlaying={isPlaying}
-										href={audioLinkPrefix + track.filename}
-										onClick={e => playTrack(e, index)}
-										contrastColor={color}
-									>
-										<TrackTitle>
-											{track.title}
-
-											{track.artists_feat && (
-												<span style={{opacity: 0.6}}>
-													{' '}
-													ft. {track.artists_feat.join(', ')}
-												</span>
-											)}
-										</TrackTitle>
-										{isPlaying && (
-											<TrackHighlight color={color}>
-												<IsPlayingIcon />
-											</TrackHighlight>
-										)}
-									</Track>
-								</TracklistItem>
-							)
-						})}
-					</Tracklist>
+							})}
+						</Tracklist>
+					</Flipper>
 				</TracklistContainer>
 			</PageLayout>
 		</Layout>

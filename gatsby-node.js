@@ -49,7 +49,6 @@ exports.createPages = ({graphql, actions}) => {
 			if (artist.isMedienwirksam) {
 				artistFilter.push('Medienwirksam')
 			}
-			console.log(artistFilter)
 			createPage({
 				path: `/artist${artist.fields.slug}`,
 				component: path.resolve(`./src/templates/Artist.js`),

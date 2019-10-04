@@ -27,7 +27,7 @@
 		"prop-types": "^15.7.2",
 		"react": "^16.9.0",
 		"react-dom": "^16.9.0",
-		"react-flip-toolkit": "^7.0.5",
+		"react-flip-toolkit": "^7.0.6",
 		"react-helmet": "^6.0.0-beta",
 		"react-persist": "^1.0.2",
 		"styled-components": "^4.3.2",

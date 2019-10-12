@@ -7,14 +7,14 @@ import PlaylistItem, {PlaylistGrid} from '@components/PlaylistItem'
 
 function Artist({data}) {
 	// const {currentTrack, changeTrack} = useContext(TrackContext)
-	const {imageCdnRoot, title: pageTitle} = data.site.siteMetadata
+	const {imageCdnRoot} = data.site.siteMetadata
 	const {title: artistName} = data.artistsYaml
 	const playlists = data.allMarkdownRemark.edges
 	const artists = data.allArtistsYaml.nodes
 	const currentArtist = data.artistsYaml
 
 	return (
-		<Layout pageTitle={`${artistName} - ${pageTitle}`}>
+		<Layout pageTitle={artistName}>
 			<Filter artists={artists} selectedArtist={currentArtist.title} />
 			<PlaylistGrid>
 				{playlists.map(({node: playlist}) => (

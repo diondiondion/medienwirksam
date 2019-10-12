@@ -147,7 +147,7 @@ function useAudioPlayer(ref) {
 			value: volume,
 		})
 	}
-	console.log('Updating', currentTime)
+
 	const playerObject = {
 		isPlaying,
 		isMuted,

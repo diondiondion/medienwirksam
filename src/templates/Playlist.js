@@ -1,5 +1,5 @@
 import React, {useContext, useCallback} from 'react'
-import {Link, graphql} from 'gatsby'
+import {graphql} from 'gatsby'
 import styled, {keyframes} from 'styled-components'
 import {Flipper, Flipped} from 'react-flip-toolkit'
 import invert from 'invert-color'
@@ -9,7 +9,7 @@ import ClearButton from '@components/ClearButton'
 import {BackIcon, PlayIcon, IsPlayingIcon} from '@components/icons'
 import Layout from '@components/Layout'
 import TitleLabel from '@components/TitleLabel'
-import useBackLink from '@components/useBackLink'
+import BackLinkBase from '@components/BackLink'
 
 const fadeInFromLeft = keyframes`
 	from {
@@ -32,7 +32,13 @@ const fadeInFromRight = keyframes`
 	}
 `
 
-const BackLink = styled(Link)`
+const BackLink = styled(BackLinkBase)`
+	font: inherit;
+	appearance: none;
+	cursor: pointer;
+	background-color: transparent;
+	border: none;
+
 	display: inline-block;
 	margin-bottom: ${p => p.theme.spacing.m};
 	color: ${p => p.theme.text};
@@ -51,6 +57,12 @@ const BackLink = styled(Link)`
 		margin-right: 0.5rem;
 		font-size: 1.8em;
 		vertical-align: -0.3em;
+	}
+
+	/* Normalise inner button spacing in Gecko browsers */
+	&::-moz-focus-inner {
+		padding: 0;
+		border: 0;
 	}
 `
 
@@ -171,7 +183,6 @@ const PositionedClearButton = styled(ClearButton)`
 `
 
 function Playlist({data}) {
-	const backLink = useBackLink()
 	const {currentTrack, changeTrack, playlist: currentPlaylist} = useContext(
 		TrackContext
 	)
@@ -204,13 +215,10 @@ function Playlist({data}) {
 	const isCurrentPlaylist = currentPlaylist && currentPlaylist.title === title
 
 	return (
-		<Layout
-			withoutLogo
-			pageTitle={`${title} - ${playlistArtists} - ${pageTitle}`}
-		>
+		<Layout withoutLogo pageTitle={`${title} - ${playlistArtists}`}>
 			<PageLayout>
 				<PlaylistInfo>
-					<BackLink to={backLink}>
+					<BackLink to={'/'}>
 						<BackIcon />
 						zurück
 					</BackLink>

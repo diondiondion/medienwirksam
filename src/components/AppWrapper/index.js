@@ -6,7 +6,7 @@ import {ThemeProvider} from 'styled-components'
 import theme from '@style/theme'
 
 import AudioPlayer from '@components/AudioPlayer'
-import {BackLinkProvider} from '@components/useBackLink'
+import {BackLinkProvider} from '@components/BackLink/useBackLink'
 
 export const TrackContext = React.createContext()
 

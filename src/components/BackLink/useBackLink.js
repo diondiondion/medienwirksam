@@ -3,20 +3,17 @@ import React, {createContext, memo, useContext, useEffect, useRef} from 'react'
 const BackLinkContext = createContext('/')
 
 function Provider({children, pathname}) {
-	const previousPathname = useRef(pathname)
-	const hasHistory = useRef(false)
+	const hasHistoryRef = useRef(false)
 
 	useEffect(() => {
-		if (pathname !== previousPathname.current) {
-			hasHistory.current = true
-			previousPathname.current = pathname
-		}
+		// We're using a ref so that we don't trigger a rerender,
+		// as the new value should only apply on the next render,
+		// i.e. the next time `pathname` has changed
+		hasHistoryRef.current = true
 	}, [pathname])
 
 	return (
-		<BackLinkContext.Provider
-			value={hasHistory.current ? previousPathname.current : '/'}
-		>
+		<BackLinkContext.Provider value={hasHistoryRef.current}>
 			{children}
 		</BackLinkContext.Provider>
 	)

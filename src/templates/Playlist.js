@@ -186,7 +186,7 @@ function Playlist({data}) {
 	const {currentTrack, changeTrack, playlist: currentPlaylist} = useContext(
 		TrackContext
 	)
-	const {audioCdnRoot, imageCdnRoot, title: pageTitle} = data.site.siteMetadata
+	const {audioCdnRoot, imageCdnRoot} = data.site.siteMetadata
 
 	const playlist = data.markdownRemark.frontmatter
 	const {slug} = data.markdownRemark.fields

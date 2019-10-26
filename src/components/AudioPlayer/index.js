@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useEffect, useState} from 'react'
+import React, {useContext, useRef, useState} from 'react'
 import {Link} from 'gatsby'
 import styled, {css} from 'styled-components'
 
@@ -20,6 +20,7 @@ import {
 } from '@components/icons'
 
 import useAudioPlayer from './useAudioPlayer'
+import useMediaSession from './useMediaSession'
 
 const VisuallyHidden = styled.span`
 	position: absolute;
@@ -211,6 +212,15 @@ function AudioPlayer({autoPlay}) {
 			? `https://${imageCdnRoot}w_340/${playlist.frontCover}`
 			: null
 
+	useMediaSession({
+		title: currentTrack && currentTrack.title,
+		artist: currentTrack && currentTrack.artists,
+		album: playlist && playlist.title,
+		artwork: [{src: imageSrc, type: 'image/jpg'}],
+		nextTrack: goToNextTrack,
+		previousTrack: goToPrevTrack,
+	})
+
 	function rewind() {
 		if (player && player.currentTime > 2) {
 			player.seekTo(0)
@@ -218,20 +228,6 @@ function AudioPlayer({autoPlay}) {
 			goToPrevTrack()
 		}
 	}
-
-	useEffect(() => {
-		if ('mediaSession' in navigator) {
-			/* eslint-disable-next-line no-undef */
-			navigator.mediaSession.metadata = new MediaMetadata({
-				title: currentTrack && currentTrack.title,
-				artist: currentTrack && currentTrack.artists,
-				album: playlist && playlist.title,
-				artwork: [{src: imageSrc, type: 'image/jpg'}],
-			})
-			navigator.mediaSession.setActionHandler('nexttrack', goToNextTrack)
-			navigator.mediaSession.setActionHandler('previoustrack', goToPrevTrack)
-		}
-	}, [currentTrack, playlist, imageSrc, goToNextTrack, goToPrevTrack])
 
 	return (
 		<ThemeSection color={playlistColor}>

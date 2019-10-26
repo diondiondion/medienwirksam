@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled, {createGlobalStyle} from 'styled-components'
 import {Helmet} from 'react-helmet'
+import {Link} from 'gatsby'
 
 import cssReset from '@style/cssReset'
 import theme from '@style/theme'
@@ -63,9 +64,19 @@ const PageWrapper = styled.div`
 	max-width: 2000px;
 `
 
-const Logo = styled.img`
+const imageSize = {
+	width: 730,
+	height: 92,
+}
+
+const LogoLink = styled(Link)`
 	display: block;
 	margin: 0 auto ${theme.spacing.l};
+	max-width: ${imageSize.width}px;
+`
+
+const Logo = styled.img`
+	display: block;
 	max-width: 100%;
 	height: auto;
 `
@@ -85,7 +96,14 @@ function Layout({children, pageTitle, withoutLogo}) {
 			<GlobalStyles />
 			<PageWrapper>
 				{!withoutLogo && (
-					<Logo src={logoImage} alt="Medienwirksam" width="730" height="92" />
+					<LogoLink to="/" aria-label="Zur Startseite">
+						<Logo
+							src={logoImage}
+							alt="Medienwirksam"
+							width={imageSize.width}
+							height={imageSize.height}
+						/>
+					</LogoLink>
 				)}
 				{children}
 			</PageWrapper>

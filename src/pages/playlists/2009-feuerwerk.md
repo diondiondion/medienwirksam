@@ -2,7 +2,7 @@
 title: Feuerwerk
 frontCover: feuerwerk/feuerwerk-cover-front.jpg
 backCover: feuerwerk/feuerwerk-cover-back.jpg
-color: '#495DD9'
+color: '#5137cc'
 artists:
   - EAN
 tracks:

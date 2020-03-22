@@ -6,15 +6,14 @@ import PlaylistItem, {PlaylistGrid} from '@components/PlaylistItem'
 import Filter from '@components/Filter'
 
 function IndexPage({data}) {
-	const playlists = data.allMarkdownRemark.edges
-	const artists = data.allArtistsYaml.nodes
-	const {imageCdnRoot} = data.site.siteMetadata
+	const {playlists, artists, site} = data
+	const {imageCdnRoot} = site.siteMetadata
 
 	return (
 		<Layout>
-			<Filter artists={artists} />
+			<Filter artists={artists.nodes} />
 			<PlaylistGrid>
-				{playlists.map(({node: playlist}) => (
+				{playlists.edges.map(({node: playlist}) => (
 					<PlaylistItem
 						key={playlist.id}
 						playlist={playlist}
@@ -39,7 +38,7 @@ export const query = graphql`
 				imageCdnRoot
 			}
 		}
-		allArtistsYaml(sort: {fields: title, order: ASC}) {
+		artists: allArtistsYaml(sort: {fields: title, order: ASC}) {
 			nodes {
 				title
 				fields {
@@ -47,7 +46,9 @@ export const query = graphql`
 				}
 			}
 		}
-		allMarkdownRemark(sort: {fields: [frontmatter___year], order: DESC}) {
+		playlists: allMarkdownRemark(
+			sort: {fields: [frontmatter___year], order: DESC}
+		) {
 			totalCount
 			edges {
 				node {

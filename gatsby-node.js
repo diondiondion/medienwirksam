@@ -46,9 +46,6 @@ exports.createPages = ({graphql, actions}) => {
 		})
 		result.data.allArtistsYaml.nodes.forEach(artist => {
 			const artistFilter = [artist.title]
-			if (artist.isMedienwirksam) {
-				artistFilter.push('Medienwirksam')
-			}
 			createPage({
 				path: `/artist${artist.fields.slug}`,
 				component: path.resolve(`./src/templates/Artist.js`),

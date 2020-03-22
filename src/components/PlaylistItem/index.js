@@ -103,7 +103,7 @@ function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 						</Dimmed>
 					</Metadata>
 				</Flipped>
-				<CoverLink to={link}>View</CoverLink>
+				<CoverLink to={link}>Anhören</CoverLink>
 			</Info>
 		</Wrapper>
 	)

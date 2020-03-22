@@ -58,9 +58,9 @@ const cssReset = css`
 	textarea {
 		vertical-align: top;
 	}
+	/* Remove button padding in FF */
 	input::-moz-focus-inner,
-	button::-moz-focus-inner /* Remove button padding in FF */
-	 {
+	button::-moz-focus-inner {
 		border: 0;
 		padding: 0;
 	}

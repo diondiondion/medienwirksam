@@ -3,6 +3,7 @@ import {Link} from 'gatsby'
 import styled, {css} from 'styled-components'
 
 import {getRgb} from '@utils/hexToRgb'
+import friendlyList from '@utils/friendlyList'
 
 import useSiteMetaData from '@utils/useSiteMetaData'
 import formatTime from '@utils/formatTime'
@@ -255,9 +256,9 @@ function AudioPlayer({autoPlay}) {
 							</strong>
 							<br />
 							<VisuallyHidden>von</VisuallyHidden>
-							{currentTrack.artists.join(' und ')}
+							{currentTrack.artists_alias || friendlyList(currentTrack.artists)}
 							{currentTrack.artists_feat && (
-								<> ft. {currentTrack.artists_feat.join(', ')}</>
+								<> ft. {friendlyList(currentTrack.artists_feat)}</>
 							)}
 						</>
 					) : (

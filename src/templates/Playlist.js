@@ -331,6 +331,7 @@ export const query = graphql`
 				tracks {
 					title
 					artists
+					artists_alias
 					artists_feat
 					producers
 					filename

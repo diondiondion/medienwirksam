@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {Link} from 'gatsby'
 import {Flipped} from 'react-flip-toolkit'
 
+import friendlyList from '@utils/friendlyList'
 import TitleLabel from '@components/TitleLabel'
 import {TrackContext} from '@components/AppWrapper'
 import {IsPlayingIcon} from '@components/icons'
@@ -93,7 +94,7 @@ function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 				</Heading>
 				<Flipped stagger flipId={`playlistInfo-${slug}`}>
 					<Metadata>
-						<strong>{artists.join(' und ')}</strong>
+						<strong>{friendlyList(artists)}</strong>
 						<br />
 						<Dimmed>
 							{year}

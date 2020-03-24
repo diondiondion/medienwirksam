@@ -4,6 +4,7 @@ import {graphql} from 'gatsby'
 import Layout from '@components/Layout'
 import PlaylistItem, {PlaylistGrid} from '@components/PlaylistItem'
 import Filter from '@components/Filter'
+import Heading from '@components/Heading'
 
 function IndexPage({data}) {
 	const {playlists, artists, site} = data
@@ -12,6 +13,7 @@ function IndexPage({data}) {
 	return (
 		<Layout>
 			<Filter artists={artists.nodes} />
+			<Heading as="h2">Alben</Heading>
 			<PlaylistGrid>
 				{playlists.edges.map(({node: playlist}) => (
 					<PlaylistItem

@@ -4,6 +4,7 @@ import styled, {keyframes} from 'styled-components'
 import {Flipper, Flipped} from 'react-flip-toolkit'
 import invert from 'invert-color'
 
+import friendlyList from '@utils/friendlyList'
 import {TrackContext} from '@components/AppWrapper'
 import ClearButton from '@components/ClearButton'
 import {BackIcon, PlayIcon, IsPlayingIcon} from '@components/icons'
@@ -210,7 +211,7 @@ function Playlist({data}) {
 		[changeTrack, playlist, slug]
 	)
 
-	const playlistArtists = artists.join(' und ')
+	const playlistArtists = friendlyList(artists)
 
 	const isCurrentPlaylist = currentPlaylist && currentPlaylist.title === title
 
@@ -218,7 +219,7 @@ function Playlist({data}) {
 		<Layout withoutLogo pageTitle={`${title} - ${playlistArtists}`}>
 			<PageLayout>
 				<PlaylistInfo>
-					<BackLink to={'/'}>
+					<BackLink to="/">
 						<BackIcon />
 						zurück
 					</BackLink>
@@ -282,7 +283,7 @@ function Playlist({data}) {
 												{track.artists_feat && (
 													<span style={{opacity: 0.6}}>
 														{' '}
-														ft. {track.artists_feat.join(', ')}
+														ft. {friendlyList(track.artists_feat)}
 													</span>
 												)}
 											</TrackTitle>

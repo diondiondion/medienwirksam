@@ -1,16 +1,16 @@
-import React, {useContext, useCallback} from 'react'
+import React, {useContext} from 'react'
 import {graphql} from 'gatsby'
 import styled, {keyframes} from 'styled-components'
-import {Flipper, Flipped} from 'react-flip-toolkit'
-import invert from 'invert-color'
+import {Flipped} from 'react-flip-toolkit'
 
 import friendlyList from '@utils/friendlyList'
-import {TrackContext} from '@components/AppWrapper'
 import ClearButton from '@components/ClearButton'
-import {BackIcon, PlayIcon, IsPlayingIcon} from '@components/icons'
+import {BackIcon, PlayIcon} from '@components/icons'
 import Layout from '@components/Layout'
 import TitleLabel from '@components/TitleLabel'
 import BackLinkBase from '@components/BackLink'
+import Playlist from '@components/Playlist'
+import {TrackContext} from '@components/AppWrapper'
 
 const fadeInFromLeft = keyframes`
 	from {
@@ -97,14 +97,9 @@ const Metadata = styled.p`
 	margin: ${p => p.theme.spacing.m} ${p => p.theme.spacing.s};
 `
 
-const TracklistContainer = styled.section`
+const PlaylistContainer = styled.section`
 	position: relative;
 	grid-column: right;
-	margin: 0;
-	padding: ${p => p.theme.spacing.m};
-
-	background-color: ${p => p.theme.panel};
-	box-shadow: 0 0 30px #ffffff2b;
 
 	animation: ${fadeInFromTop} 250ms backwards ease-out 250ms;
 	transform-origin: 0 0;
@@ -114,65 +109,7 @@ const TracklistContainer = styled.section`
 	}
 `
 
-const Tracklist = styled.ol`
-	margin: 0;
-	padding: 0;
-`
-
-const TracklistItem = styled.li`
-	list-style: none;
-	counter-increment: track-counter;
-`
-
-const Track = styled.a`
-	position: relative;
-	z-index: 0;
-	display: inline-block;
-	vertical-align: middle;
-	max-width: 100%;
-	padding: 5px 0;
-
-	font-size: 18px;
-	color: ${p => (p.isPlaying ? invert(p.contrastColor, true) : 'inherit')};
-	text-decoration: none;
-
-	${p =>
-		p.isPlaying &&
-		`
-		font-weight: bold;
-	`}
-`
-
-const TrackTitle = styled.span`
-	display: inline-block;
-	vertical-align: top;
-	max-width: 100%;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-
-	&:before {
-		display: inline-block;
-		content: counter(track-counter) ' ';
-		width: 3ch;
-	}
-`
-
-const TrackHighlight = styled.span`
-	position: absolute;
-	top: 0;
-	left: -${p => p.theme.spacing.xl};
-	right: -${p => p.theme.spacing.s};
-	bottom: 0;
-	display: flex;
-	align-items: center;
-	padding-left: ${p => p.theme.spacing.s};
-	z-index: -1;
-	background-color: ${p => p.color};
-	transform: rotate(${(Math.random() * 3 - 1.5).toFixed(2)}deg);
-`
-
-const PositionedClearButton = styled(ClearButton)`
+const BigPlayButton = styled(ClearButton)`
 	position: absolute;
 	top: -${p => p.theme.spacing.l};
 	right: ${p => p.theme.spacing.m};
@@ -183,37 +120,30 @@ const PositionedClearButton = styled(ClearButton)`
 	}
 `
 
-function Playlist({data}) {
+function PlaylistPage({data}) {
 	const {currentTrack, changeTrack, playlist: currentPlaylist} = useContext(
 		TrackContext
 	)
 	const {audioCdnRoot, imageCdnRoot} = data.site.siteMetadata
+	const {frontmatter, fields} = data.markdownRemark
+	const playlist = {
+		...frontmatter,
+		path: `/playlist${fields.slug}`,
+	}
+	const {title, artists, year, tracks, frontCover, color, path} = playlist
+	const isCurrentPlaylist = currentPlaylist && currentPlaylist.title === title
 
-	const playlist = data.markdownRemark.frontmatter
-	const {slug} = data.markdownRemark.fields
-	const {title, artists, year, tracks, frontCover, color} = playlist
+	function playTrack(index) {
+		changeTrack(playlist, index)
+	}
 
-	const audioLinkPrefix = `https://${audioCdnRoot}`
+	const getTrackMp3Link = filename => `https://${audioCdnRoot}${filename}`
 
 	const imageUrl = frontCover
 		? `https://${imageCdnRoot}w_340,h_340,c_fill/${frontCover}`
 		: null
 
-	const playTrack = useCallback(
-		(e, trackIndex) => {
-			e.preventDefault()
-			const playlistWithSlug = {
-				...playlist,
-				slug,
-			}
-			changeTrack(playlistWithSlug, trackIndex)
-		},
-		[changeTrack, playlist, slug]
-	)
-
 	const playlistArtists = friendlyList(artists)
-
-	const isCurrentPlaylist = currentPlaylist && currentPlaylist.title === title
 
 	return (
 		<Layout withoutLogo pageTitle={`${title} - ${playlistArtists}`}>
@@ -223,7 +153,7 @@ function Playlist({data}) {
 						<BackIcon />
 						zurück
 					</BackLink>
-					<Flipped stagger="reverse" flipId={`playlistImage-${slug}`}>
+					<Flipped stagger="reverse" flipId={`playlistImage-${path}`}>
 						<figure>
 							{imageUrl && (
 								<img src={imageUrl} alt="" width="340" height="340" />
@@ -231,13 +161,13 @@ function Playlist({data}) {
 						</figure>
 					</Flipped>
 					<Header>
-						<Flipped stagger="reverse" flipId={`playlistTitle-${slug}`}>
+						<Flipped stagger="reverse" flipId={`playlistTitle-${path}`}>
 							<TitleLabel as="h1" color={color}>
 								{title}
 							</TitleLabel>
 						</Flipped>
 					</Header>
-					<Flipped stagger="reverse" flipId={`playlistInfo-${slug}`}>
+					<Flipped stagger="reverse" flipId={`playlistInfo-${path}`}>
 						<Metadata>
 							<strong>{playlistArtists}</strong>
 							<br />
@@ -247,66 +177,31 @@ function Playlist({data}) {
 						</Metadata>
 					</Flipped>
 				</PlaylistInfo>
-				<TracklistContainer>
+				<PlaylistContainer>
 					{!isCurrentPlaylist && (
-						<PositionedClearButton
+						<BigPlayButton
 							smallPadding
 							color={color}
-							onClick={e => playTrack(e, 0)}
+							onClick={() => playTrack(0)}
 						>
 							<PlayIcon />
-						</PositionedClearButton>
+						</BigPlayButton>
 					)}
-					<Flipper flipKey={currentTrack && currentTrack.title}>
-						<Tracklist>
-							{playlist.tracks.map((track, index) => {
-								if (!track)
-									return (
-										<TracklistItem key={index}>
-											Track {index + 1} nicht gefunden
-										</TracklistItem>
-									)
-
-								const isPlaying =
-									currentTrack && currentTrack.title === track.title
-								return (
-									<TracklistItem key={track.title}>
-										<Track
-											isPlaying={isPlaying}
-											href={audioLinkPrefix + track.filename}
-											onClick={e => playTrack(e, index)}
-											contrastColor={color}
-										>
-											<TrackTitle>
-												{track.title}
-
-												{track.artists_feat && (
-													<span style={{opacity: 0.6}}>
-														{' '}
-														ft. {friendlyList(track.artists_feat)}
-													</span>
-												)}
-											</TrackTitle>
-											{isPlaying && (
-												<Flipped flipId="trackHighlight">
-													<TrackHighlight key={track.title} color={color}>
-														<IsPlayingIcon />
-													</TrackHighlight>
-												</Flipped>
-											)}
-										</Track>
-									</TracklistItem>
-								)
-							})}
-						</Tracklist>
-					</Flipper>
-				</TracklistContainer>
+					<Playlist
+						tracks={playlist.tracks}
+						currentTrack={currentTrack}
+						shouldExcludeArtist={artist => artists.includes(artist)}
+						color={color}
+						getMp3Link={getTrackMp3Link}
+						onPlay={playTrack}
+					/>
+				</PlaylistContainer>
 			</PageLayout>
 		</Layout>
 	)
 }
 
-export default Playlist
+export default PlaylistPage
 
 export const query = graphql`
 	query($slug: String!) {
@@ -332,8 +227,8 @@ export const query = graphql`
 				tracks {
 					title
 					artists
-					artists_alias
-					artists_feat
+					artistsAlias
+					artistsFeat
 					producers
 					filename
 				}

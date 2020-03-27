@@ -29,7 +29,6 @@ exports.createPages = ({graphql, actions}) => {
 			allArtistsYaml(sort: {fields: title, order: ASC}) {
 				nodes {
 					title
-					isMedienwirksam
 					fields {
 						slug
 					}
@@ -40,16 +39,15 @@ exports.createPages = ({graphql, actions}) => {
 		result.data.allMarkdownRemark.edges.forEach(({node}) => {
 			createPage({
 				path: `/playlist${node.fields.slug}`,
-				component: path.resolve(`./src/templates/Playlist.js`),
+				component: path.resolve(`./src/templates/PlaylistPage.js`),
 				context: {slug: node.fields.slug},
 			})
 		})
 		result.data.allArtistsYaml.nodes.forEach(artist => {
-			const artistFilter = [artist.title]
 			createPage({
 				path: `/artist${artist.fields.slug}`,
-				component: path.resolve(`./src/templates/Artist.js`),
-				context: {artistFilter, slug: artist.fields.slug},
+				component: path.resolve(`./src/templates/ArtistPage.js`),
+				context: {artistFilter: [artist.title], slug: artist.fields.slug},
 			})
 		})
 	})

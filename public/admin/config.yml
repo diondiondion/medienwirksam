@@ -104,7 +104,7 @@ collections:
           - Dion
           - Jouston
       - label: Featuring
-        name: artists-feat
+        name: artistsFeat
         widget: select
         multiple: true
         required: false

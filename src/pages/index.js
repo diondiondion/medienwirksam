@@ -2,7 +2,7 @@ import React from 'react'
 import {graphql} from 'gatsby'
 
 import Layout from '@components/Layout'
-import PlaylistItem, {PlaylistGrid} from '@components/PlaylistItem'
+import PlaylistTile, {PlaylistGrid} from '@components/PlaylistTile'
 import Filter from '@components/Filter'
 import Heading from '@components/Heading'
 
@@ -16,7 +16,7 @@ function IndexPage({data}) {
 			<Heading as="h2">Alben</Heading>
 			<PlaylistGrid>
 				{playlists.edges.map(({node: playlist}) => (
-					<PlaylistItem
+					<PlaylistTile
 						key={playlist.id}
 						playlist={playlist}
 						imageCdnRoot={imageCdnRoot}

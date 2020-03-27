@@ -203,27 +203,26 @@ function AudioPlayer({autoPlay}) {
 	const {currentTrack, playlist, goToNextTrack, goToPrevTrack} = useContext(
 		TrackContext
 	)
-	const playlistColor = playlist ? playlist.color : theme.background
+	const playlistColor = playlist?.color || theme.background
 	const src = currentTrack
 		? `https://${audioCdnRoot}${currentTrack.filename}`
 		: ''
 
-	const imageSrc =
-		playlist && playlist.frontCover
-			? `https://${imageCdnRoot}w_340/${playlist.frontCover}`
-			: null
+	const imageSrc = playlist?.frontCover
+		? `https://${imageCdnRoot}w_340/${playlist.frontCover}`
+		: null
 
 	useMediaSession({
-		title: currentTrack && currentTrack.title,
-		artist: currentTrack && currentTrack.artists,
-		album: playlist && playlist.title,
-		artwork: [{src: imageSrc, type: 'image/jpg'}],
+		title: currentTrack?.title,
+		artist: currentTrack?.artists,
+		album: playlist?.title,
+		artwork: imageSrc ? [{src: imageSrc, type: 'image/jpg'}] : undefined,
 		nextTrack: goToNextTrack,
 		previousTrack: goToPrevTrack,
 	})
 
 	function rewind() {
-		if (player && player.currentTime > 2) {
+		if (player?.currentTime > 2) {
 			player.seekTo(0)
 		} else {
 			goToPrevTrack()
@@ -240,8 +239,8 @@ function AudioPlayer({autoPlay}) {
 					preload="auto"
 					onEnded={goToNextTrack}
 				/>
-				{playlist && (
-					<Link to={playlist ? `/playlist${playlist.slug}` : null}>
+				{playlist && imageSrc && (
+					<Link to={playlist?.path}>
 						<img src={imageSrc} alt={playlist.title} width="56" height="56" />
 					</Link>
 				)}
@@ -256,9 +255,9 @@ function AudioPlayer({autoPlay}) {
 							</strong>
 							<br />
 							<VisuallyHidden>von</VisuallyHidden>
-							{currentTrack.artists_alias || friendlyList(currentTrack.artists)}
-							{currentTrack.artists_feat && (
-								<> ft. {friendlyList(currentTrack.artists_feat)}</>
+							{currentTrack.artistsAlias || friendlyList(currentTrack.artists)}
+							{currentTrack.artistsFeat && (
+								<> ft. {friendlyList(currentTrack.artistsFeat)}</>
 							)}
 						</>
 					) : (

@@ -64,7 +64,7 @@ const PlayingIndicator = styled(IsPlayingIcon)`
 	vertical-align: -${p => p.theme.spacing.xxs};
 `
 
-function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
+function PlaylistTile({playlist, link, slug, imageCdnRoot}) {
 	const {
 		frontmatter: {title, artists, year, tracks, frontCover, color},
 	} = playlist
@@ -112,4 +112,4 @@ function PlaylistItem({playlist, link, slug, imageCdnRoot}) {
 
 export {PlaylistGrid}
 
-export default PlaylistItem
+export default PlaylistTile

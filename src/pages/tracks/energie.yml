@@ -1,13 +1,11 @@
 title: Energie
 filename: feuerwerk/18-energie.mp3
-artists-alias: EAN
 artists:
   - EAN
+artistsFeat:
   - oGUZE
   - EMC
   - Reefer Maxxx
-artists-feat:
-  - Medienwirksam
 producers:
   - EAN
 year: '2009'

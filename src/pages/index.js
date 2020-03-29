@@ -12,7 +12,7 @@ function IndexPage({data}) {
 
 	return (
 		<Layout>
-			<Filter artists={artists.nodes} />
+			<Filter artists={artists.nodes.filter(a => a.isMedienwirksam)} />
 			<Heading as="h2">Alben</Heading>
 			<PlaylistGrid>
 				{playlists.edges.map(({node: playlist}) => (
@@ -43,6 +43,7 @@ export const query = graphql`
 		artists: allArtistsYaml(sort: {fields: title, order: ASC}) {
 			nodes {
 				title
+				isMedienwirksam
 				fields {
 					slug
 				}

@@ -125,10 +125,13 @@ function PlaylistPage({data}) {
 		TrackContext
 	)
 	const {audioCdnRoot, imageCdnRoot} = data.site.siteMetadata
-	const {frontmatter, fields} = data.markdownRemark
+	const {
+		frontmatter,
+		fields: {slug},
+	} = data.markdownRemark
 	const playlist = {
 		...frontmatter,
-		path: `/playlist${fields.slug}`,
+		path: `/playlist${slug}`,
 	}
 	const {title, artists, year, tracks, frontCover, color, path} = playlist
 	const isCurrentPlaylist = currentPlaylist && currentPlaylist.title === title
@@ -153,7 +156,7 @@ function PlaylistPage({data}) {
 						<BackIcon />
 						zurück
 					</BackLink>
-					<Flipped stagger="reverse" flipId={`playlistImage-${path}`}>
+					<Flipped stagger="reverse" flipId={`playlistImage-${slug}`}>
 						<figure>
 							{imageUrl && (
 								<img src={imageUrl} alt="" width="340" height="340" />
@@ -161,13 +164,13 @@ function PlaylistPage({data}) {
 						</figure>
 					</Flipped>
 					<Header>
-						<Flipped stagger="reverse" flipId={`playlistTitle-${path}`}>
+						<Flipped stagger="reverse" flipId={`playlistTitle-${slug}`}>
 							<TitleLabel as="h1" color={color}>
 								{title}
 							</TitleLabel>
 						</Flipped>
 					</Header>
-					<Flipped stagger="reverse" flipId={`playlistInfo-${path}`}>
+					<Flipped stagger="reverse" flipId={`playlistInfo-${slug}`}>
 						<Metadata>
 							<strong>{playlistArtists}</strong>
 							<br />

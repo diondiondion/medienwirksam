@@ -240,7 +240,7 @@ function AudioPlayer({autoPlay}) {
 					onEnded={goToNextTrack}
 				/>
 				{playlist && imageSrc && (
-					<Link to={playlist?.path}>
+					<Link to={playlist.path}>
 						<img src={imageSrc} alt={playlist.title} width="56" height="56" />
 					</Link>
 				)}

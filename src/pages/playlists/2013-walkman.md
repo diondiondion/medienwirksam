@@ -5,7 +5,6 @@ backCover: walkman/Jouston-Walkman-Cover-back-web.png
 color: '#3468b6'
 artists:
   - Jouston
-  - Dion
 tracks:
   - Walkman Intro
   - Walkman

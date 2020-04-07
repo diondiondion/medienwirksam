@@ -54,6 +54,14 @@ const Wrapper = styled.div`
 		font-size: 18px;
 	}
 
+	transition: 0.2s ease-in;
+
+	${p =>
+		!p.isOpen &&
+		`
+		transform: translateY(100%);
+	`}
+
 	.hideOnMobile {
 		@media (max-width: 540px) {
 			display: none;
@@ -231,7 +239,7 @@ function AudioPlayer({autoPlay}) {
 
 	return (
 		<ThemeSection color={playlistColor}>
-			<Wrapper highlightColor={playlistColor}>
+			<Wrapper isOpen={Boolean(currentTrack)} highlightColor={playlistColor}>
 				<audio
 					ref={audioRef}
 					src={src}

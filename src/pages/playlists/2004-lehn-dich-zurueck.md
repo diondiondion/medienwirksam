@@ -15,4 +15,5 @@ tracks:
   - Wozu reden
   - Lehn dich zurück Outro
 year: '2004'
+isFeatured: true
 ---

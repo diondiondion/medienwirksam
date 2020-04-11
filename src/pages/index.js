@@ -13,18 +13,20 @@ function IndexPage({data}) {
 	return (
 		<Layout>
 			<Filter artists={artists.nodes.filter(a => a.isMedienwirksam)} />
-			<Heading as="h2">Alben</Heading>
-			<PlaylistGrid>
-				{playlists.edges.map(({node: playlist}) => (
-					<PlaylistTile
-						key={playlist.id}
-						playlist={playlist}
-						imageCdnRoot={imageCdnRoot}
-						slug={playlist.fields.slug}
-						link={`/playlist${playlist.fields.slug}`}
-					/>
-				))}
-			</PlaylistGrid>
+			<main>
+				<Heading as="h2">Alben</Heading>
+				<PlaylistGrid>
+					{playlists.edges.map(({node: playlist}) => (
+						<PlaylistTile
+							key={playlist.id}
+							playlist={playlist}
+							imageCdnRoot={imageCdnRoot}
+							slug={playlist.fields.slug}
+							link={`/playlist${playlist.fields.slug}`}
+						/>
+					))}
+				</PlaylistGrid>
+			</main>
 		</Layout>
 	)
 }
@@ -50,6 +52,7 @@ export const query = graphql`
 			}
 		}
 		playlists: allMarkdownRemark(
+			filter: {frontmatter: {isFeatured: {eq: true}}}
 			sort: {fields: [frontmatter___year], order: DESC}
 		) {
 			totalCount

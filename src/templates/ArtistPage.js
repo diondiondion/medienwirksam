@@ -1,18 +1,13 @@
 import React, {useContext} from 'react'
 import {graphql} from 'gatsby'
-import styled from 'styled-components'
 
 import Layout from '@components/Layout'
 import Filter from '@components/Filter'
 import Heading from '@components/Heading'
 import Playlist from '@components/Playlist'
+import Stack from '@components/Stack'
 import PlaylistTile, {PlaylistGrid} from '@components/PlaylistTile'
 import {TrackContext} from '@components/AppWrapper'
-
-const Columns = styled.div`
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-`
 
 function ArtistPlaylist({currentArtist, getMp3Link, title, tracks}) {
 	const {currentTrack, changeTrack, playlist: currentPlaylist} = useContext(
@@ -43,9 +38,11 @@ function ArtistPlaylist({currentArtist, getMp3Link, title, tracks}) {
 				{isCurrentPlaylist && '*'}
 			</Heading>
 			<Playlist
+				id={title.replace(' ', '_').toLowerCase()}
 				tracks={artistPlaylist.tracks}
 				currentTrack={currentTrack}
 				shouldExcludeArtist={artist => currentArtist.title === artist}
+				maxTrackCount={5}
 				color={artistPlaylist.color}
 				getMp3Link={getMp3Link}
 				onPlay={playTrack}
@@ -74,7 +71,7 @@ function Artist({data}) {
 				artists={allArtists.nodes.filter(a => a.isMedienwirksam)}
 				selectedArtist={currentArtist.title}
 			/>
-			<Columns>
+			<PlaylistGrid as="main">
 				{!!playlists.edges.length && (
 					<div>
 						<Heading as="h2">Alben</Heading>
@@ -92,32 +89,34 @@ function Artist({data}) {
 					</div>
 				)}
 				<div>
-					{!!tracks.edges.length && (
-						<ArtistPlaylist
-							title={`Tracks von ${currentArtist.title}`}
-							tracks={tracks}
-							currentArtist={currentArtist}
-							getMp3Link={getTrackMp3Link}
-						/>
-					)}
-					{!!featureTracks.edges.length && (
-						<ArtistPlaylist
-							title={`Features von ${currentArtist.title}`}
-							tracks={featureTracks}
-							currentArtist={currentArtist}
-							getMp3Link={getTrackMp3Link}
-						/>
-					)}
-					{!!producedTracks.edges.length && (
-						<ArtistPlaylist
-							title={`Beats von ${currentArtist.title}`}
-							tracks={producedTracks}
-							currentArtist={currentArtist}
-							getMp3Link={getTrackMp3Link}
-						/>
-					)}
+					<Stack spacing="l">
+						{!!tracks.edges.length && (
+							<ArtistPlaylist
+								title="Tracks"
+								tracks={tracks}
+								currentArtist={currentArtist}
+								getMp3Link={getTrackMp3Link}
+							/>
+						)}
+						{!!featureTracks.edges.length && (
+							<ArtistPlaylist
+								title="Features"
+								tracks={featureTracks}
+								currentArtist={currentArtist}
+								getMp3Link={getTrackMp3Link}
+							/>
+						)}
+						{!!producedTracks.edges.length && (
+							<ArtistPlaylist
+								title="Beats"
+								tracks={producedTracks}
+								currentArtist={currentArtist}
+								getMp3Link={getTrackMp3Link}
+							/>
+						)}
+					</Stack>
 				</div>
-			</Columns>
+			</PlaylistGrid>
 		</Layout>
 	)
 }

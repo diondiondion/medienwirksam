@@ -13,6 +13,7 @@ const Wrapper = styled.article`
 	position: relative;
 	display: flex;
 	flex-wrap: wrap;
+	width: 100%;
 `
 
 const ImageContainer = styled.div`

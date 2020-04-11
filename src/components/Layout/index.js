@@ -61,7 +61,11 @@ const PageWrapper = styled.div`
 	margin: 1rem auto 0;
 	padding: 1rem;
 	padding-bottom: 12rem;
-	max-width: 2000px;
+	max-width: 1180px;
+
+	@media (min-width: 1750px) {
+		max-width: 1770px;
+	}
 `
 
 const imageSize = {

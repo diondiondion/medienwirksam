@@ -14,4 +14,5 @@ tracks:
   - Oh mein Gott
   - Die Motive
 year: '2003'
+isFeatured: true
 ---

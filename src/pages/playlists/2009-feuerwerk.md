@@ -28,4 +28,5 @@ tracks:
   - Feuerwerk
   - Feuerwerk Outro
 year: '2009'
+isFeatured: true
 ---

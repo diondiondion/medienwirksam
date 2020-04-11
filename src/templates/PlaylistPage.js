@@ -8,7 +8,8 @@ import ClearButton from '@components/ClearButton'
 import {BackIcon, PlayIcon} from '@components/icons'
 import Layout from '@components/Layout'
 import TitleLabel from '@components/TitleLabel'
-import BackLinkBase from '@components/BackLink'
+import TextLink from '@components/TextLink'
+import BackLink from '@components/BackLink'
 import Playlist from '@components/Playlist'
 import {TrackContext} from '@components/AppWrapper'
 
@@ -33,38 +34,10 @@ const fadeInFromRight = keyframes`
 	}
 `
 
-const BackLink = styled(BackLinkBase)`
-	font: inherit;
-	appearance: none;
-	cursor: pointer;
-	background-color: transparent;
-	border: none;
-
-	display: inline-block;
+const BackLinkWrapper = styled.span`
+	display: block;
 	margin-bottom: ${p => p.theme.spacing.m};
-	color: ${p => p.theme.text};
-	text-decoration: none;
-	font-weight: bold;
-	font-size: ${p => p.theme.typeScale.s};
-
 	animation: ${fadeInFromRight} 250ms backwards ease-out 250ms;
-
-	&:hover,
-	&.focus-visible {
-		text-decoration: underline;
-	}
-
-	& > svg {
-		margin-right: 0.5rem;
-		font-size: 1.8em;
-		vertical-align: -0.3em;
-	}
-
-	/* Normalise inner button spacing in Gecko browsers */
-	&::-moz-focus-inner {
-		padding: 0;
-		border: 0;
-	}
 `
 
 const PageLayout = styled.main`
@@ -131,10 +104,11 @@ function PlaylistPage({data}) {
 	} = data.markdownRemark
 	const playlist = {
 		...frontmatter,
+		slug,
 		path: `/playlist${slug}`,
 	}
-	const {title, artists, year, tracks, frontCover, color, path} = playlist
-	const isCurrentPlaylist = currentPlaylist && currentPlaylist.title === title
+	const {title, artists, year, tracks, frontCover, color} = playlist
+	const isCurrentPlaylist = currentPlaylist?.title === title
 
 	function playTrack(index) {
 		changeTrack(playlist, index)
@@ -152,10 +126,12 @@ function PlaylistPage({data}) {
 		<Layout withoutLogo pageTitle={`${title} - ${playlistArtists}`}>
 			<PageLayout>
 				<PlaylistInfo>
-					<BackLink to="/">
-						<BackIcon />
-						zurück
-					</BackLink>
+					<BackLinkWrapper>
+						<TextLink as={BackLink} to="/">
+							<BackIcon />
+							zurück
+						</TextLink>
+					</BackLinkWrapper>
 					<Flipped stagger="reverse" flipId={`playlistImage-${slug}`}>
 						<figure>
 							{imageUrl && (
@@ -191,6 +167,7 @@ function PlaylistPage({data}) {
 						</BigPlayButton>
 					)}
 					<Playlist
+						id={title.replace(' ', '_').toLowerCase()}
 						tracks={playlist.tracks}
 						currentTrack={currentTrack}
 						shouldExcludeArtist={artist => artists.includes(artist)}

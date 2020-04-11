@@ -24,4 +24,5 @@ tracks:
   - Zu ehrlich
   - Nicht geplant (Remix)
 year: '2009'
+isFeatured: true
 ---

@@ -10,6 +10,7 @@ import formatTime from '@utils/formatTime'
 import theme from '@style/theme'
 import {TrackContext} from '@components/AppWrapper'
 import Slider from '@components/Slider'
+import TextLink from '@components/TextLink'
 import ThemeSection from '@components/ThemeSection'
 import ClearButton from '@components/ClearButton'
 import {
@@ -248,9 +249,9 @@ function AudioPlayer({autoPlay}) {
 					onEnded={goToNextTrack}
 				/>
 				{playlist && imageSrc && (
-					<Link to={playlist.path}>
+					<TextLink as={Link} to={playlist.path}>
 						<img src={imageSrc} alt={playlist.title} width="56" height="56" />
-					</Link>
+					</TextLink>
 				)}
 				<TrackInfo>
 					<VisuallyHidden>Aktueller Track:</VisuallyHidden>

@@ -17,9 +17,13 @@ const TextLink = styled.a`
 	font-size: ${p => p.theme.typeScale.s};
 	text-decoration: none;
 
-	&:hover,
-	&.focus-visible {
+	&:hover {
 		text-decoration: underline;
+	}
+
+	&.focus-visible {
+		outline: 2px solid currentcolor;
+		outline-offset: 4px;
 	}
 
 	& > svg {

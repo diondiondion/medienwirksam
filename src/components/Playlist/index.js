@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useState, useCallback, useRef, useEffect} from 'react'
 import styled from 'styled-components'
 import {Flipper, Flipped} from 'react-flip-toolkit'
 import invert from 'invert-color'
@@ -6,15 +6,33 @@ import invert from 'invert-color'
 import friendlyList from '@utils/friendlyList'
 import {IsPlayingIcon} from '@components/icons'
 import Panel from '@components/Panel'
+import TextLink from '@components/TextLink'
 
-const Tracklist = styled.ol`
+const Tracklist = styled.ol.attrs({
+	role: 'list',
+})`
 	margin: 0;
 	padding: 0;
 `
 
-const TracklistItem = styled.li`
+const TracklistItem = styled.li.attrs({
+	role: 'listitem',
+})`
+	${p =>
+		p.isHidden &&
+		`
+		display: none;
+	`}
+
 	list-style: none;
 	counter-increment: track-counter;
+`
+
+const ExpandListLink = styled(TextLink)`
+	padding: 0.5rem 1.5rem;
+	margin-bottom: -0.5rem;
+	width: 100%;
+	text-align: left;
 `
 
 const Track = styled.a`
@@ -23,11 +41,16 @@ const Track = styled.a`
 	display: inline-block;
 	vertical-align: middle;
 	max-width: 100%;
-	padding: 5px 0;
+	padding: ${p => p.theme.spacing.xs} 0;
 
-	font-size: 18px;
+	font-size: 0.9rem;
 	color: ${p => (p.isPlaying ? invert(p.contrastColor, true) : 'inherit')};
 	text-decoration: none;
+
+	&.focus-visible {
+		outline: 2px solid currentcolor;
+		outline-offset: 4px;
+	}
 
 	${p =>
 		p.isPlaying &&
@@ -66,7 +89,9 @@ const TrackHighlight = styled.span`
 `
 
 function Playlist({
+	id,
 	tracks,
+	maxTrackCount = Infinity,
 	color,
 	currentTrack,
 	shouldExcludeArtist = () => false,
@@ -80,12 +105,34 @@ function Playlist({
 		},
 		[onPlay]
 	)
-	console.log(tracks)
+
+	const firstExpandedTrackRef = useRef()
+	const toggleButtonRef = useRef()
+	const shouldHandleFocus = useRef(false)
+	const isExpandable = tracks.length > maxTrackCount
+	const [showAll, setShowAll] = useState(!isExpandable)
+	function toggleShowAll() {
+		setShowAll(prevShowAll => !prevShowAll)
+		shouldHandleFocus.current = true
+	}
+
+	useEffect(() => {
+		if (shouldHandleFocus.current) {
+			if (showAll) {
+				firstExpandedTrackRef.current?.focus()
+			} else {
+				toggleButtonRef.current?.focus()
+			}
+			shouldHandleFocus.current = false
+		}
+	}, [showAll])
+
+	const listId = id
 
 	return (
 		<Panel>
 			<Flipper flipKey={currentTrack && currentTrack.title}>
-				<Tracklist>
+				<Tracklist id={listId}>
 					{tracks.map((track, index) => {
 						if (!track)
 							return (
@@ -94,6 +141,9 @@ function Playlist({
 								</TracklistItem>
 							)
 
+						const shouldTrackBeHidden = !showAll && index + 1 > maxTrackCount
+						const shouldTrackBeFocusedAfterExpanding = index === maxTrackCount
+
 						const mainArtist =
 							track.artistsAlias ||
 							(track.artists.length === 1 ? track.artists[0] : null)
@@ -101,8 +151,13 @@ function Playlist({
 
 						const isPlaying = currentTrack && currentTrack.title === track.title
 						return (
-							<TracklistItem key={track.title}>
+							<TracklistItem key={track.title} isHidden={shouldTrackBeHidden}>
 								<Track
+									ref={
+										shouldTrackBeFocusedAfterExpanding
+											? firstExpandedTrackRef
+											: undefined
+									}
 									isPlaying={isPlaying}
 									href={getMp3Link(track.filename)}
 									onClick={e => playTrack(e, index)}
@@ -134,6 +189,18 @@ function Playlist({
 					})}
 				</Tracklist>
 			</Flipper>
+			{isExpandable && (
+				<ExpandListLink
+					as="button"
+					type="button"
+					ref={toggleButtonRef}
+					onClick={toggleShowAll}
+					aria-expanded={showAll ? 'true' : 'false'}
+					aria-controls={listId}
+				>
+					{showAll ? 'Weniger zeigen' : `Alle ${tracks.length} Tracks zeigen`}
+				</ExpandListLink>
+			)}
 		</Panel>
 	)
 }

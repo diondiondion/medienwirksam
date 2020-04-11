@@ -21,4 +21,5 @@ tracks:
   - Alltag RMX
   - Fortschritt RMX
 year: '2006'
+isFeatured: true
 ---

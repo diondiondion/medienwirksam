@@ -21,4 +21,5 @@ tracks:
   - Fliegeralarm
   - Hadi Tschüss
 year: '2011'
+isFeatured: true
 ---

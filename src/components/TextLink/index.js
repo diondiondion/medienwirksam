@@ -9,7 +9,7 @@ const TextLink = styled.a`
 	margin: 0;
 	padding: 0;
 
-	color: ${p => p.theme.text};
+	color: inherit;
 	background-color: transparent;
 
 	font: inherit;

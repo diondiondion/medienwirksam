@@ -1,8 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, {useState} from 'react'
 import {Link} from 'gatsby'
+import styled from 'styled-components'
 import theme from '@style/theme'
 import {fontSmoothing} from '@style/mixins'
+import TextLink from '@components/TextLink'
 
 const Wrapper = styled.nav`
 	display: flex;
@@ -11,9 +12,10 @@ const Wrapper = styled.nav`
 	margin-bottom: ${theme.spacing.l};
 `
 
-const ArtistLink = styled(({isSelected, ...otherProps}) => (
-	<Link {...otherProps} />
-))`
+const ArtistLink = styled(TextLink).withConfig({
+	shouldForwardProp: (prop, defaultPropChecker) =>
+		prop !== 'isSelected' || defaultPropChecker(prop),
+})`
 	display: inline-block;
 	margin-right: ${theme.spacing.xs};
 	padding: ${theme.spacing.xs} ${theme.spacing.s} ${theme.spacing.xxs};
@@ -23,9 +25,11 @@ const ArtistLink = styled(({isSelected, ...otherProps}) => (
 
 	font-family: ${theme.fonts.label};
 	font-size: 1.25rem;
+	font-weight: normal;
 	text-transform: uppercase;
 	text-decoration: none;
 	${fontSmoothing}
+	border: none;
 
 	transition: opacity 250ms ease, transform 250ms ease;
 	opacity: ${p => (p.isSelected ? '1' : '0.75')};
@@ -39,7 +43,9 @@ const ArtistLink = styled(({isSelected, ...otherProps}) => (
 
 	&:hover {
 		opacity: 1;
+		text-decoration: none;
 	}
+
 	&.focus-visible {
 		outline: 2px solid white;
 		opacity: 1;
@@ -50,21 +56,62 @@ const ArtistLink = styled(({isSelected, ...otherProps}) => (
 	}
 `
 
-function Filter({artists, selectedArtist = 'all'}) {
+function ArtistList({artists, selectedArtist}) {
 	return (
-		<Wrapper>
-			<ArtistLink to="/" isSelected={selectedArtist === 'all'}>
-				Alle
-			</ArtistLink>
+		<>
 			{artists.map(artist => (
 				<ArtistLink
 					key={artist.title}
+					as={Link}
 					to={`/artist${artist.fields.slug}`}
 					isSelected={selectedArtist === artist.title}
 				>
 					{artist.title}
 				</ArtistLink>
 			))}
+		</>
+	)
+}
+
+function Filter({artists, selectedArtist = 'all'}) {
+	const medienwirksam = artists.filter(a => a.isMedienwirksam)
+	const guests = artists.filter(a => !a.isMedienwirksam)
+
+	const [showGuests, setShowGuests] = useState(
+		guests.map(g => g.title).includes(selectedArtist)
+	)
+
+	return (
+		<Wrapper>
+			{!showGuests && (
+				<ArtistLink as={Link} to="/" isSelected={selectedArtist === 'all'}>
+					Alle
+				</ArtistLink>
+			)}
+			{showGuests && (
+				<ArtistLink
+					as="button"
+					type="button"
+					onClick={() => setShowGuests(!showGuests)}
+					aria-label="Medienwirksam"
+				>
+					…
+				</ArtistLink>
+			)}
+			<ArtistList
+				artists={showGuests ? guests : medienwirksam}
+				selectedArtist={selectedArtist}
+			/>
+			{!showGuests && (
+				<ArtistLink
+					as="button"
+					type="button"
+					aria-label="Gäste"
+					onClick={() => setShowGuests(!showGuests)}
+				>
+					…
+				</ArtistLink>
+			)}
 		</Wrapper>
 	)
 }

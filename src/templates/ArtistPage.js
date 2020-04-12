@@ -67,10 +67,7 @@ function Artist({data}) {
 
 	return (
 		<Layout pageTitle={currentArtist.title}>
-			<Filter
-				artists={allArtists.nodes.filter(a => a.isMedienwirksam)}
-				selectedArtist={currentArtist.title}
-			/>
+			<Filter artists={allArtists.nodes} selectedArtist={currentArtist.title} />
 			<PlaylistGrid as="main">
 				{!!playlists.edges.length && (
 					<div>

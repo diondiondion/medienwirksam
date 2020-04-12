@@ -12,7 +12,7 @@ function IndexPage({data}) {
 
 	return (
 		<Layout>
-			<Filter artists={artists.nodes.filter(a => a.isMedienwirksam)} />
+			<Filter artists={artists.nodes} />
 			<main>
 				<Heading as="h2">Alben</Heading>
 				<PlaylistGrid>

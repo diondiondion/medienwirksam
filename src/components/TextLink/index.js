@@ -14,7 +14,7 @@ const TextLink = styled.a`
 
 	font: inherit;
 	font-weight: bold;
-	font-size: ${p => p.theme.typeScale.s};
+	font-size: ${p => (p.size ? p.theme.typeScale[p.size] : 'inherit')};
 	text-decoration: none;
 
 	&:hover {

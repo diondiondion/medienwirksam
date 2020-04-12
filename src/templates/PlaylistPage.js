@@ -127,7 +127,7 @@ function PlaylistPage({data}) {
 			<PageLayout>
 				<PlaylistInfo>
 					<BackLinkWrapper>
-						<TextLink as={BackLink} to="/">
+						<TextLink as={BackLink} to="/" size="xs">
 							<BackIcon />
 							zurück
 						</TextLink>

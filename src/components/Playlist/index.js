@@ -43,7 +43,6 @@ const Track = styled.a`
 	max-width: 100%;
 	padding: ${p => p.theme.spacing.xs} 0;
 
-	font-size: 0.9rem;
 	color: ${p => (p.isPlaying ? invert(p.contrastColor, true) : 'inherit')};
 	text-decoration: none;
 
@@ -130,7 +129,7 @@ function Playlist({
 	const listId = id
 
 	return (
-		<Panel>
+		<Panel fontSize="s">
 			<Flipper flipKey={currentTrack && currentTrack.title}>
 				<Tracklist id={listId}>
 					{tracks.map((track, index) => {

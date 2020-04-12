@@ -1,6 +1,7 @@
 import React, {useContext, useRef, useState} from 'react'
 import {Link} from 'gatsby'
 import styled, {css} from 'styled-components'
+import {useMatch} from '@reach/router'
 
 import {getRgb} from '@utils/hexToRgb'
 import friendlyList from '@utils/friendlyList'
@@ -17,6 +18,7 @@ import {
 	PlayIcon,
 	PauseIcon,
 	SkipIcon,
+	MoreIcon,
 	MuteIcon,
 	MutedIcon,
 } from '@components/icons'
@@ -63,16 +65,22 @@ const Wrapper = styled.div`
 		transform: translateY(100%);
 	`}
 
-	.hideOnMobile {
-		@media (max-width: 540px) {
+	.hideOnDesktop {
+		@media (min-width: ${p => p.theme.breakpoints.m}) {
 			display: none;
 		}
 	}
 
 	.hideOnTablet {
-		@media (max-width: 800px) {
+		@media (max-width: ${p => p.theme.breakpoints.m}) {
 			display: none;
 		}
+	}
+`
+
+const ThumbnailWrapper = styled.div`
+	@media (max-width: ${p => p.theme.breakpoints.xs}) {
+		display: none;
 	}
 `
 
@@ -85,9 +93,30 @@ const TrackInfo = styled.div`
 `
 
 const ButtonSection = styled.div`
-	@media (min-width: 800px) {
+	@media (max-width: ${p => p.theme.breakpoints.xs}) {
+		order: -1;
+	}
+	@media (min-width: ${p => p.theme.breakpoints.m}) {
 		flex: 1 1 auto;
 		text-align: center;
+	}
+`
+
+const MobileDrawerButton = styled(ClearButton)`
+	@media (min-width: ${p => p.theme.breakpoints.m}) {
+		display: none;
+	}
+`
+const MobileDrawerToggleArea = styled(TextLink)`
+	position: absolute;
+	top: -0.5rem;
+	left: 0;
+	right: 0;
+	width: 100%;
+	height: 1rem;
+
+	@media (min-width: ${p => p.theme.breakpoints.m}) {
+		display: none;
 	}
 `
 
@@ -101,6 +130,7 @@ const MobileDrawer = styled.div`
 		left: 0;
 		z-index: -1;
 
+		display: flex;
 		width: 100%;
 		padding: 0.5rem;
 
@@ -116,6 +146,7 @@ const MobileDrawer = styled.div`
 
 const SongPositionWrapper = styled.div`
 	position: relative;
+	width: 100%;
 `
 
 const progressStyles = css`
@@ -204,6 +235,36 @@ const VolumeProgressBar = styled.progress`
 	${progressStyles}
 `
 
+function RewindButton(props) {
+	return (
+		<ClearButton
+			aria-label="Zum Anfang oder zum vorherigen Track wechseln"
+			{...props}
+		>
+			<SkipIcon style={{transform: 'rotate(180deg)'}} />
+		</ClearButton>
+	)
+}
+
+function SkipButton(props) {
+	return (
+		<ClearButton aria-label="Track überspringen" {...props}>
+			<SkipIcon />
+		</ClearButton>
+	)
+}
+
+function MaybeLink({children, to, ...otherProps}) {
+	if (!to) {
+		return <strong>{children}</strong>
+	}
+	return (
+		<TextLink as={Link} to={to} {...otherProps}>
+			{children}
+		</TextLink>
+	)
+}
+
 function AudioPlayer({autoPlay}) {
 	const [isMobileDrawerOpen, setMobileDrawerOpenState] = useState(false)
 	const audioRef = useRef(null)
@@ -213,6 +274,9 @@ function AudioPlayer({autoPlay}) {
 		TrackContext
 	)
 	const playlistColor = playlist?.color || theme.background
+	const isUserOnCurrentPlaylist = Boolean(useMatch(playlist?.path || '/'))
+	console.log(isUserOnCurrentPlaylist, playlist?.path)
+
 	const src = currentTrack
 		? `https://${audioCdnRoot}${currentTrack.filename}`
 		: ''
@@ -249,19 +313,19 @@ function AudioPlayer({autoPlay}) {
 					onEnded={goToNextTrack}
 				/>
 				{playlist && imageSrc && (
-					<TextLink as={Link} to={playlist.path}>
-						<img src={imageSrc} alt={playlist.title} width="56" height="56" />
-					</TextLink>
+					<ThumbnailWrapper>
+						<MaybeLink to={isUserOnCurrentPlaylist ? null : playlist.path}>
+							<img src={imageSrc} alt={playlist.title} width="56" height="56" />
+						</MaybeLink>
+					</ThumbnailWrapper>
 				)}
 				<TrackInfo>
 					<VisuallyHidden>Aktueller Track:</VisuallyHidden>
 					{currentTrack ? (
 						<>
-							<strong
-								onClick={() => setMobileDrawerOpenState(!isMobileDrawerOpen)}
-							>
+							<MaybeLink to={isUserOnCurrentPlaylist ? null : playlist.path}>
 								{currentTrack.title}
-							</strong>
+							</MaybeLink>
 							<br />
 							<VisuallyHidden>von</VisuallyHidden>
 							{currentTrack.artistsAlias || friendlyList(currentTrack.artists)}
@@ -274,14 +338,7 @@ function AudioPlayer({autoPlay}) {
 					)}
 				</TrackInfo>
 				<ButtonSection>
-					<ClearButton
-						dimmed
-						className="hideOnMobile"
-						onClick={rewind}
-						aria-label="Zum Anfang oder zum vorherigen Track wechseln"
-					>
-						<SkipIcon style={{transform: 'rotate(180deg)'}} />
-					</ClearButton>
+					<RewindButton dimmed className="hideOnTablet" onClick={rewind} />
 					<ClearButton
 						smallPadding
 						onClick={player.togglePlay}
@@ -290,19 +347,33 @@ function AudioPlayer({autoPlay}) {
 					>
 						{player.isPlaying ? <PauseIcon /> : <PlayIcon />}
 					</ClearButton>
-					<ClearButton
-						dimmed
-						className="hideOnMobile"
-						onClick={goToNextTrack}
-						aria-label="Track überspringen"
-					>
-						<SkipIcon />
-					</ClearButton>
+					<SkipButton dimmed className="hideOnTablet" onClick={goToNextTrack} />
 				</ButtonSection>
 				<ProgressReadout className="hideOnTablet">
 					{formatTime(player.currentTime)}/{formatTime(player.duration)}
 				</ProgressReadout>
+				<MobileDrawerButton
+					onClick={() => setMobileDrawerOpenState(!isMobileDrawerOpen)}
+					aria-label="Mehr Optionen"
+					aria-pressed={isMobileDrawerOpen}
+					dimmed={!isMobileDrawerOpen}
+				>
+					<MoreIcon />
+				</MobileDrawerButton>
+				<MobileDrawerToggleArea
+					as="button"
+					type="button"
+					onClick={() => setMobileDrawerOpenState(!isMobileDrawerOpen)}
+					aria-hidden="true"
+				/>
 				<MobileDrawer isOpen={isMobileDrawerOpen}>
+					{isMobileDrawerOpen && (
+						<RewindButton
+							aria-hidden="true"
+							className="hideOnDesktop"
+							onClick={rewind}
+						/>
+					)}
 					<SongPositionWrapper>
 						<SongProgressBar
 							isCollapsed={isMobileDrawerOpen}
@@ -322,6 +393,13 @@ function AudioPlayer({autoPlay}) {
 							aria-label="Spielfortschritt ändern"
 						/>
 					</SongPositionWrapper>
+					{isMobileDrawerOpen && (
+						<SkipButton
+							aria-hidden="true"
+							className="hideOnDesktop"
+							onClick={goToNextTrack}
+						/>
+					)}
 				</MobileDrawer>
 				<VolumeSection className="hideOnTablet">
 					<ClearButton onClick={player.toggleMute} aria-label="Stumm schalten">

@@ -70,7 +70,7 @@ function AppWrapper({children}) {
 				</TrackContext.Provider>
 			</ThemeProvider>
 			<Persist
-				name="playlistState"
+				name="mwPlaylistState1.0"
 				data={{
 					playlist,
 					trackIndex,

@@ -275,7 +275,6 @@ function AudioPlayer({autoPlay}) {
 	)
 	const playlistColor = playlist?.color || theme.background
 	const isUserOnCurrentPlaylist = Boolean(useMatch(playlist?.path || '/'))
-	console.log(isUserOnCurrentPlaylist, playlist?.path)
 
 	const src = currentTrack
 		? `https://${audioCdnRoot}${currentTrack.filename}`

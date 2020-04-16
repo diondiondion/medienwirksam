@@ -1,13 +1,22 @@
 import React, {useContext} from 'react'
 import {graphql} from 'gatsby'
+import styled from 'styled-components'
 
 import Layout from '@components/Layout'
 import Filter from '@components/Filter'
 import Heading from '@components/Heading'
+import {IsPlayingIcon} from '@components/icons'
 import Playlist from '@components/Playlist'
 import Stack from '@components/Stack'
 import PlaylistTile, {PlaylistGrid} from '@components/PlaylistTile'
 import {TrackContext} from '@components/AppWrapper'
+
+const PlayIcon = styled(IsPlayingIcon)`
+	width: 1rem;
+	height: 1rem;
+	vertical-align: 0;
+	margin-left: ${p => p.theme.spacing.xxs};
+`
 
 function ArtistPlaylist({currentArtist, getMp3Link, title, tracks}) {
 	const {currentTrack, changeTrack, playlist: currentPlaylist} = useContext(
@@ -35,7 +44,7 @@ function ArtistPlaylist({currentArtist, getMp3Link, title, tracks}) {
 		<>
 			<Heading as="h2">
 				{title}
-				{isCurrentPlaylist && '*'}
+				{isCurrentPlaylist && <PlayIcon />}
 			</Heading>
 			<Playlist
 				id={title.replace(' ', '_').toLowerCase()}

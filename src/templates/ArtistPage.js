@@ -6,6 +6,7 @@ import Layout from '@components/Layout'
 import Filter from '@components/Filter'
 import Heading from '@components/Heading'
 import {IsPlayingIcon} from '@components/icons'
+import Panel from '@components/Panel'
 import Playlist from '@components/Playlist'
 import Stack from '@components/Stack'
 import PlaylistTile, {PlaylistGrid} from '@components/PlaylistTile'
@@ -46,15 +47,17 @@ function ArtistPlaylist({currentArtist, title, tracks}) {
 				{title}
 				{isCurrentPlaylist && <PlayIcon />}
 			</Heading>
-			<Playlist
-				id={title.replace(' ', '_').toLowerCase()}
-				tracks={artistPlaylist.tracks}
-				currentTrack={currentTrack}
-				shouldExcludeArtist={artist => currentArtist.title === artist}
-				maxTrackCount={5}
-				color={artistPlaylist.color}
-				onPlay={playTrack}
-			/>
+			<Panel spacing="m" fontSize="s">
+				<Playlist
+					id={title.replace(' ', '_').toLowerCase()}
+					tracks={artistPlaylist.tracks}
+					currentTrack={currentTrack}
+					shouldExcludeArtist={artist => currentArtist.title === artist}
+					maxTrackCount={5}
+					color={artistPlaylist.color}
+					onPlay={playTrack}
+				/>
+			</Panel>
 		</>
 	)
 }

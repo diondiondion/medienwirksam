@@ -48,11 +48,11 @@ const MetaIcon = styled.span`
 
 const DownloadLink = styled(TextLink).attrs({download: true})`
 	align-self: flex-start;
-	font-size: ${p => p.theme.typeScale.xs};
 	white-space: nowrap;
 
 	& svg {
 		margin-left: ${p => p.theme.spacing.xxs};
+		margin-right: 0;
 	}
 
 	& span {
@@ -130,7 +130,7 @@ function Artist({data}) {
 							</Stack>
 						</Subtitle>
 					</SongDetails>
-					<DownloadLink href={mp3Link}>
+					<DownloadLink size="xs" href={mp3Link}>
 						<span>Download</span>
 						<DownloadIcon />
 					</DownloadLink>

@@ -11,6 +11,7 @@ import TitleLabel from '@components/TitleLabel'
 import TextLink from '@components/TextLink'
 import BackLink from '@components/BackLink'
 import Playlist from '@components/Playlist'
+import Panel from '@components/Panel'
 import {TrackContext} from '@components/AppWrapper'
 
 const fadeInFromLeft = keyframes`
@@ -73,7 +74,8 @@ const Metadata = styled.p`
 const DownloadLink = styled(TextLink).attrs({download: true})`
 	& svg {
 		font-size: ${p => p.theme.typeScale.l};
-		margin-right: ${p => p.theme.spacing.xs};
+		margin-left: ${p => p.theme.spacing.xs};
+		margin-right: 0;
 	}
 `
 
@@ -89,15 +91,18 @@ const PlaylistContainer = styled.section`
 	}
 `
 
+const PlaylistActionsBar = styled.div`
+	display: flex;
+	min-height: 1.5em;
+	margin: -${p => p.theme.spacing.xs} 0 ${p => p.theme.spacing.s};
+	justify-content: flex-end;
+`
+
 const BigPlayButton = styled(ClearButton)`
 	position: absolute;
-	top: -${p => p.theme.spacing.l};
-	right: ${p => p.theme.spacing.m};
+	top: -${p => p.theme.spacing.s};
+	left: ${p => p.theme.spacing.s};
 	transform: rotate(-3deg);
-
-	@media (min-width: ${p => p.theme.breakpoints.s}) {
-		top: -${p => p.theme.spacing.s};
-	}
 `
 
 function PlaylistPage({data}) {
@@ -166,13 +171,6 @@ function PlaylistPage({data}) {
 							{year}
 							<br />
 							{tracks.length} Tracks
-							<br />
-							{downloadLink && (
-								<DownloadLink href={`/zip/${downloadLink}`}>
-									<DownloadIcon />
-									Download
-								</DownloadLink>
-							)}
 						</Metadata>
 					</Flipped>
 				</PlaylistInfo>
@@ -186,14 +184,24 @@ function PlaylistPage({data}) {
 							<PlayIcon />
 						</BigPlayButton>
 					)}
-					<Playlist
-						id={title.replace(' ', '_').toLowerCase()}
-						tracks={playlist.tracks}
-						currentTrack={currentTrack}
-						shouldExcludeArtist={artist => artists.includes(artist)}
-						color={color}
-						onPlay={playTrack}
-					/>
+					<Panel spacing="m" fontSize="s">
+						<PlaylistActionsBar>
+							{downloadLink && (
+								<DownloadLink size="xs" href={`/zip/${downloadLink}`}>
+									Album runterladen
+									<DownloadIcon />
+								</DownloadLink>
+							)}
+						</PlaylistActionsBar>
+						<Playlist
+							id={title.replace(' ', '_').toLowerCase()}
+							tracks={playlist.tracks}
+							currentTrack={currentTrack}
+							shouldExcludeArtist={artist => artists.includes(artist)}
+							color={color}
+							onPlay={playTrack}
+						/>
+					</Panel>
 				</PlaylistContainer>
 			</PageLayout>
 		</Layout>

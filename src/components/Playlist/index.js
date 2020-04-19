@@ -129,7 +129,7 @@ function Playlist({
 	const listId = id
 
 	return (
-		<Panel spacing="m" fontSize="s">
+		<>
 			<Flipper flipKey={currentTrack && currentTrack.title}>
 				<Tracklist id={listId}>
 					{tracks.map((track, index) => {
@@ -200,7 +200,7 @@ function Playlist({
 					{showAll ? 'Weniger zeigen' : `Alle ${tracks.length} Tracks zeigen`}
 				</ExpandListLink>
 			)}
-		</Panel>
+		</>
 	)
 }
 

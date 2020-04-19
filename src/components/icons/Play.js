@@ -11,7 +11,7 @@ function PlayIcon(props) {
 			viewBox="0 0 30 30"
 			aria-hidden="true"
 		>
-			<path d="M0,0,18,9,0,18Z" transform="translate(7 6)" />
+			<path d="M0,0,18,9,0,18Z" transform="translate(8 6)" />
 		</svg>
 	)
 }

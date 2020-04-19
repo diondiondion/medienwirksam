@@ -44,6 +44,10 @@ const GlobalStyles = createGlobalStyle`
 		font-size: 3em;
 	}
 
+	p {
+		margin: 0
+	}
+
 	a {
 		color: ${theme.links};
 	}

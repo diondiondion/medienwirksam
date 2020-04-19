@@ -3,7 +3,7 @@ import theme from '@style/theme'
 import {fontSmoothing} from '@style/mixins'
 
 const Heading = styled.h1`
-	margin: 0 0 ${theme.spacing.s};
+	margin: 0 0 ${p => p.theme.spacing[p.spacing] || 0};
 
 	font-family: ${theme.fonts.label};
 	font-size: ${theme.typeScale.xl};
@@ -13,5 +13,9 @@ const Heading = styled.h1`
 
 	opacity: 0.9;
 `
+
+Heading.defaultProps = {
+	spacing: 's',
+}
 
 export default Heading

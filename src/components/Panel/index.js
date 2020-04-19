@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 const Panel = styled.div`
 	margin: 0;
-	padding: ${p => p.theme.spacing.m};
+	padding: ${p => p.theme.spacing[p.spacing] || 0};
 
 	color: ${p => p.theme.text};
 	background-color: ${p => p.theme.panel};

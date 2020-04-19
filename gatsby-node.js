@@ -4,7 +4,7 @@ const {createFilePath} = require(`gatsby-source-filesystem`)
 exports.onCreateNode = ({node, getNode, actions}) => {
 	const {createNodeField} = actions
 	const {type} = node.internal
-	if (type === `MarkdownRemark` || type === `ArtistsYaml`) {
+	if (['MarkdownRemark', 'ArtistsYaml', 'TracksYaml'].includes(type)) {
 		const slug = createFilePath({node, getNode, basePath: `pages`})
 		createNodeField({node, name: `slug`, value: slug})
 	}
@@ -34,6 +34,14 @@ exports.createPages = ({graphql, actions}) => {
 					}
 				}
 			}
+			allTracksYaml(sort: {fields: title, order: ASC}) {
+				nodes {
+					title
+					fields {
+						slug
+					}
+				}
+			}
 		}
 	`).then(result => {
 		result.data.allMarkdownRemark.edges.forEach(({node}) => {
@@ -48,6 +56,13 @@ exports.createPages = ({graphql, actions}) => {
 				path: `/artist${artist.fields.slug}`,
 				component: path.resolve(`./src/templates/ArtistPage.js`),
 				context: {artistFilter: [artist.title], slug: artist.fields.slug},
+			})
+		})
+		result.data.allTracksYaml.nodes.forEach(track => {
+			createPage({
+				path: `/track${track.fields.slug}`,
+				component: path.resolve(`./src/templates/TrackPage.js`),
+				context: {slug: track.fields.slug},
 			})
 		})
 	})

@@ -1,4 +1,5 @@
 import React, {useState, useCallback, useRef, useEffect} from 'react'
+import {Link} from 'gatsby'
 import styled from 'styled-components'
 import {Flipper, Flipped} from 'react-flip-toolkit'
 import invert from 'invert-color'
@@ -35,7 +36,7 @@ const ExpandListLink = styled(TextLink)`
 	text-align: left;
 `
 
-const Track = styled.a`
+const Track = styled(Link)`
 	position: relative;
 	z-index: 0;
 	display: inline-block;
@@ -94,7 +95,6 @@ function Playlist({
 	color,
 	currentTrack,
 	shouldExcludeArtist = () => false,
-	getMp3Link,
 	onPlay,
 }) {
 	const playTrack = useCallback(
@@ -129,7 +129,7 @@ function Playlist({
 	const listId = id
 
 	return (
-		<Panel fontSize="s">
+		<Panel spacing="m" fontSize="s">
 			<Flipper flipKey={currentTrack && currentTrack.title}>
 				<Tracklist id={listId}>
 					{tracks.map((track, index) => {
@@ -158,7 +158,7 @@ function Playlist({
 											: undefined
 									}
 									isPlaying={isPlaying}
-									href={getMp3Link(track.filename)}
+									to={`track/${track?.fields?.slug}`}
 									onClick={e => playTrack(e, index)}
 									contrastColor={color}
 								>

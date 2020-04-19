@@ -97,7 +97,7 @@ function PlaylistPage({data}) {
 	const {currentTrack, changeTrack, playlist: currentPlaylist} = useContext(
 		TrackContext
 	)
-	const {audioCdnRoot, imageCdnRoot} = data.site.siteMetadata
+	const {imageCdnRoot} = data.site.siteMetadata
 	const {
 		frontmatter,
 		fields: {slug},
@@ -113,8 +113,6 @@ function PlaylistPage({data}) {
 	function playTrack(index) {
 		changeTrack(playlist, index)
 	}
-
-	const getTrackMp3Link = filename => `https://${audioCdnRoot}${filename}`
 
 	const imageUrl = frontCover
 		? `https://${imageCdnRoot}w_340,h_340,c_fill/${frontCover}`
@@ -172,7 +170,6 @@ function PlaylistPage({data}) {
 						currentTrack={currentTrack}
 						shouldExcludeArtist={artist => artists.includes(artist)}
 						color={color}
-						getMp3Link={getTrackMp3Link}
 						onPlay={playTrack}
 					/>
 				</PlaylistContainer>
@@ -211,6 +208,9 @@ export const query = graphql`
 					artistsFeat
 					producers
 					filename
+					fields {
+						slug
+					}
 				}
 			}
 		}

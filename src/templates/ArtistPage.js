@@ -18,7 +18,7 @@ const PlayIcon = styled(IsPlayingIcon)`
 	margin-left: ${p => p.theme.spacing.xxs};
 `
 
-function ArtistPlaylist({currentArtist, getMp3Link, title, tracks}) {
+function ArtistPlaylist({currentArtist, title, tracks}) {
 	const {currentTrack, changeTrack, playlist: currentPlaylist} = useContext(
 		TrackContext
 	)
@@ -53,7 +53,6 @@ function ArtistPlaylist({currentArtist, getMp3Link, title, tracks}) {
 				shouldExcludeArtist={artist => currentArtist.title === artist}
 				maxTrackCount={5}
 				color={artistPlaylist.color}
-				getMp3Link={getMp3Link}
 				onPlay={playTrack}
 			/>
 		</>
@@ -70,9 +69,7 @@ function Artist({data}) {
 		producedTracks,
 		site,
 	} = data
-	const {audioCdnRoot, imageCdnRoot} = site.siteMetadata
-
-	const getTrackMp3Link = filename => `https://${audioCdnRoot}${filename}`
+	const {imageCdnRoot} = site.siteMetadata
 
 	return (
 		<Layout pageTitle={currentArtist.title}>
@@ -101,7 +98,6 @@ function Artist({data}) {
 								title="Tracks"
 								tracks={tracks}
 								currentArtist={currentArtist}
-								getMp3Link={getTrackMp3Link}
 							/>
 						)}
 						{!!featureTracks.edges.length && (
@@ -109,7 +105,6 @@ function Artist({data}) {
 								title="Features"
 								tracks={featureTracks}
 								currentArtist={currentArtist}
-								getMp3Link={getTrackMp3Link}
 							/>
 						)}
 						{!!producedTracks.edges.length && (
@@ -117,7 +112,6 @@ function Artist({data}) {
 								title="Beats"
 								tracks={producedTracks}
 								currentArtist={currentArtist}
-								getMp3Link={getTrackMp3Link}
 							/>
 						)}
 					</Stack>
@@ -191,6 +185,9 @@ export const query = graphql`
 					artistsFeat
 					filename
 					producers
+					fields {
+						slug
+					}
 				}
 			}
 		}
@@ -207,6 +204,9 @@ export const query = graphql`
 					artistsFeat
 					filename
 					producers
+					fields {
+						slug
+					}
 				}
 			}
 		}
@@ -223,6 +223,9 @@ export const query = graphql`
 					artistsFeat
 					filename
 					producers
+					fields {
+						slug
+					}
 				}
 			}
 		}

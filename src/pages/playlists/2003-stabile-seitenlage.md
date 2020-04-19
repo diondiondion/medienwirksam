@@ -1,6 +1,7 @@
 ---
 title: Stabile Seitenlage
 frontCover: stabile-seitenlage/front-cover.jpg
+downloadLink: stabile-seitenlage.zip
 color: '#556972'
 artists:
   - Medienwirksam

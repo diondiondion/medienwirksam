@@ -2,6 +2,7 @@
 title: Walkman
 frontCover: walkman/Jouston-Walkman-Cover-front-web.png
 backCover: walkman/Jouston-Walkman-Cover-back-web.png
+downloadLink: walkman.zip
 color: '#3468b6'
 artists:
   - Jouston

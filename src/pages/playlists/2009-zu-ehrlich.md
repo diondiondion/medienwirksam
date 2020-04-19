@@ -2,6 +2,7 @@
 title: Zu ehrlich
 frontCover: zu-ehrlich/zu-ehrlich-cover-front.jpg
 backCover: zu-ehrlich/zu-ehrlich-cover-back.jpg
+downloadLink: zu-ehrlich.zip
 color: '#FCDB48'
 artists:
   - Reefer Maxxx

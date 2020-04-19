@@ -2,6 +2,7 @@
 title: Feuerwerk
 frontCover: feuerwerk/feuerwerk-cover-front.jpg
 backCover: feuerwerk/feuerwerk-cover-back.jpg
+downloadLink: feuerwerk.zip
 color: '#5137cc'
 artists:
   - EAN

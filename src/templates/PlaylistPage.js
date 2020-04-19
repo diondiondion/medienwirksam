@@ -5,7 +5,7 @@ import {Flipped} from 'react-flip-toolkit'
 
 import friendlyList from '@utils/friendlyList'
 import ClearButton from '@components/ClearButton'
-import {BackIcon, PlayIcon} from '@components/icons'
+import {BackIcon, PlayIcon, DownloadIcon} from '@components/icons'
 import Layout from '@components/Layout'
 import TitleLabel from '@components/TitleLabel'
 import TextLink from '@components/TextLink'
@@ -70,6 +70,13 @@ const Metadata = styled.p`
 	margin: ${p => p.theme.spacing.m} ${p => p.theme.spacing.s};
 `
 
+const DownloadLink = styled(TextLink).attrs({download: true})`
+	& svg {
+		font-size: ${p => p.theme.typeScale.l};
+		margin-right: ${p => p.theme.spacing.xs};
+	}
+`
+
 const PlaylistContainer = styled.section`
 	position: relative;
 	grid-column: right;
@@ -107,7 +114,15 @@ function PlaylistPage({data}) {
 		slug,
 		path: `/playlist${slug}`,
 	}
-	const {title, artists, year, tracks, frontCover, color} = playlist
+	const {
+		title,
+		artists,
+		year,
+		tracks,
+		frontCover,
+		downloadLink,
+		color,
+	} = playlist
 	const isCurrentPlaylist = currentPlaylist?.title === title
 
 	function playTrack(index) {
@@ -150,7 +165,14 @@ function PlaylistPage({data}) {
 							<br />
 							{year}
 							<br />
-							{tracks.length} tracks
+							{tracks.length} Tracks
+							<br />
+							{downloadLink && (
+								<DownloadLink href={`/zip/${downloadLink}`}>
+									<DownloadIcon />
+									Download
+								</DownloadLink>
+							)}
 						</Metadata>
 					</Flipped>
 				</PlaylistInfo>
@@ -200,6 +222,7 @@ export const query = graphql`
 				year
 				frontCover
 				backCover
+				downloadLink
 				color
 				tracks {
 					title

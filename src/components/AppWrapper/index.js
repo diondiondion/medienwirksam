@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
-import {Persist} from 'react-persist'
 import {Flipper} from 'react-flip-toolkit'
+import {useStorageState} from 'react-storage-hooks'
 import {Location} from '@reach/router'
 import {ThemeProvider} from 'styled-components'
 import theme from '@style/theme'
@@ -8,11 +8,21 @@ import theme from '@style/theme'
 import AudioPlayer from '@components/AudioPlayer'
 import {BackLinkProvider} from '@components/BackLink/useBackLink'
 
+function useLocalStorageState(...args) {
+	return useStorageState(localStorage, ...args)
+}
+
 export const TrackContext = React.createContext()
 
 function AppWrapper({children}) {
-	const [playlist, setPlaylist] = useState(undefined)
-	const [trackIndex, setTrackIndex] = useState(0)
+	const [playlist, setPlaylist] = useLocalStorageState(
+		'medienwirksam-current-playlist',
+		undefined
+	)
+	const [trackIndex, setTrackIndex] = useLocalStorageState(
+		'medienwirksam-current-track-index',
+		0
+	)
 	const [autoPlay, setAutoPlay] = useState(false)
 	const currentTrack = playlist ? playlist.tracks[trackIndex] : undefined
 
@@ -69,19 +79,6 @@ function AppWrapper({children}) {
 					<AudioPlayer autoPlay={autoPlay} />
 				</TrackContext.Provider>
 			</ThemeProvider>
-			<Persist
-				name="mwPlaylistState1.0"
-				data={{
-					playlist,
-					trackIndex,
-				}}
-				debounce={500}
-				onMount={data => {
-					setAutoPlay(false)
-					setPlaylist(data.playlist)
-					setTrackIndex(data.trackIndex)
-				}}
-			/>
 		</>
 	)
 }

@@ -1,4 +1,9 @@
 import {useEffect, useReducer, useRef} from 'react'
+import {useStorageReducer} from 'react-storage-hooks'
+
+function useLocalStorageReducer(...args) {
+	return useStorageReducer(localStorage, ...args)
+}
 
 function useForceUpdate() {
 	const [, forceUpdate] = useReducer(e => e + 1, 0)
@@ -55,7 +60,11 @@ function volumeReducer(volume, action) {
 }
 
 function useAudioPlayer(ref) {
-	const [volume, dispatchVolume] = useReducer(volumeReducer, initialVolume)
+	const [volume, dispatchVolume] = useLocalStorageReducer(
+		'medienwirksam-volume',
+		volumeReducer,
+		initialVolume
+	)
 	const forceUpdate = useForceUpdate()
 
 	useEffect(

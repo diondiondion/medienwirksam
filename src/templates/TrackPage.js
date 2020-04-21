@@ -117,10 +117,12 @@ function Artist({data}) {
 						<Heading spacing={null}>{title}</Heading>
 						<Subtitle>
 							<Stack inline spacing="m">
-								<>
-									<MetaIcon as={BeatIcon} aria-label="Beat:" />
-									{friendlyList(producers)}
-								</>
+								{producers && (
+									<>
+										<MetaIcon as={BeatIcon} aria-label="Beat:" />
+										{friendlyList(producers)}
+									</>
+								)}
 								{artistsAlias && (
 									<>
 										<MetaIcon as={MicIcon} aria-label="Am Mikrofon:" />

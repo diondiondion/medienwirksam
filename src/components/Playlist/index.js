@@ -1,12 +1,11 @@
 import React, {useState, useCallback, useRef, useEffect} from 'react'
 import {Link} from 'gatsby'
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 import {Flipper, Flipped} from 'react-flip-toolkit'
 import invert from 'invert-color'
 
 import friendlyList from '@utils/friendlyList'
-import {IsPlayingIcon} from '@components/icons'
-import Panel from '@components/Panel'
+import {IsPlayingIcon, WaveformIcon} from '@components/icons'
 import TextLink from '@components/TextLink'
 
 const Tracklist = styled.ol.attrs({
@@ -19,47 +18,54 @@ const Tracklist = styled.ol.attrs({
 const TracklistItem = styled.li.attrs({
 	role: 'listitem',
 })`
+	display: flex;
+	justify-content: space-between;
+	white-space: nowrap;
+
+	list-style: none;
+	counter-increment: track-counter;
+
 	${p =>
 		p.isHidden &&
 		`
 		display: none;
 	`}
-
-	list-style: none;
-	counter-increment: track-counter;
 `
 
-const ExpandListLink = styled(TextLink)`
-	padding: 0.5rem 1.5rem;
-	margin-bottom: -0.5rem;
-	width: 100%;
-	text-align: left;
+const TrackNameWrapper = styled.span`
+	position: relative;
+	flex: 1 1 0;
+	min-width: 0;
 `
 
-const Track = styled(Link)`
+const TrackButton = styled.button.attrs({type: 'button'})`
 	position: relative;
 	z-index: 0;
 	display: inline-block;
 	vertical-align: middle;
 	max-width: 100%;
+	margin: 0;
 	padding: ${p => p.theme.spacing.xs} 0;
+	border: none;
+	appearance: none;
+	cursor: pointer;
+
+	font: inherit;
+	font-weight: ${p => (p.isPlaying ? 'bold' : 'normal')};
+	text-decoration: none;
+	text-align: left;
 
 	color: ${p => (p.isPlaying ? invert(p.contrastColor, true) : 'inherit')};
-	text-decoration: none;
+	background-color: transparent;
 
 	&.focus-visible {
 		outline: 2px solid currentcolor;
 		outline-offset: 4px;
 	}
-
-	${p =>
-		p.isPlaying &&
-		`
-		font-weight: bold;
-	`}
 `
 
 const TrackTitle = styled.span`
+	position: relative;
 	display: inline-block;
 	vertical-align: top;
 	max-width: 100%;
@@ -67,7 +73,7 @@ const TrackTitle = styled.span`
 	overflow: hidden;
 	text-overflow: ellipsis;
 
-	&:before {
+	&::before {
 		display: inline-block;
 		content: counter(track-counter) ' ';
 		width: 3ch;
@@ -86,6 +92,38 @@ const TrackHighlight = styled.span`
 	z-index: -1;
 	background-color: ${p => p.color};
 	transform: rotate(${(Math.random() * 3 - 1.5).toFixed(2)}deg);
+`
+
+const LinkToTrackPage = styled(TextLink)`
+	display: flex;
+	align-items: center;
+	margin-left: ${p => p.theme.spacing.s};
+	font-size: ${p => p.theme.typeScale.xxs};
+	opacity: 0;
+	transition: opacity 250ms ease-in-out;
+
+	svg {
+		margin-right: 0;
+	}
+
+	${TracklistItem}:hover & {
+		opacity: 0.5;
+	}
+	${TracklistItem}:focus-within & {
+		opacity: 0.5;
+	}
+
+	&&&:hover,
+	&:focus {
+		opacity: 1;
+	}
+`
+
+const ExpandListLink = styled(TextLink)`
+	padding: 0.5rem 1.5rem;
+	margin-bottom: -0.5rem;
+	width: 100%;
+	text-align: left;
 `
 
 function Playlist({
@@ -151,38 +189,42 @@ function Playlist({
 						const isPlaying = currentTrack && currentTrack.title === track.title
 						return (
 							<TracklistItem key={track.title} isHidden={shouldTrackBeHidden}>
-								<Track
-									ref={
-										shouldTrackBeFocusedAfterExpanding
-											? firstExpandedTrackRef
-											: undefined
-									}
-									isPlaying={isPlaying}
-									to={`track/${track?.fields?.slug}`}
-									onClick={e => playTrack(e, index)}
-									contrastColor={color}
-								>
-									<TrackTitle>
-										{track.title}{' '}
-										<span style={{opacity: 0.6}}>
-											{showMainArtist && (
-												<>
-													{track.artistsAlias || friendlyList(track.artists)}{' '}
-												</>
-											)}
-											{track.artistsFeat && (
-												<>ft. {friendlyList(track.artistsFeat)}</>
-											)}
-										</span>
-									</TrackTitle>
-									{isPlaying && (
-										<Flipped flipId="trackHighlight">
-											<TrackHighlight key={track.title} color={color}>
-												<IsPlayingIcon />
-											</TrackHighlight>
-										</Flipped>
-									)}
-								</Track>
+								<TrackNameWrapper isSelected={isPlaying} selectionColor={color}>
+									<TrackButton
+										ref={
+											shouldTrackBeFocusedAfterExpanding
+												? firstExpandedTrackRef
+												: undefined
+										}
+										isPlaying={isPlaying}
+										onClick={e => playTrack(e, index)}
+										contrastColor={color}
+									>
+										<TrackTitle>
+											{track.title}{' '}
+											<span style={{opacity: 0.6}}>
+												{showMainArtist && (
+													<>
+														{track.artistsAlias || friendlyList(track.artists)}{' '}
+													</>
+												)}
+												{track.artistsFeat && (
+													<>ft. {friendlyList(track.artistsFeat)}</>
+												)}
+											</span>
+										</TrackTitle>
+										{isPlaying && (
+											<Flipped flipId="trackHighlight">
+												<TrackHighlight key={track.title} color={color}>
+													<IsPlayingIcon />
+												</TrackHighlight>
+											</Flipped>
+										)}
+									</TrackButton>
+								</TrackNameWrapper>
+								<LinkToTrackPage as={Link} to={`track/${track?.fields?.slug}`}>
+									Info <WaveformIcon />
+								</LinkToTrackPage>
 							</TracklistItem>
 						)
 					})}

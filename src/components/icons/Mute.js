@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {forwardRef} from 'react'
 
-function MuteIcon(props) {
+function MuteIcon(props, ref) {
 	return (
 		<svg
 			{...props}
+			ref={ref}
 			xmlns="http://www.w3.org/2000/svg"
 			xmlnsXlink="http://www.w3.org/1999/xlink"
 			width="30"
@@ -23,4 +24,4 @@ function MuteIcon(props) {
 	)
 }
 
-export default MuteIcon
+export default forwardRef(MuteIcon)

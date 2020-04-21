@@ -9,6 +9,7 @@ import MoreIcon from './More'
 import MuteIcon from './Mute'
 import IsPlayingIcon from './Mute'
 import MutedIcon from './Muted'
+import WaveformIcon from './Waveform'
 
 export {
 	BeatIcon,
@@ -22,4 +23,5 @@ export {
 	MuteIcon,
 	MutedIcon,
 	IsPlayingIcon,
+	WaveformIcon,
 }

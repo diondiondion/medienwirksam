@@ -31,7 +31,7 @@ function ArtistPlaylist({currentArtist, title, tracks}) {
 		artist: currentArtist.title,
 		color: '#09d0ab',
 		tracks: tracks.edges.map(({node}) => node),
-		path: `artists/${slug}`,
+		path: `artist/${slug}`,
 	}
 
 	function playTrack(index) {

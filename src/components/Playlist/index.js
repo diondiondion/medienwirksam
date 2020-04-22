@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useRef, useEffect} from 'react'
 import {Link} from 'gatsby'
-import styled, {keyframes} from 'styled-components'
+import styled from 'styled-components'
 import {Flipper, Flipped} from 'react-flip-toolkit'
 import invert from 'invert-color'
 
@@ -128,7 +128,7 @@ const ExpandListLink = styled(TextLink)`
 
 function Playlist({
 	id,
-	tracks,
+	data,
 	maxTrackCount = Infinity,
 	color,
 	currentTrack,
@@ -146,7 +146,7 @@ function Playlist({
 	const firstExpandedTrackRef = useRef()
 	const toggleButtonRef = useRef()
 	const shouldHandleFocus = useRef(false)
-	const isExpandable = tracks.length > maxTrackCount
+	const isExpandable = data?.tracks?.length > maxTrackCount
 	const [showAll, setShowAll] = useState(!isExpandable)
 	function toggleShowAll() {
 		setShowAll(prevShowAll => !prevShowAll)
@@ -170,7 +170,7 @@ function Playlist({
 		<>
 			<Flipper flipKey={currentTrack && currentTrack.title}>
 				<Tracklist id={listId}>
-					{tracks.map((track, index) => {
+					{data.tracks.map((track, index) => {
 						if (!track)
 							return (
 								<TracklistItem key={index}>
@@ -222,7 +222,16 @@ function Playlist({
 										)}
 									</TrackButton>
 								</TrackNameWrapper>
-								<LinkToTrackPage as={Link} to={`track/${track?.fields?.slug}`}>
+								<LinkToTrackPage
+									as={Link}
+									to={`track/${track?.fields?.slug}`}
+									state={{
+										trackContext: {
+											playlist: data,
+											index,
+										},
+									}}
+								>
 									Info <WaveformIcon />
 								</LinkToTrackPage>
 							</TracklistItem>
@@ -239,7 +248,9 @@ function Playlist({
 					aria-expanded={showAll ? 'true' : 'false'}
 					aria-controls={listId}
 				>
-					{showAll ? 'Weniger zeigen' : `Alle ${tracks.length} Tracks zeigen`}
+					{showAll
+						? 'Weniger zeigen'
+						: `Alle ${data?.tracks?.length} Tracks zeigen`}
 				</ExpandListLink>
 			)}
 		</>

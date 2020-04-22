@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 import {graphql} from 'gatsby'
 
@@ -9,7 +9,14 @@ import Panel from '@components/Panel'
 import Stack from '@components/Stack'
 import TextLink from '@components/TextLink'
 import ClearButton from '@components/ClearButton'
-import {BeatIcon, MicIcon, DownloadIcon, PlayIcon} from '@components/icons'
+import {
+	BeatIcon,
+	MicIcon,
+	DownloadIcon,
+	PlayIcon,
+	IsPlayingIcon,
+} from '@components/icons'
+import {TrackContext} from '@components/AppWrapper'
 
 const Waveform = styled.img`
 	display: block;
@@ -64,11 +71,15 @@ const DownloadLink = styled(TextLink).attrs({download: true})`
 
 function getRandomColor() {
 	const letters = '0123456789ABCDEF'
-	let color = ''
+	let color = '#'
 	for (let i = 0; i < 6; i++) {
 		color += letters[Math.floor(Math.random() * 16)]
 	}
 	return color
+}
+
+function removeHash(hex) {
+	return hex.slice(1)
 }
 
 function getImageLinkFromMp3Link(filename) {
@@ -82,39 +93,65 @@ const waveformSizes = {
 	height: 120,
 }
 
-function Artist({data}) {
-	const {currentTrack, site} = data
-	const {
-		title,
-		artists,
-		artistsAlias,
-		artistsFeat,
-		producers,
-		filename,
-	} = currentTrack
+function getSingleTrackPlaylist(track, color) {
+	return {
+		slug: track.fields.slug,
+		title: `${track.title} von ${friendlyList(track.artists)}`,
+		artist: track.artists,
+		color,
+		tracks: [track],
+		path: `track/${track.fields.slug}`,
+	}
+}
 
+function Artist({data, location}) {
+	const {track, site} = data
+	const {title, artists, artistsAlias, artistsFeat, producers, filename} = track
 	const {audioCdnRoot} = site.siteMetadata
-	const trackColor = getRandomColor()
+	const {state: locState} = location
+	const trackContext = locState?.trackContext
+
+	const trackColor = trackContext?.playlist.color || getRandomColor()
 	const imageFilename = getImageLinkFromMp3Link(filename)
-	const imageLink = `https://${audioCdnRoot}h_${waveformSizes.height},w_${waveformSizes.width},fl_waveform,co_rgb:${trackColor},b_transparent/${imageFilename}`
+	const imageLink = `https://${audioCdnRoot}h_${waveformSizes.height},w_${
+		waveformSizes.width
+	},fl_waveform,co_rgb:${removeHash(trackColor)},b_transparent/${imageFilename}`
 	const mp3Link = `https://${audioCdnRoot}${filename}`
 
 	const artistsList = artistsAlias || friendlyList(artists)
 	const featureList = artistsFeat ? ` ft. ${friendlyList(artistsFeat)}` : ''
 
+	const {currentTrack, changeTrack} = useContext(TrackContext)
+	const playlist =
+		trackContext?.playlist || getSingleTrackPlaylist(track, trackColor)
+	const trackIndex = trackContext?.index || 0
+
+	function play() {
+		changeTrack(playlist, trackIndex)
+	}
+
+	const isCurrentTrack = currentTrack.title === title
+
 	return (
 		<Layout pageTitle={`${title} - ${artistsList}${featureList}`}>
 			<Panel>
 				<Content>
-					<ClearButton smallPadding color={`#${trackColor}`} onClick={() => {}}>
-						<PlayIcon />
+					<ClearButton
+						smallPadding
+						disabled={isCurrentTrack}
+						color={trackColor}
+						onClick={play}
+					>
+						{isCurrentTrack ? <IsPlayingIcon /> : <PlayIcon />}
 					</ClearButton>
 					<SongDetails>
 						<p>
 							{artistsList}
 							<Features>{featureList}</Features>
 						</p>
-						<Heading spacing={null}>{title}</Heading>
+						<Heading spacing={null}>
+							{title} {isCurrentTrack && '*'}
+						</Heading>
 						<Subtitle>
 							<Stack inline spacing="m">
 								{producers && (
@@ -159,7 +196,7 @@ export const query = graphql`
 				title
 			}
 		}
-		currentTrack: tracksYaml(fields: {slug: {eq: $slug}}) {
+		track: tracksYaml(fields: {slug: {eq: $slug}}) {
 			id
 			title
 			artists

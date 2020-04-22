@@ -50,7 +50,7 @@ function ArtistPlaylist({currentArtist, title, tracks}) {
 			<Panel spacing="m" fontSize="s">
 				<Playlist
 					id={title.replace(' ', '_').toLowerCase()}
-					tracks={artistPlaylist.tracks}
+					data={artistPlaylist}
 					currentTrack={currentTrack}
 					shouldExcludeArtist={artist => currentArtist.title === artist}
 					maxTrackCount={5}

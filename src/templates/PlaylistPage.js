@@ -195,7 +195,7 @@ function PlaylistPage({data}) {
 						</PlaylistActionsBar>
 						<Playlist
 							id={title.replace(' ', '_').toLowerCase()}
-							tracks={playlist.tracks}
+							data={playlist}
 							currentTrack={currentTrack}
 							shouldExcludeArtist={artist => artists.includes(artist)}
 							color={color}

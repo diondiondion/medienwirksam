@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {Link} from 'gatsby'
 import {Flipped} from 'react-flip-toolkit'
 
+import {getPlaylistLink} from '@utils/getLink'
 import friendlyList from '@utils/friendlyList'
 import TitleLabel from '@components/TitleLabel'
 import {TrackContext} from '@components/AppWrapper'
@@ -65,10 +66,13 @@ const PlayingIndicator = styled(IsPlayingIcon)`
 	vertical-align: -${p => p.theme.spacing.xxs};
 `
 
-function PlaylistTile({playlist, link, slug, imageCdnRoot}) {
+function PlaylistTile({playlist, link, imageCdnRoot}) {
 	const {
 		frontmatter: {title, artists, year, tracks, frontCover, color},
+		fields: {slug},
 	} = playlist
+	const playlistLink = link || getPlaylistLink(playlist)
+
 	const imageUrl = frontCover
 		? `https://${imageCdnRoot}w_340,h_340,c_fill/${frontCover}`
 		: null
@@ -105,7 +109,7 @@ function PlaylistTile({playlist, link, slug, imageCdnRoot}) {
 						</Dimmed>
 					</Metadata>
 				</Flipped>
-				<CoverLink to={link}>Anhören</CoverLink>
+				<CoverLink to={playlistLink}>Anhören</CoverLink>
 			</Info>
 		</Wrapper>
 	)

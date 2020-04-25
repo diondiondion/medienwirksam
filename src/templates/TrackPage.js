@@ -2,6 +2,7 @@ import React, {useContext} from 'react'
 import styled from 'styled-components'
 import {graphql} from 'gatsby'
 
+import {getTrackLink} from '@utils/getLink'
 import friendlyList from '@utils/friendlyList'
 import Layout from '@components/Layout'
 import Heading from '@components/Heading'
@@ -88,10 +89,8 @@ function getImageLinkFromMp3Link(filename) {
 	return `${nameWithoutExt}.png`
 }
 
-const waveformSizes = {
-	width: 800,
-	height: 120,
-}
+const waveformWidth = 800
+const wavformHeight = 120
 
 function getSingleTrackPlaylist(track, color) {
 	return {
@@ -100,7 +99,7 @@ function getSingleTrackPlaylist(track, color) {
 		artist: track.artists,
 		color,
 		tracks: [track],
-		path: `track/${track.fields.slug}`,
+		path: getTrackLink(track),
 	}
 }
 
@@ -113,9 +112,9 @@ function Artist({data, location}) {
 
 	const trackColor = trackContext?.playlist.color || getRandomColor()
 	const imageFilename = getImageLinkFromMp3Link(filename)
-	const imageLink = `https://${audioCdnRoot}h_${waveformSizes.height},w_${
-		waveformSizes.width
-	},fl_waveform,co_rgb:${removeHash(trackColor)},b_transparent/${imageFilename}`
+	const imageLink = `https://${audioCdnRoot}h_${wavformHeight},w_${waveformWidth},fl_waveform,co_rgb:${removeHash(
+		trackColor
+	)},b_transparent/${imageFilename}`
 	const mp3Link = `https://${audioCdnRoot}${filename}`
 
 	const artistsList = artistsAlias || friendlyList(artists)
@@ -130,7 +129,7 @@ function Artist({data, location}) {
 		changeTrack(playlist, trackIndex)
 	}
 
-	const isCurrentTrack = currentTrack.title === title
+	const isCurrentTrack = currentTrack?.title === title
 
 	return (
 		<Layout pageTitle={`${title} - ${artistsList}${featureList}`}>
@@ -176,8 +175,8 @@ function Artist({data, location}) {
 				</Content>
 				<Waveform
 					src={imageLink}
-					width={waveformSizes.width}
-					height={waveformSizes.height}
+					width={waveformWidth}
+					height={wavformHeight}
 					alt=""
 				/>
 			</Panel>

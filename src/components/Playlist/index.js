@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import {Flipper, Flipped} from 'react-flip-toolkit'
 import invert from 'invert-color'
 
+import {getTrackLink} from '@utils/getLink'
 import friendlyList from '@utils/friendlyList'
 import {IsPlayingIcon, WaveformIcon} from '@components/icons'
 import TextLink from '@components/TextLink'
@@ -224,7 +225,7 @@ function Playlist({
 								</TrackNameWrapper>
 								<LinkToTrackPage
 									as={Link}
-									to={`track/${track?.fields?.slug}`}
+									to={getTrackLink(track)}
 									state={{
 										trackContext: {
 											playlist: data,

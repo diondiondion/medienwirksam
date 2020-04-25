@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {Link} from 'gatsby'
 import styled from 'styled-components'
+import {getArtistLink} from '@utils/getLink'
 import theme from '@style/theme'
 import {fontSmoothing} from '@style/mixins'
 import TextLink from '@components/TextLink'
@@ -63,7 +64,7 @@ function ArtistList({artists, selectedArtist}) {
 				<ArtistLink
 					key={artist.title}
 					as={Link}
-					to={`/artist${artist.fields.slug}`}
+					to={getArtistLink(artist)}
 					isSelected={selectedArtist === artist.title}
 				>
 					{artist.title}

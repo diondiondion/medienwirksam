@@ -2,6 +2,8 @@ import React, {useContext} from 'react'
 import {graphql} from 'gatsby'
 import styled from 'styled-components'
 
+import {getArtistLink} from '@utils/getLink'
+
 import Layout from '@components/Layout'
 import Filter from '@components/Filter'
 import Heading from '@components/Heading'
@@ -31,7 +33,7 @@ function ArtistPlaylist({currentArtist, title, tracks}) {
 		artist: currentArtist.title,
 		color: '#09d0ab',
 		tracks: tracks.edges.map(({node}) => node),
-		path: `artist/${slug}`,
+		path: getArtistLink(currentArtist),
 	}
 
 	function playTrack(index) {
@@ -87,8 +89,6 @@ function Artist({data}) {
 									key={playlist.id}
 									playlist={playlist}
 									imageCdnRoot={imageCdnRoot}
-									slug={playlist.fields.slug}
-									link={`/playlist${playlist.fields.slug}`}
 								/>
 							))}
 						</PlaylistGrid>

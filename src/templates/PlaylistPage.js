@@ -3,6 +3,7 @@ import {graphql} from 'gatsby'
 import styled, {keyframes} from 'styled-components'
 import {Flipped} from 'react-flip-toolkit'
 
+import {getPlaylistLink} from '@utils/getLink'
 import friendlyList from '@utils/friendlyList'
 import ClearButton from '@components/ClearButton'
 import {BackIcon, PlayIcon, DownloadIcon} from '@components/icons'
@@ -117,7 +118,7 @@ function PlaylistPage({data}) {
 	const playlist = {
 		...frontmatter,
 		slug,
-		path: `/playlist${slug}`,
+		path: getPlaylistLink(data),
 	}
 	const {
 		title,

@@ -21,8 +21,6 @@ function IndexPage({data}) {
 							key={playlist.id}
 							playlist={playlist}
 							imageCdnRoot={imageCdnRoot}
-							slug={playlist.fields.slug}
-							link={`/playlist${playlist.fields.slug}`}
 						/>
 					))}
 				</PlaylistGrid>

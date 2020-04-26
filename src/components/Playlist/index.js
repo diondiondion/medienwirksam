@@ -226,7 +226,8 @@ function Playlist({
 										},
 									}}
 								>
-									Info <WaveformIcon scale={0.666} />
+									Info
+									<WaveformIcon scale={0.666} spacingLeft="xxs" />
 								</LinkToTrackPage>
 							</TracklistItem>
 						)

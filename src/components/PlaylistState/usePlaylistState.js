@@ -36,6 +36,7 @@ function usePlaylistState() {
 	}
 
 	return {
+		currentIndex: trackIndex,
 		currentTrack,
 		playlist,
 		changeTrack,

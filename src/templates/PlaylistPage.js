@@ -107,10 +107,11 @@ function PlaylistPage({data}) {
 		frontmatter,
 		fields: {slug},
 	} = data.markdownRemark
+
 	const playlist = {
 		...frontmatter,
 		slug,
-		path: getPlaylistLink(data),
+		path: getPlaylistLink(data.markdownRemark),
 	}
 	const {
 		title,

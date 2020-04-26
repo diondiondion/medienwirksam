@@ -5,9 +5,10 @@ import {useMatch} from '@reach/router'
 
 import {getRgb} from '@utils/hexToRgb'
 import friendlyList from '@utils/friendlyList'
-
+import {getTrackLink} from '@utils/getLink'
 import useSiteMetaData from '@utils/useSiteMetaData'
 import formatTime from '@utils/formatTime'
+
 import theme from '@style/theme'
 import Slider from '@components/Slider'
 import TextLink from '@components/TextLink'
@@ -267,14 +268,16 @@ function MaybeLink({children, to, ...otherProps}) {
 
 function AudioPlayer() {
 	const [isMobileDrawerOpen, setMobileDrawerOpenState] = useState(false)
-	const {autoPlay} = useContext(PlaylistContext)
+	const {autoPlay, currentIndex} = useContext(PlaylistContext)
 	const {audioRef, player} = useContext(AudioPlayerContext)
 	const {audioCdnRoot, imageCdnRoot} = useSiteMetaData()
 	const {currentTrack, playlist, goToNextTrack, goToPrevTrack} = useContext(
 		PlaylistContext
 	)
 	const playlistColor = playlist?.color || theme.background
-	const isUserOnCurrentPlaylist = Boolean(useMatch(playlist?.path || '/'))
+	const isUserOnCurrentPlaylist = Boolean(
+		useMatch(playlist?.path || '/notMatching')
+	)
 
 	const src = currentTrack
 		? `https://${audioCdnRoot}${currentTrack.filename}`
@@ -322,7 +325,15 @@ function AudioPlayer() {
 					<VisuallyHidden>Aktueller Track:</VisuallyHidden>
 					{currentTrack ? (
 						<>
-							<MaybeLink to={isUserOnCurrentPlaylist ? null : playlist.path}>
+							<MaybeLink
+								to={getTrackLink(currentTrack)}
+								state={{
+									trackContext: {
+										playlist,
+										index: currentIndex,
+									},
+								}}
+							>
 								{currentTrack.title}
 							</MaybeLink>
 							<br />

@@ -12,7 +12,7 @@ import Panel from '@components/Panel'
 import Playlist from '@components/Playlist'
 import Stack from '@components/Stack'
 import PlaylistTile, {PlaylistGrid} from '@components/PlaylistTile'
-import {TrackContext} from '@components/AppWrapper'
+import {PlaylistContext} from '@components/PlaylistState'
 
 const PlayIcon = styled(IsPlayingIcon)`
 	width: 1rem;
@@ -23,7 +23,7 @@ const PlayIcon = styled(IsPlayingIcon)`
 
 function ArtistPlaylist({currentArtist, title, tracks}) {
 	const {currentTrack, changeTrack, playlist: currentPlaylist} = useContext(
-		TrackContext
+		PlaylistContext
 	)
 
 	const {slug} = currentArtist.fields

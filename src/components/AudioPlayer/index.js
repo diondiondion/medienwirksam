@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from 'react'
+import React, {useContext, useState} from 'react'
 import {Link} from 'gatsby'
 import styled, {css} from 'styled-components'
 import {useMatch} from '@reach/router'
@@ -9,7 +9,6 @@ import friendlyList from '@utils/friendlyList'
 import useSiteMetaData from '@utils/useSiteMetaData'
 import formatTime from '@utils/formatTime'
 import theme from '@style/theme'
-import {TrackContext} from '@components/AppWrapper'
 import Slider from '@components/Slider'
 import TextLink from '@components/TextLink'
 import ThemeSection from '@components/ThemeSection'
@@ -22,8 +21,9 @@ import {
 	MuteIcon,
 	MutedIcon,
 } from '@components/icons'
+import {PlaylistContext} from '@components/PlaylistState'
 
-import useAudioPlayer from './useAudioPlayer'
+import {AudioPlayerContext} from './AudioPlayerContext'
 import useMediaSession from './useMediaSession'
 
 const VisuallyHidden = styled.span`
@@ -265,13 +265,13 @@ function MaybeLink({children, to, ...otherProps}) {
 	)
 }
 
-function AudioPlayer({autoPlay}) {
+function AudioPlayer() {
 	const [isMobileDrawerOpen, setMobileDrawerOpenState] = useState(false)
-	const audioRef = useRef(null)
-	const player = useAudioPlayer(audioRef)
+	const {autoPlay} = useContext(PlaylistContext)
+	const {audioRef, player} = useContext(AudioPlayerContext)
 	const {audioCdnRoot, imageCdnRoot} = useSiteMetaData()
 	const {currentTrack, playlist, goToNextTrack, goToPrevTrack} = useContext(
-		TrackContext
+		PlaylistContext
 	)
 	const playlistColor = playlist?.color || theme.background
 	const isUserOnCurrentPlaylist = Boolean(useMatch(playlist?.path || '/'))

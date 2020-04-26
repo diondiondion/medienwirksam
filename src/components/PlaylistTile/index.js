@@ -6,7 +6,7 @@ import {Flipped} from 'react-flip-toolkit'
 import {getPlaylistLink} from '@utils/getLink'
 import friendlyList from '@utils/friendlyList'
 import TitleLabel from '@components/TitleLabel'
-import {TrackContext} from '@components/AppWrapper'
+import {PlaylistContext} from '@components/PlaylistState'
 import {IsPlayingIcon} from '@components/icons'
 import PlaylistGrid from './PlaylistGrid'
 
@@ -77,7 +77,7 @@ function PlaylistTile({playlist, link, imageCdnRoot}) {
 		? `https://${imageCdnRoot}w_340,h_340,c_fill/${frontCover}`
 		: null
 
-	const {playlist: playingPlaylist} = useContext(TrackContext)
+	const {playlist: playingPlaylist} = useContext(PlaylistContext)
 
 	const isPlaying = playingPlaylist && playingPlaylist.title === title
 

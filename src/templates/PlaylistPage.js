@@ -13,7 +13,7 @@ import TextLink from '@components/TextLink'
 import BackLink from '@components/BackLink'
 import Playlist from '@components/Playlist'
 import Panel from '@components/Panel'
-import {TrackContext} from '@components/AppWrapper'
+import {PlaylistContext} from '@components/PlaylistState'
 
 const fadeInFromLeft = keyframes`
 	from {
@@ -100,7 +100,7 @@ const BigPlayButton = styled(ClearButton)`
 
 function PlaylistPage({data}) {
 	const {currentTrack, changeTrack, playlist: currentPlaylist} = useContext(
-		TrackContext
+		PlaylistContext
 	)
 	const {imageCdnRoot} = data.site.siteMetadata
 	const {

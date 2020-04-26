@@ -17,7 +17,7 @@ import {
 	PlayIcon,
 	IsPlayingIcon,
 } from '@components/icons'
-import {TrackContext} from '@components/AppWrapper'
+import {PlaylistContext} from '@components/PlaylistState'
 
 const Waveform = styled.img`
 	display: block;
@@ -108,7 +108,7 @@ function Artist({data, location}) {
 	const artistsList = artistsAlias || friendlyList(artists)
 	const featureList = artistsFeat ? ` ft. ${friendlyList(artistsFeat)}` : ''
 
-	const {currentTrack, changeTrack} = useContext(TrackContext)
+	const {currentTrack, changeTrack} = useContext(PlaylistContext)
 	const playlist =
 		trackContext?.playlist || getSingleTrackPlaylist(track, trackColor)
 	const trackIndex = trackContext?.index || 0

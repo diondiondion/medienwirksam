@@ -26,11 +26,18 @@ const ClearButton = styled.button`
 		`
 			opacity: 0.5;
 	`}
-	cursor: pointer;
+
+	&:disabled {
+		opacity: 0.5;
+	}
+
+	&:not(:disabled) {
+		cursor: pointer;
+	}
 
 	transition: all 0.15s ease;
 
-	&:hover {
+	&:hover:not(:disabled) {
 		background-color: ${p =>
 			p.color
 				? `rgba(${getRgb(p.color)}, 0.9)`
@@ -43,11 +50,6 @@ const ClearButton = styled.button`
 		background-color: ${p => p.theme.text};
 		opacity: 1;
 		outline: none;
-	}
-
-	& svg {
-		width: auto;
-		height: auto;
 	}
 `
 

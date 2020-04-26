@@ -26,12 +26,6 @@ const TextLink = styled.a`
 		outline-offset: 4px;
 	}
 
-	& > svg {
-		margin-right: 0.5rem;
-		font-size: 1.8em;
-		vertical-align: -0.3em;
-	}
-
 	/* Normalise inner button spacing in Gecko browsers */
 	&::-moz-focus-inner {
 		padding: 0;

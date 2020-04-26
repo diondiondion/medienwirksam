@@ -72,14 +72,6 @@ const Metadata = styled.p`
 	margin: ${p => p.theme.spacing.m} ${p => p.theme.spacing.s};
 `
 
-const DownloadLink = styled(TextLink).attrs({download: true})`
-	& svg {
-		font-size: ${p => p.theme.typeScale.l};
-		margin-left: ${p => p.theme.spacing.xs};
-		margin-right: 0;
-	}
-`
-
 const PlaylistContainer = styled.section`
 	position: relative;
 	grid-column: right;
@@ -147,7 +139,7 @@ function PlaylistPage({data}) {
 				<PlaylistInfo>
 					<BackLinkWrapper>
 						<TextLink as={BackLink} to="/" size="xs">
-							<BackIcon />
+							<BackIcon spacingRight="xs" />
 							zurück
 						</TextLink>
 					</BackLinkWrapper>
@@ -188,10 +180,10 @@ function PlaylistPage({data}) {
 					<Panel spacing="m" fontSize="s">
 						<PlaylistActionsBar>
 							{downloadLink && (
-								<DownloadLink size="xs" href={`/zip/${downloadLink}`}>
+								<TextLink download size="xs" href={`/zip/${downloadLink}`}>
 									Album runterladen
-									<DownloadIcon />
-								</DownloadLink>
+									<DownloadIcon spacingLeft="xxs" />
+								</TextLink>
 							)}
 						</PlaylistActionsBar>
 						<Playlist

@@ -3,6 +3,7 @@ const theme = {
 	background: '#030926',
 	panel: '#000000',
 	links: '#0081ff',
+	dimmedTextOpacity: 0.7,
 	fonts: {
 		default: '"Courier New", Courier, monospace',
 		label: 'Impact Label Reversed, "Courier New", Courier, monospace',

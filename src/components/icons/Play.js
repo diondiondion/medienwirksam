@@ -1,19 +1,13 @@
-import React from 'react'
+import React, {forwardRef} from 'react'
 
-function PlayIcon(props) {
+import Svg from './Svg'
+
+function PlayIcon({size, ...otherProps}, ref) {
 	return (
-		<svg
-			{...props}
-			xmlns="http://www.w3.org/2000/svg"
-			xmlnsXlink="http://www.w3.org/1999/xlink"
-			width="45"
-			height="45"
-			viewBox="0 0 30 30"
-			aria-hidden="true"
-		>
+		<Svg ref={ref} size={size || 45} {...otherProps} viewBox="0 0 30 30">
 			<path d="M0,0,18,9,0,18Z" transform="translate(8 6)" />
-		</svg>
+		</Svg>
 	)
 }
 
-export default PlayIcon
+export default forwardRef(PlayIcon)

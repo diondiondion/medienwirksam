@@ -98,24 +98,17 @@ const TrackHighlight = styled.span`
 const LinkToTrackPage = styled(TextLink)`
 	display: flex;
 	align-items: center;
-	margin-left: ${p => p.theme.spacing.s};
+	margin-left: ${p => p.theme.spacing.m};
+	margin-right: -${p => p.theme.spacing.xs};
 	font-size: ${p => p.theme.typeScale.xxs};
 	opacity: 0;
 	transition: opacity 250ms ease-in-out;
 
-	svg {
-		margin-right: 0;
-	}
-
+	&:focus,
 	${TracklistItem}:hover & {
-		opacity: 0.5;
+		opacity: 1;
 	}
 	${TracklistItem}:focus-within & {
-		opacity: 0.5;
-	}
-
-	&&&:hover,
-	&:focus {
 		opacity: 1;
 	}
 `
@@ -217,7 +210,7 @@ function Playlist({
 										{isPlaying && (
 											<Flipped flipId="trackHighlight">
 												<TrackHighlight key={track.title} color={color}>
-													<IsPlayingIcon />
+													<IsPlayingIcon scale={0.75} />
 												</TrackHighlight>
 											</Flipped>
 										)}
@@ -233,7 +226,7 @@ function Playlist({
 										},
 									}}
 								>
-									Info <WaveformIcon />
+									Info <WaveformIcon scale={0.666} />
 								</LinkToTrackPage>
 							</TracklistItem>
 						)

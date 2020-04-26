@@ -47,21 +47,9 @@ const Subtitle = styled.p`
 	font-size: ${p => p.theme.typeScale.xs};
 `
 
-const MetaIcon = styled.span`
-	margin-right: ${p => p.theme.spacing.xxs};
-	vertical-align: -0.25em;
-	font-size: ${p => p.theme.typeScale.m};
-	opacity: 0.7;
-`
-
 const DownloadLink = styled(TextLink).attrs({download: true})`
 	align-self: flex-start;
 	white-space: nowrap;
-
-	& svg {
-		margin-left: ${p => p.theme.spacing.xxs};
-		margin-right: 0;
-	}
 
 	& span {
 		@media (max-width: ${p => p.theme.breakpoints.s}) {
@@ -137,31 +125,40 @@ function Artist({data, location}) {
 				<Content>
 					<ClearButton
 						smallPadding
+						dimmed={isCurrentTrack}
 						disabled={isCurrentTrack}
 						color={trackColor}
 						onClick={play}
 					>
-						{isCurrentTrack ? <IsPlayingIcon /> : <PlayIcon />}
+						{isCurrentTrack ? <IsPlayingIcon size={45} /> : <PlayIcon />}
 					</ClearButton>
 					<SongDetails>
 						<p>
 							{artistsList}
 							<Features>{featureList}</Features>
 						</p>
-						<Heading spacing={null}>
-							{title} {isCurrentTrack && '*'}
-						</Heading>
+						<Heading spacing={null}>{title}</Heading>
 						<Subtitle>
 							<Stack inline spacing="m">
 								{producers && (
 									<>
-										<MetaIcon as={BeatIcon} aria-label="Beat:" />
+										<BeatIcon
+											dimmed
+											scale={0.75}
+											spacingRight="xs"
+											aria-label="Beat:"
+										/>
 										{friendlyList(producers)}
 									</>
 								)}
 								{artistsAlias && (
 									<>
-										<MetaIcon as={MicIcon} aria-label="Am Mikrofon:" />
+										<MicIcon
+											dimmed
+											scale={0.75}
+											spacingRight="xs"
+											aria-label="Am Mikrofon:"
+										/>
 										{friendlyList(artists)}
 									</>
 								)}
@@ -170,7 +167,7 @@ function Artist({data, location}) {
 					</SongDetails>
 					<DownloadLink size="xs" href={mp3Link}>
 						<span>Download</span>
-						<DownloadIcon />
+						<DownloadIcon spacingLeft="xxs" />
 					</DownloadLink>
 				</Content>
 				<Waveform

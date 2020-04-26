@@ -1,7 +1,7 @@
 module.exports = {
 	siteMetadata: {
 		title: 'Medienwirksam',
-		audioCdnRoot: 'res.cloudinary.com/medienwirksam/video/upload/',
+		audioCdnRoot: 'res.cloudinary.com/medienwirksam/video/upload/q_auto/',
 		imageCdnRoot: 'res.cloudinary.com/medienwirksam/image/upload/',
 		altCdnRoot: 'medienwirksam-df6d.kxcdn.com',
 	},

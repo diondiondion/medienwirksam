@@ -100,7 +100,7 @@ function Artist({data, location}) {
 
 	const trackColor = trackContext?.playlist.color || getRandomColor()
 	const imageFilename = getImageLinkFromMp3Link(filename)
-	const imageLink = `https://${audioCdnRoot}h_${wavformHeight},w_${waveformWidth},fl_waveform,co_rgb:${removeHash(
+	const imageLink = `https://${audioCdnRoot}q_auto,h_${wavformHeight},w_${waveformWidth},fl_waveform,co_rgb:${removeHash(
 		trackColor
 	)},b_transparent/${imageFilename}`
 	const mp3Link = `https://${audioCdnRoot}${filename}`

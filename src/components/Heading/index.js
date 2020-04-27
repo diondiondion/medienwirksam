@@ -7,6 +7,7 @@ const Heading = styled.h1`
 
 	font-family: ${theme.fonts.label};
 	font-size: ${theme.typeScale.xl};
+	line-height: 0.8;
 	text-transform: uppercase;
 	text-decoration: none;
 	${fontSmoothing}

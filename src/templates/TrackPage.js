@@ -15,15 +15,53 @@ import {
 	MicIcon,
 	DownloadIcon,
 	PlayIcon,
-	IsPlayingIcon,
+	PauseIcon,
 } from '@components/icons'
 import {PlaylistContext} from '@components/PlaylistState'
+import {AudioPlayerContext} from '@components/AudioPlayer/AudioPlayerContext'
+
+const WaveformContainer = styled.div`
+	position: relative;
+	padding-bottom: ${p => p.theme.spacing.m};
+`
 
 const Waveform = styled.img`
 	display: block;
 	width: 100%;
-	padding-bottom: ${p => p.theme.spacing.m};
-	opacity: 0.333;
+`
+
+const WaveformShade = styled.div.attrs(p => ({
+	style: {
+		transform: `scaleX(${p.scale || 1})`,
+	},
+}))`
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	background-color: ${p => p.theme.background};
+	opacity: 0.666;
+	transform-origin: top right;
+
+	pointer-events: none;
+`
+
+const BigPlayButton = styled(ClearButton)`
+	transform: rotate(-1.5deg);
+
+	@media (max-width: ${p => p.theme.breakpoints.s}) {
+		margin-left: -${p => p.theme.spacing.l};
+	}
+`
+
+const PlaybackIcon = styled(PlayIcon)`
+	font-size: 30px;
+
+	@media (min-width: ${p => p.theme.breakpoints.m}) {
+		font-size: 45px;
+	}
 `
 
 const Content = styled.div`
@@ -36,14 +74,24 @@ const Content = styled.div`
 const SongDetails = styled.div`
 	flex-grow: 1;
 	flex-shrink: 1;
-	margin: 0 ${p => p.theme.spacing.m};
+	margin: 0 ${p => p.theme.spacing.s};
+
+	@media (min-width: ${p => p.theme.breakpoints.m}) {
+		margin: 0 ${p => p.theme.spacing.m};
+	}
 `
 
 const Features = styled.span`
 	opacity: 0.7;
 `
 
+const Topline = styled.p`
+	line-height: 0.9;
+	margin-bottom: ${p => p.theme.spacing.xxs};
+`
+
 const Subtitle = styled.p`
+	margin-top: ${p => p.theme.spacing.xxs};
 	font-size: ${p => p.theme.typeScale.xs};
 `
 
@@ -69,6 +117,10 @@ function getRandomColor() {
 
 function removeHash(hex) {
 	return hex.slice(1)
+}
+
+function getWaveformShadeScale(duration, currentTime) {
+	return 1 - duration / currentTime
 }
 
 function getImageLinkFromMp3Link(filename) {
@@ -97,6 +149,7 @@ function Artist({data, location}) {
 	const {audioCdnRoot} = site.siteMetadata
 	const {state: locState} = location
 	const trackContext = locState?.trackContext
+	const {player} = useContext(AudioPlayerContext)
 
 	const trackColor = trackContext?.playlist.color || getRandomColor()
 	const imageFilename = getImageLinkFromMp3Link(filename)
@@ -113,7 +166,7 @@ function Artist({data, location}) {
 		trackContext?.playlist || getSingleTrackPlaylist(track, trackColor)
 	const trackIndex = trackContext?.index || 0
 
-	function play() {
+	function playThisTrack() {
 		changeTrack(playlist, trackIndex)
 	}
 
@@ -123,20 +176,21 @@ function Artist({data, location}) {
 		<Layout pageTitle={`${title} - ${artistsList}${featureList}`}>
 			<Panel>
 				<Content>
-					<ClearButton
+					<BigPlayButton
 						smallPadding
-						dimmed={isCurrentTrack}
-						disabled={isCurrentTrack}
+						dimmed={isCurrentTrack && player.isPlaying}
 						color={trackColor}
-						onClick={play}
+						onClick={isCurrentTrack ? player.togglePlay : playThisTrack}
 					>
-						{isCurrentTrack ? <IsPlayingIcon size={45} /> : <PlayIcon />}
-					</ClearButton>
+						<PlaybackIcon
+							as={isCurrentTrack && player.isPlaying ? PauseIcon : undefined}
+						/>
+					</BigPlayButton>
 					<SongDetails>
-						<p>
+						<Topline>
 							{artistsList}
 							<Features>{featureList}</Features>
-						</p>
+						</Topline>
 						<Heading spacing={null}>{title}</Heading>
 						<Subtitle>
 							<Stack inline spacing="m">
@@ -170,12 +224,27 @@ function Artist({data, location}) {
 						<DownloadIcon spacingLeft="xxs" />
 					</DownloadLink>
 				</Content>
-				<Waveform
-					src={imageLink}
-					width={waveformWidth}
-					height={wavformHeight}
-					alt=""
-				/>
+				<WaveformContainer>
+					<Waveform
+						src={imageLink}
+						width={waveformWidth}
+						height={wavformHeight}
+						alt=""
+					/>
+					<WaveformShade
+						scale={
+							isCurrentTrack && player.currentTime > 1
+								? getWaveformShadeScale(player.currentTime, player.duration)
+								: 1
+						}
+					/>
+					{/* <progress
+						value={player.currentTime}
+						min="0"
+						max={player.duration}
+						style={{width: '100%'}}
+					/> */}
+				</WaveformContainer>
 			</Panel>
 		</Layout>
 	)

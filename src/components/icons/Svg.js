@@ -9,9 +9,11 @@ function getIconSize(sizeInPx) {
 	return `${sizeInPx}px`
 }
 
+const propsToBlock = ['size', 'scale', 'dimmed', 'spacingLeft', 'spacingRight']
+
 const Svg = styled.svg
 	.withConfig({
-		shouldForwardProp: prop => !['size', 'scale'].includes(prop),
+		shouldForwardProp: prop => !propsToBlock.includes(prop),
 	})
 	.attrs(p => ({
 		xmlns: 'http://www.w3.org/2000/svg',

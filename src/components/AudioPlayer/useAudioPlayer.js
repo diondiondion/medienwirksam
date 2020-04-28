@@ -1,9 +1,5 @@
 import {useEffect, useReducer, useRef} from 'react'
-import {useStorageReducer} from 'react-storage-hooks'
-
-function useLocalStorageReducer(...args) {
-	return useStorageReducer(localStorage, ...args)
-}
+import {useLocalStorageReducer} from '@utils/useLocalStorage'
 
 function useForceUpdate() {
 	const [, forceUpdate] = useReducer(e => e + 1, 0)

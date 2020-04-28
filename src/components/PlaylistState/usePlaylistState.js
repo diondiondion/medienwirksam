@@ -1,9 +1,5 @@
 import {useState} from 'react'
-import {useStorageState} from 'react-storage-hooks'
-
-function useLocalStorageState(...args) {
-	return useStorageState(localStorage, ...args)
-}
+import {useLocalStorageState} from '@utils/useLocalStorage'
 
 function usePlaylistState() {
 	const [playlist, setPlaylist] = useLocalStorageState(

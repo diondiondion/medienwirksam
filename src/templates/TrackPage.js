@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {graphql} from 'gatsby'
 
@@ -150,8 +150,9 @@ function Artist({data, location}) {
 	const {state: locState} = location
 	const trackContext = locState?.trackContext
 	const {player} = useContext(AudioPlayerContext)
+	const randomColor = useRef(getRandomColor())
 
-	const trackColor = trackContext?.playlist.color || getRandomColor()
+	const trackColor = trackContext?.playlist.color || randomColor.current
 	const imageFilename = getImageLinkFromMp3Link(filename)
 	const imageLink = `https://${audioCdnRoot}q_auto,h_${wavformHeight},w_${waveformWidth},fl_waveform,co_rgb:${removeHash(
 		trackColor

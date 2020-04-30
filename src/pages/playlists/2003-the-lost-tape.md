@@ -13,6 +13,9 @@ tracks:
   - Es könnte schöner sein
   - Oh mein Gott
   - Die Motive
+  - Alptraum
+  - Werft euer Hirn auf die Straße
+  - Quattro
 year: '2003'
 isFeatured: true
 ---

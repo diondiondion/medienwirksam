@@ -214,7 +214,9 @@ function Artist({data, location}) {
 											spacingRight="xs"
 											aria-label="Am Mikrofon:"
 										/>
-										{friendlyList(artists)}
+										{friendlyList(
+											artistsFeat ? [...artists, ...artistsFeat] : artists
+										)}
 									</>
 								)}
 							</Stack>

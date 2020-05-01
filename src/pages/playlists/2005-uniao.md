@@ -19,8 +19,8 @@ year: '2005'
 isFeatured: true
 ---
 
-Diese CD entstand im Rahmen des Projekts „20 Jahre Hip-Hop“ in Sao Paulo. Dabei kamen viele Hip Hop-Aktive aus verschiedenen Ländern wie z.B. Frankreich, USA, Deutschland, Paraguay und Brasilien zusammen.
+Diese CD entstand im Rahmen des Projekts „20 Jahre Hip-Hop“ in Sao Paulo. Dabei kamen viele Hip Hop-Aktive aus verschiedenen Ländern wie Frankreich, USA, Deutschland, Paraguay und Brasilien zusammen.
 
-Gemeinsam führten wir zahlreiche Workshops in den Bereichen Rap, DJing, Breakdance, Graffiti, Video und Producing durch. Diese Workshops fanden in verschiedenen Einrichtungen in Sao Paulo statt. Die Teilnehmer waren Jugendliche und junge Erwachsene aus der Umgebung.
+Gemeinsam führten wir Workshops in den Bereichen Rap, DJing, Breakdance, Graffiti, Video und Producing durch. Diese Workshops fanden in verschiedenen Einrichtungen in Sao Paulo statt. Die Teilnehmer waren Jugendliche und junge Erwachsene aus der Umgebung.
 
-Durch diese Begegnugen entstanden zahlreiche Kontakte zu Rappern mit denen wir in einigen chaotischen aber zugleich amüsanten Aufnahmesessions diese CD aufnahmen.
+Durch diese Begegnugen entstanden zahlreiche Kontakte zu Rappern, mit denen wir in einigen chaotischen, aber zugleich amüsanten Aufnahmesessions diese CD aufnahmen.

@@ -98,12 +98,24 @@ const BigPlayButton = styled(ClearButton)`
 	transform: rotate(-3deg);
 `
 
+const DescriptionWrapper = styled.div`
+	padding-top: ${p => p.theme.spacing.m};
+	padding-left: ${p => p.theme.spacing.l};
+	font-size: ${p => p.theme.typeScale.s};
+	line-height: 1.3;
+
+	& > p + p {
+		margin-top: ${p => p.theme.spacing.s};
+	}
+`
+
 function PlaylistPage({data}) {
 	const {currentTrack, changeTrack, playlist: currentPlaylist} = useContext(
 		PlaylistContext
 	)
 	const {imageCdnRoot} = data.site.siteMetadata
 	const {
+		html: playlistDescription,
 		frontmatter,
 		fields: {slug},
 	} = data.markdownRemark
@@ -195,6 +207,11 @@ function PlaylistPage({data}) {
 							color={color}
 							onPlay={playTrack}
 						/>
+						{playlistDescription && (
+							<DescriptionWrapper
+								dangerouslySetInnerHTML={{__html: playlistDescription}}
+							/>
+						)}
 					</Panel>
 				</PlaylistContainer>
 			</PageLayout>

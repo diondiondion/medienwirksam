@@ -8,7 +8,6 @@ tracks:
   - Releasedate
   - Wer Wind sät
   - WM-Song
-  - La Vida
   - Der Fehler im System
   - Es könnte schöner sein
   - Oh mein Gott

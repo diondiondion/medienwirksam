@@ -89,18 +89,51 @@ const Logo = styled.img`
 	height: auto;
 `
 
-function Layout({children, pageTitle, description = '', withoutLogo}) {
+function Layout({
+	children,
+	pageTitle,
+	description = '',
+	slug = '',
+	imageUrl,
+	withoutLogo,
+}) {
 	const {title: siteTitle} = useSiteMetaData()
+	const title = pageTitle ? `${pageTitle} - ${siteTitle}` : siteTitle
+	const fullUrl = `https://medienwirksam.de${slug}`
 
 	return (
 		<>
 			<Helmet
-				title={pageTitle ? `${pageTitle} - ${siteTitle}` : siteTitle}
+				title={title}
+				htmlAttributes={{
+					lang: 'de',
+				}}
 				meta={[
 					{name: 'description', content: description},
 					{name: 'keywords', content: ''},
 				]}
-			/>
+			>
+				<meta property="og:title" content={title} />
+				<meta property="og:type" content="website" />
+				<meta property="og:description" content={description} />
+				{imageUrl && <meta property="og:image" content={imageUrl} />}
+				{fullUrl && <meta property="og:url" content={fullUrl} />}
+				<meta itemProp="name" content={title} />
+				<meta itemProp="description" content={description} />
+				<meta name="twitter:card" content="summary" />
+				{imageUrl && (
+					<meta name="twitter:image" property="og:image" content={imageUrl} />
+				)}
+				{fullUrl && (
+					<meta name="twitter:url" property="og:url" content={fullUrl} />
+				)}
+				<meta name="twitter:title" property="og:title" content={title} />
+				<meta
+					name="twitter:description"
+					property="og:description"
+					content={description}
+				/>
+			</Helmet>
 			<GlobalStyles />
 			<PageWrapper>
 				{!withoutLogo && (
@@ -122,7 +155,9 @@ function Layout({children, pageTitle, description = '', withoutLogo}) {
 Layout.propTypes = {
 	children: PropTypes.node.isRequired,
 	description: PropTypes.string,
+	imageUrl: PropTypes.string,
 	pageTitle: PropTypes.string,
+	slug: PropTypes.string,
 	withoutLogo: PropTypes.bool,
 }
 

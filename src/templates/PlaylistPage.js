@@ -121,10 +121,11 @@ function PlaylistPage({data}) {
 		fields: {slug},
 	} = data.markdownRemark
 
+	const path = getPlaylistLink(data.markdownRemark)
 	const playlist = {
 		...frontmatter,
 		slug,
-		path: getPlaylistLink(data.markdownRemark),
+		path,
 	}
 	const {
 		title,
@@ -146,11 +147,13 @@ function PlaylistPage({data}) {
 		: null
 
 	const playlistArtists = friendlyList(artists)
-	console.log(descriptionExcerpt)
+
 	return (
 		<Layout
 			withoutLogo
 			pageTitle={`${title} - ${playlistArtists}`}
+			imageUrl={imageUrl}
+			slug={path}
 			description={descriptionExcerpt}
 		>
 			<PageLayout>

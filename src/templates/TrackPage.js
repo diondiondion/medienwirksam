@@ -154,7 +154,7 @@ function Artist({data, location}) {
 
 	const trackColor = trackContext?.playlist.color || randomColor.current
 	const imageFilename = getImageLinkFromMp3Link(filename)
-	const imageLink = `https://${audioCdnRoot}q_auto,h_${wavformHeight},w_${waveformWidth},fl_waveform,co_rgb:${removeHash(
+	const imageUrl = `https://${audioCdnRoot}q_auto,h_${wavformHeight},w_${waveformWidth},fl_waveform,co_rgb:${removeHash(
 		trackColor
 	)},b_transparent/${imageFilename}`
 	const mp3Link = `https://${audioCdnRoot}${filename}`
@@ -174,7 +174,11 @@ function Artist({data, location}) {
 	const isCurrentTrack = currentTrack?.title === title
 
 	return (
-		<Layout pageTitle={`${title} - ${artistsList}${featureList}`}>
+		<Layout
+			pageTitle={`${title} - ${artistsList}${featureList}`}
+			imageUrl={imageUrl}
+			slug={getTrackLink(track)}
+		>
 			<Panel>
 				<Content>
 					<BigPlayButton
@@ -229,7 +233,7 @@ function Artist({data, location}) {
 				</Content>
 				<WaveformContainer>
 					<Waveform
-						src={imageLink}
+						src={imageUrl}
 						width={waveformWidth}
 						height={wavformHeight}
 						alt=""

@@ -77,7 +77,7 @@ function Artist({data}) {
 	const {imageCdnRoot} = site.siteMetadata
 
 	return (
-		<Layout pageTitle={currentArtist.title}>
+		<Layout pageTitle={currentArtist.title} slug={getArtistLink(currentArtist)}>
 			<Filter artists={allArtists.nodes} selectedArtist={currentArtist.title} />
 			<PlaylistGrid as="main">
 				{!!playlists.edges.length && (

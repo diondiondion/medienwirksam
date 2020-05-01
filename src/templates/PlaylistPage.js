@@ -116,6 +116,7 @@ function PlaylistPage({data}) {
 	const {imageCdnRoot} = data.site.siteMetadata
 	const {
 		html: playlistDescription,
+		excerpt: descriptionExcerpt,
 		frontmatter,
 		fields: {slug},
 	} = data.markdownRemark
@@ -145,9 +146,13 @@ function PlaylistPage({data}) {
 		: null
 
 	const playlistArtists = friendlyList(artists)
-
+	console.log(descriptionExcerpt)
 	return (
-		<Layout withoutLogo pageTitle={`${title} - ${playlistArtists}`}>
+		<Layout
+			withoutLogo
+			pageTitle={`${title} - ${playlistArtists}`}
+			description={descriptionExcerpt}
+		>
 			<PageLayout>
 				<PlaylistInfo>
 					<BackLinkWrapper>
@@ -232,6 +237,7 @@ export const query = graphql`
 		}
 		markdownRemark(fields: {slug: {eq: $slug}}) {
 			html
+			excerpt
 			fields {
 				slug
 			}

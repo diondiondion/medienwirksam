@@ -8,6 +8,7 @@ import friendlyList from '@utils/friendlyList'
 import {getTrackLink} from '@utils/getLink'
 import useSiteMetaData from '@utils/useSiteMetaData'
 import formatTime from '@utils/formatTime'
+import useHasMounted from '@utils/useHasMounted'
 
 import theme from '@style/theme'
 import Slider from '@components/Slider'
@@ -303,6 +304,8 @@ function AudioPlayer() {
 			goToPrevTrack()
 		}
 	}
+
+	if (!useHasMounted()) return null
 
 	return (
 		<ThemeSection color={playlistColor}>

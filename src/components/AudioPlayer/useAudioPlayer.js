@@ -55,7 +55,7 @@ function volumeReducer(volume, action) {
 	throw new Error()
 }
 
-function useAudioPlayer(ref) {
+function useAudioPlayer(audio) {
 	const [volume, dispatchVolume] = useLocalStorageReducer(
 		'medienwirksam-volume',
 		volumeReducer,
@@ -65,17 +65,15 @@ function useAudioPlayer(ref) {
 
 	useEffect(
 		function syncVolume() {
-			const audio = ref.current
 			if (audio) {
 				audio.volume = volume.current
 			}
 		},
-		[ref, volume]
+		[audio, volume]
 	)
 
 	useEffect(
 		function addListeners() {
-			const audio = ref.current
 			if (audio) {
 				audio.addEventListener('play', forceUpdate)
 				audio.addEventListener('pause', forceUpdate)
@@ -100,10 +98,9 @@ function useAudioPlayer(ref) {
 				}
 			}
 		},
-		[ref, forceUpdate]
+		[audio, forceUpdate]
 	)
 
-	const audio = ref.current
 	const isPlaying = audio && !(audio.paused || audio.ended)
 	const isMuted = Number(volume.current) === 0
 	const hasMetadata = audio && !isNaN(audio.duration)
@@ -154,6 +151,7 @@ function useAudioPlayer(ref) {
 	}
 
 	const playerObject = {
+		hasLoaded: hasMetadata,
 		isPlaying,
 		isMuted,
 		duration: hasMetadata ? audio.duration : 0,

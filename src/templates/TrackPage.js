@@ -4,6 +4,7 @@ import {graphql} from 'gatsby'
 
 import {getTrackLink} from '@utils/getLink'
 import friendlyList from '@utils/friendlyList'
+import useHasMounted from '@utils/useHasMounted'
 import Layout from '@components/Layout'
 import Heading from '@components/Heading'
 import Panel from '@components/Panel'
@@ -151,6 +152,7 @@ function Artist({data, location}) {
 	const trackContext = locState?.trackContext
 	const {player} = useContext(AudioPlayerContext)
 	const randomColor = useRef(getRandomColor())
+	const hasMounted = useHasMounted()
 
 	const trackColor = trackContext?.playlist.color || randomColor.current
 	const imageFilename = getImageLinkFromMp3Link(filename)
@@ -184,9 +186,12 @@ function Artist({data, location}) {
 				<Content>
 					<BigPlayButton
 						smallPadding
-						dimmed={isCurrentTrack && player.isPlaying}
+						disabled={!hasMounted}
+						dimmed={!hasMounted}
 						color={trackColor}
 						onClick={isCurrentTrack ? player.togglePlay : playThisTrack}
+						aria-label="Abspielen"
+						aria-pressed={isCurrentTrack && player.isPlaying}
 					>
 						<PlaybackIcon
 							as={isCurrentTrack && player.isPlaying ? PauseIcon : undefined}
@@ -246,12 +251,6 @@ function Artist({data, location}) {
 								: 1
 						}
 					/>
-					{/* <progress
-						value={player.currentTime}
-						min="0"
-						max={player.duration}
-						style={{width: '100%'}}
-					/> */}
 				</WaveformContainer>
 			</Panel>
 		</Layout>

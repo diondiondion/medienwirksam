@@ -1,16 +1,6 @@
 import {useStorageReducer, useStorageState} from 'react-storage-hooks'
 
-function hasLocalStorage() {
-	try {
-		if (typeof localStorage === 'undefined') {
-			return false
-		}
-	} catch (err) {
-		return false
-	}
-
-	return true
-}
+import useHasMounted from '@utils/useHasMounted'
 
 const dummyStorage = {
 	getItem: () => null,
@@ -19,17 +9,15 @@ const dummyStorage = {
 }
 
 function useLocalStorageReducer(...args) {
-	return useStorageReducer(
-		hasLocalStorage() ? localStorage : dummyStorage,
-		...args
-	)
+	const hasMounted = useHasMounted()
+
+	return useStorageReducer(hasMounted ? localStorage : dummyStorage, ...args)
 }
 
 function useLocalStorageState(...args) {
-	return useStorageState(
-		hasLocalStorage() ? localStorage : dummyStorage,
-		...args
-	)
+	const hasMounted = useHasMounted()
+
+	return useStorageState(hasMounted ? localStorage : dummyStorage, ...args)
 }
 
 export {useLocalStorageReducer, useLocalStorageState}

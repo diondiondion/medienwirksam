@@ -1,10 +1,16 @@
 import React from 'react'
 import {graphql} from 'gatsby'
+import styled from 'styled-components'
 
 import Layout from '@components/Layout'
 import PlaylistTile, {PlaylistGrid} from '@components/PlaylistTile'
 import Filter from '@components/Filter'
 import Heading from '@components/Heading'
+
+const HomepageHeading = styled(Heading)`
+	grid-column: 1 / -1;
+	margin-bottom: -2rem;
+`
 
 function IndexPage({data}) {
 	const {playlists, artists, site} = data
@@ -14,8 +20,8 @@ function IndexPage({data}) {
 		<Layout>
 			<Filter artists={artists.nodes} />
 			<main>
-				<Heading as="h2">Alben</Heading>
 				<PlaylistGrid>
+					<HomepageHeading as="h2">Alben</HomepageHeading>
 					{playlists.edges.map(({node: playlist}) => (
 						<PlaylistTile
 							key={playlist.id}

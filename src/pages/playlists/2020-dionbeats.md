@@ -5,7 +5,7 @@ frontCover: dionbeats-2020/font-cover.png
 artists:
   - Dion
 tracks:
-  - Rose Hip (Instrumental)
   - The Chase (Instrumental)
+  - Rose Hip (Instrumental)
 year: '2020'
 ---

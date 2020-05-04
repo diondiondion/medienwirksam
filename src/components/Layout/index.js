@@ -10,7 +10,7 @@ import theme from '@style/theme'
 import logoImage from '@assets/images/logo.svg'
 import backgroundImage from '@assets/images/background-xl.jpg'
 
-import useSiteMetaData from '@utils/useSiteMetaData'
+import {PAGE_TITLE} from '@constants'
 
 import 'focus-visible'
 
@@ -93,8 +93,7 @@ function Layout({
 	imageUrl,
 	withoutLogo,
 }) {
-	const {title: siteTitle} = useSiteMetaData()
-	const title = pageTitle ? `${pageTitle} - ${siteTitle}` : siteTitle
+	const title = pageTitle ? `${pageTitle} - ${PAGE_TITLE}` : PAGE_TITLE
 	const fullUrl = `https://medienwirksam.de${slug}`
 
 	return (

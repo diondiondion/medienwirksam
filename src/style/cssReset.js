@@ -2,6 +2,7 @@ import {css} from 'styled-components'
 
 const cssReset = css`
 	html {
+		--reach-menu-button: 1;
 		box-sizing: border-box;
 	}
 	*,

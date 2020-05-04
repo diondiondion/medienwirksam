@@ -14,6 +14,7 @@ import BackLink from '@components/BackLink'
 import Playlist from '@components/Playlist'
 import Panel from '@components/Panel'
 import {PlaylistContext} from '@components/PlaylistState'
+import {CDN_ROOT_IMAGE} from '@constants'
 
 const fadeInFromLeft = keyframes`
 	from {
@@ -113,7 +114,6 @@ function PlaylistPage({data}) {
 	const {currentTrack, changeTrack, playlist: currentPlaylist} = useContext(
 		PlaylistContext
 	)
-	const {imageCdnRoot} = data.site.siteMetadata
 	const {
 		html: playlistDescription,
 		excerpt: descriptionExcerpt,
@@ -143,7 +143,7 @@ function PlaylistPage({data}) {
 	}
 
 	const imageUrl = frontCover
-		? `https://${imageCdnRoot}w_340,h_340,c_fill/${frontCover}`
+		? `https://${CDN_ROOT_IMAGE}w_340,h_340,c_fill/${frontCover}`
 		: null
 
 	const playlistArtists = friendlyList(artists)
@@ -231,13 +231,6 @@ export default PlaylistPage
 
 export const query = graphql`
 	query($slug: String!) {
-		site {
-			siteMetadata {
-				audioCdnRoot
-				imageCdnRoot
-				title
-			}
-		}
 		markdownRemark(fields: {slug: {eq: $slug}}) {
 			html
 			excerpt

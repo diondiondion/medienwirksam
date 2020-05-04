@@ -1,13 +1,31 @@
 import React, {useState, useCallback, useRef, useEffect} from 'react'
 import {Link} from 'gatsby'
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 import {Flipper, Flipped} from 'react-flip-toolkit'
 import invert from 'invert-color'
 
 import {getTrackLink} from '@utils/getLink'
 import friendlyList from '@utils/friendlyList'
-import {IsPlayingIcon, WaveformIcon} from '@components/icons'
+import {
+	DownloadIcon,
+	IsPlayingIcon,
+	MoreIcon,
+	WaveformIcon,
+} from '@components/icons'
 import TextLink from '@components/TextLink'
+import VisuallyHidden from '@components/VisuallyHidden'
+import {buttonReset} from '@style/mixins'
+import {
+	Menu,
+	MenuList as ReachMenuList,
+	MenuButton as ReachMenuButton,
+	MenuLink as ReachMenuLink,
+} from '@reach/menu-button'
+import {CDN_ROOT_AUDIO} from '@constants'
+
+const filterStyleProps = {
+	shouldForwardProp: prop => !['color', 'isPlaying'].includes(prop),
+}
 
 const Tracklist = styled.ol.attrs({
 	role: 'list',
@@ -19,9 +37,16 @@ const Tracklist = styled.ol.attrs({
 const TracklistItem = styled.li.attrs({
 	role: 'listitem',
 })`
+	position: relative;
+	z-index: 0;
+
 	display: flex;
 	justify-content: space-between;
 	white-space: nowrap;
+
+	color: ${p => (p.isPlaying ? invert(p.contrastColor, true) : 'inherit')};
+	background: transparent;
+	font-weight: ${p => (p.isPlaying ? 'bold' : 'normal')};
 
 	list-style: none;
 	counter-increment: track-counter;
@@ -34,14 +59,11 @@ const TracklistItem = styled.li.attrs({
 `
 
 const TrackNameWrapper = styled.span`
-	position: relative;
 	flex: 1 1 0;
 	min-width: 0;
 `
 
 const TrackButton = styled.button.attrs({type: 'button'})`
-	position: relative;
-	z-index: 0;
 	display: inline-block;
 	vertical-align: middle;
 	max-width: 100%;
@@ -52,11 +74,10 @@ const TrackButton = styled.button.attrs({type: 'button'})`
 	cursor: pointer;
 
 	font: inherit;
-	font-weight: ${p => (p.isPlaying ? 'bold' : 'normal')};
 	text-decoration: none;
 	text-align: left;
 
-	color: ${p => (p.isPlaying ? invert(p.contrastColor, true) : 'inherit')};
+	color: inherit;
 	background-color: transparent;
 
 	&.focus-visible {
@@ -81,35 +102,78 @@ const TrackTitle = styled.span`
 	}
 `
 
-const TrackHighlight = styled.span`
+const TrackHighlight = styled.span.withConfig(filterStyleProps)`
 	position: absolute;
 	top: 0;
 	left: -${p => p.theme.spacing.xl};
 	right: -${p => p.theme.spacing.s};
 	bottom: 0;
-	display: flex;
-	align-items: center;
-	padding-left: ${p => p.theme.spacing.s};
 	z-index: -1;
+
+	display: flex;
+	padding-left: ${p => p.theme.spacing.s};
+	align-items: center;
+
+	color: ${p => invert(p.color, true)};
 	background-color: ${p => p.color};
-	transform: rotate(${(Math.random() * 3 - 1.5).toFixed(2)}deg);
+
+	transform: rotate(${(Math.random() * 1.6 - 0.8).toFixed(2)}deg);
 `
 
-const LinkToTrackPage = styled(TextLink)`
+const MenuButton = styled(ReachMenuButton).withConfig(filterStyleProps)`
+	${buttonReset}
+
 	display: flex;
 	align-items: center;
-	margin-left: ${p => p.theme.spacing.m};
-	margin-right: -${p => p.theme.spacing.xs};
+	margin-left: ${p => p.theme.spacing.xs};
+
 	font-size: ${p => p.theme.typeScale.xxs};
-	opacity: 0;
+	opacity: 0.3;
 	transition: opacity 250ms ease-in-out;
 
-	&:focus,
-	${TracklistItem}:hover & {
+	${p =>
+		p.isPlaying &&
+		`
+		opacity: 1;
+	`}
+
+	&:focus, &:hover, &[aria-expanded="true"] {
 		opacity: 1;
 	}
-	${TracklistItem}:focus-within & {
-		opacity: 1;
+`
+
+const fadeInFromTop = keyframes`
+	from {
+		opacity: 0;
+		transform: translateY(-5px) rotate(0deg);
+	}
+`
+
+const MenuList = styled(ReachMenuList).withConfig(filterStyleProps)`
+	padding: ${p => p.theme.spacing.xs} 0;
+
+	color: ${p => invert(p.isPlaying ? p.color : p.theme.panel, true)};
+	background-color: ${p => (p.isPlaying ? p.color : p.theme.panel)};
+
+	box-shadow: 0 0 30px
+		${p => invert(p.isPlaying ? p.color : p.theme.panel, true)}2b;
+
+	transform: rotate(${(Math.random() * 1.6 - 0.8).toFixed(2)}deg);
+	animation: ${fadeInFromTop} 250ms backwards ease-out;
+`
+
+const MenuLink = styled(ReachMenuLink).withConfig(filterStyleProps)`
+	display: block;
+	padding: ${p => p.theme.spacing.xs} ${p => p.theme.spacing.s};
+
+	color: inherit;
+	font-size: ${p => p.theme.typeScale.xs};
+	text-decoration: none;
+
+	&[data-selected] {
+		text-decoration: underline;
+		color: ${p => invert(p.color, true)};
+		background-color: ${p => (p.isPlaying ? 'rgba(0 0 0 / 15%)' : p.color)};
 	}
 `
 
@@ -182,17 +246,20 @@ function Playlist({
 
 						const isPlaying = currentTrack && currentTrack.title === track.title
 						return (
-							<TracklistItem key={track.title} isHidden={shouldTrackBeHidden}>
-								<TrackNameWrapper isSelected={isPlaying} selectionColor={color}>
+							<TracklistItem
+								key={track.title}
+								isHidden={shouldTrackBeHidden}
+								isPlaying={isPlaying}
+								contrastColor={color}
+							>
+								<TrackNameWrapper>
 									<TrackButton
 										ref={
 											shouldTrackBeFocusedAfterExpanding
 												? firstExpandedTrackRef
 												: undefined
 										}
-										isPlaying={isPlaying}
 										onClick={e => playTrack(e, index)}
-										contrastColor={color}
 									>
 										<TrackTitle>
 											{track.title}{' '}
@@ -207,28 +274,47 @@ function Playlist({
 												)}
 											</span>
 										</TrackTitle>
-										{isPlaying && (
-											<Flipped flipId="trackHighlight">
-												<TrackHighlight key={track.title} color={color}>
-													<IsPlayingIcon scale={0.75} />
-												</TrackHighlight>
-											</Flipped>
-										)}
 									</TrackButton>
 								</TrackNameWrapper>
-								<LinkToTrackPage
-									as={Link}
-									to={getTrackLink(track)}
-									state={{
-										trackContext: {
-											playlist: data,
-											index,
-										},
-									}}
-								>
-									Info
-									<WaveformIcon scale={0.666} spacingLeft="xxs" />
-								</LinkToTrackPage>
+								<Menu>
+									<MenuButton isPlaying={isPlaying}>
+										<VisuallyHidden>Mehr Optionen</VisuallyHidden>
+										<MoreIcon scale={0.666} />
+									</MenuButton>
+									<MenuList color={color} isPlaying={isPlaying}>
+										<MenuLink
+											forwardedAs={Link}
+											to={getTrackLink(track)}
+											state={{
+												trackContext: {
+													playlist: data,
+													index,
+												},
+											}}
+											isPlaying={isPlaying}
+											color={color}
+										>
+											<WaveformIcon scale={0.666} spacingRight="xs" />
+											Track Info
+										</MenuLink>
+										<MenuLink
+											download
+											href={`https://${CDN_ROOT_AUDIO}${track.filename}`}
+											isPlaying={isPlaying}
+											color={color}
+										>
+											<DownloadIcon scale={0.666} spacingRight="xs" />
+											Mp3 runterladen
+										</MenuLink>
+									</MenuList>
+								</Menu>
+								{isPlaying && (
+									<Flipped flipId="trackHighlight">
+										<TrackHighlight color={color}>
+											<IsPlayingIcon scale={0.75} />
+										</TrackHighlight>
+									</Flipped>
+								)}
 							</TracklistItem>
 						)
 					})}

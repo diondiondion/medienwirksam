@@ -72,9 +72,7 @@ function Artist({data}) {
 		tracks,
 		featureTracks,
 		producedTracks,
-		site,
 	} = data
-	const {imageCdnRoot} = site.siteMetadata
 
 	return (
 		<Layout pageTitle={currentArtist.title} slug={getArtistLink(currentArtist)}>
@@ -85,11 +83,7 @@ function Artist({data}) {
 						<Heading as="h2">Alben</Heading>
 						<PlaylistGrid>
 							{playlists.edges.map(({node: playlist}) => (
-								<PlaylistTile
-									key={playlist.id}
-									playlist={playlist}
-									imageCdnRoot={imageCdnRoot}
-								/>
+								<PlaylistTile key={playlist.id} playlist={playlist} />
 							))}
 						</PlaylistGrid>
 					</div>
@@ -128,13 +122,6 @@ export default Artist
 
 export const query = graphql`
 	query($slug: String!, $artistFilter: [String!]) {
-		site {
-			siteMetadata {
-				audioCdnRoot
-				imageCdnRoot
-				title
-			}
-		}
 		currentArtist: artistsYaml(fields: {slug: {eq: $slug}}) {
 			title
 			fields {

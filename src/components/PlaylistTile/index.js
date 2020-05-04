@@ -9,6 +9,7 @@ import TitleLabel from '@components/TitleLabel'
 import {PlaylistContext} from '@components/PlaylistState'
 import {IsPlayingIcon} from '@components/icons'
 import PlaylistGrid from './PlaylistGrid'
+import {CDN_ROOT_IMAGE} from '@constants'
 
 const Wrapper = styled.article`
 	position: relative;
@@ -66,7 +67,7 @@ const PlayingIndicator = styled(IsPlayingIcon)`
 	vertical-align: -${p => p.theme.spacing.xxs};
 `
 
-function PlaylistTile({playlist, link, imageCdnRoot}) {
+function PlaylistTile({playlist, link}) {
 	const {
 		frontmatter: {title, artists, year, tracks, frontCover, color},
 		fields: {slug},
@@ -74,7 +75,7 @@ function PlaylistTile({playlist, link, imageCdnRoot}) {
 	const playlistLink = link || getPlaylistLink(playlist)
 
 	const imageUrl = frontCover
-		? `https://${imageCdnRoot}w_340,h_340,c_fill/${frontCover}`
+		? `https://${CDN_ROOT_IMAGE}w_340,h_340,c_fill/${frontCover}`
 		: null
 
 	const {playlist: playingPlaylist} = useContext(PlaylistContext)

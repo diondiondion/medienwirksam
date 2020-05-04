@@ -13,8 +13,7 @@ const HomepageHeading = styled(Heading)`
 `
 
 function IndexPage({data}) {
-	const {playlists, artists, site} = data
-	const {imageCdnRoot} = site.siteMetadata
+	const {playlists, artists} = data
 
 	return (
 		<Layout>
@@ -23,11 +22,7 @@ function IndexPage({data}) {
 				<PlaylistGrid>
 					<HomepageHeading as="h2">Alben</HomepageHeading>
 					{playlists.edges.map(({node: playlist}) => (
-						<PlaylistTile
-							key={playlist.id}
-							playlist={playlist}
-							imageCdnRoot={imageCdnRoot}
-						/>
+						<PlaylistTile key={playlist.id} playlist={playlist} />
 					))}
 				</PlaylistGrid>
 			</main>
@@ -39,13 +34,6 @@ export default IndexPage
 
 export const query = graphql`
 	query {
-		site {
-			siteMetadata {
-				title
-				audioCdnRoot
-				imageCdnRoot
-			}
-		}
 		artists: allArtistsYaml(sort: {fields: title, order: ASC}) {
 			nodes {
 				title

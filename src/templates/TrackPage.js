@@ -20,6 +20,7 @@ import {
 } from '@components/icons'
 import {PlaylistContext} from '@components/PlaylistState'
 import {AudioPlayerContext} from '@components/AudioPlayer/AudioPlayerContext'
+import {CDN_ROOT_AUDIO} from '@constants'
 
 const WaveformContainer = styled.div`
 	position: relative;
@@ -144,10 +145,8 @@ function getSingleTrackPlaylist(track, color) {
 	}
 }
 
-function Artist({data, location}) {
-	const {track, site} = data
+function Artist({data: {track}, location}) {
 	const {title, artists, artistsAlias, artistsFeat, producers, filename} = track
-	const {audioCdnRoot} = site.siteMetadata
 	const {state: locState} = location
 	const trackContext = locState?.trackContext
 	const {player} = useContext(AudioPlayerContext)
@@ -156,11 +155,11 @@ function Artist({data, location}) {
 
 	const trackColor = trackContext?.playlist.color || randomColor.current
 	const imageFilename = getImageLinkFromMp3Link(filename)
-	const imageUrl = `https://${audioCdnRoot}q_auto,h_${wavformHeight},w_${waveformWidth},fl_waveform,co_rgb:${removeHash(
+	const imageUrl = `https://${CDN_ROOT_AUDIO}q_auto,h_${wavformHeight},w_${waveformWidth},fl_waveform,co_rgb:${removeHash(
 		trackColor
 	)},b_transparent/${imageFilename}`
-	const seoImageUrl = `https://${audioCdnRoot}q_auto,h_512,w_512,fl_waveform,co_rgb:a6a8b6,b_rgb:030926/${imageFilename}`
-	const mp3Link = `https://${audioCdnRoot}${filename}`
+	const seoImageUrl = `https://${CDN_ROOT_AUDIO}q_auto,h_512,w_512,fl_waveform,co_rgb:a6a8b6,b_rgb:030926/${imageFilename}`
+	const mp3Link = `https://${CDN_ROOT_AUDIO}${filename}`
 
 	const artistsList = artistsAlias || friendlyList(artists)
 	const featureList = artistsFeat ? ` ft. ${friendlyList(artistsFeat)}` : ''
@@ -261,13 +260,6 @@ export default Artist
 
 export const query = graphql`
 	query($slug: String!) {
-		site {
-			siteMetadata {
-				audioCdnRoot
-				imageCdnRoot
-				title
-			}
-		}
 		track: tracksYaml(fields: {slug: {eq: $slug}}) {
 			id
 			title

@@ -4,6 +4,7 @@
 	"version": "1.0.0",
 	"author": "Dion Dajka <diondiondion@gmail.com>",
 	"dependencies": {
+		"@reach/menu-button": "^0.10.1",
 		"babel-plugin-styled-components": "^1.10.0",
 		"focus-visible": "^5.0.2",
 		"gatsby": "^2.20.2",

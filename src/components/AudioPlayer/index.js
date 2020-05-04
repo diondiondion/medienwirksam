@@ -6,7 +6,6 @@ import {useMatch} from '@reach/router'
 import {getRgb} from '@utils/hexToRgb'
 import friendlyList from '@utils/friendlyList'
 import {getTrackLink} from '@utils/getLink'
-import useSiteMetaData from '@utils/useSiteMetaData'
 import formatTime from '@utils/formatTime'
 import useHasMounted from '@utils/useHasMounted'
 
@@ -24,6 +23,7 @@ import {
 	MutedIcon,
 } from '@components/icons'
 import {PlaylistContext} from '@components/PlaylistState'
+import {CDN_ROOT_AUDIO, CDN_ROOT_IMAGE} from '@constants'
 
 import {AudioPlayerContext} from './AudioPlayerContext'
 import useMediaSession from './useMediaSession'
@@ -271,7 +271,6 @@ function AudioPlayer() {
 	const [isMobileDrawerOpen, setMobileDrawerOpenState] = useState(false)
 	const {autoPlay, currentIndex} = useContext(PlaylistContext)
 	const {audioRef, player} = useContext(AudioPlayerContext)
-	const {audioCdnRoot, imageCdnRoot} = useSiteMetaData()
 	const {currentTrack, playlist, goToNextTrack, goToPrevTrack} = useContext(
 		PlaylistContext
 	)
@@ -281,11 +280,11 @@ function AudioPlayer() {
 	)
 
 	const src = currentTrack
-		? `https://${audioCdnRoot}${currentTrack.filename}`
+		? `https://${CDN_ROOT_AUDIO}${currentTrack.filename}`
 		: ''
 
 	const imageSrc = playlist?.frontCover
-		? `https://${imageCdnRoot}w_340/${playlist.frontCover}`
+		? `https://${CDN_ROOT_IMAGE}w_340/${playlist.frontCover}`
 		: null
 
 	useMediaSession({

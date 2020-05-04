@@ -1,10 +1,4 @@
 module.exports = {
-	siteMetadata: {
-		title: 'Medienwirksam',
-		audioCdnRoot: 'res.cloudinary.com/medienwirksam/video/upload/',
-		imageCdnRoot: 'res.cloudinary.com/medienwirksam/image/upload/',
-		altCdnRoot: 'medienwirksam-df6d.kxcdn.com',
-	},
 	mapping: {
 		'MarkdownRemark.frontmatter.tracks': `TracksYaml.title`,
 	},
@@ -25,6 +19,7 @@ module.exports = {
 			resolve: `gatsby-plugin-alias-imports`,
 			options: {
 				alias: {
+					'@constants': './src/constants.js',
 					'@assets': './src/assets',
 					'@components': './src/components',
 					'@pages': './src/pages',

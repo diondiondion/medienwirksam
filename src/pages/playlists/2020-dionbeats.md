@@ -8,5 +8,6 @@ tracks:
   - The Chase (Instrumental)
   - Rose Hip (Instrumental)
   - Spielplatz (Instrumental)
+  - Hornet (Instrumental)
 year: '2020'
 ---

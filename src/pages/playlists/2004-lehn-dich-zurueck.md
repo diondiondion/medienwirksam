@@ -4,7 +4,7 @@ frontCover: lehn-dich-zurueck/front-cover.jpg
 downloadLink: lehn-dich-zurueck.zip
 color: '#4b683e'
 artists:
-  - Reefer Maxxx
+  - Master Maxxx
 tracks:
   - Opener
   - Der Postbote

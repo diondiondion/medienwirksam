@@ -105,9 +105,14 @@ const DescriptionWrapper = styled.div`
 	font-size: ${p => p.theme.typeScale.s};
 	line-height: 1.3;
 
-	& > p + p {
+	& p + p {
 		margin-top: ${p => p.theme.spacing.s};
 	}
+`
+
+const DescriptionHeading = styled.h3`
+	margin: 0 0 ${p => p.theme.spacing.xs} 0;
+	font-weight: bold;
 `
 
 function PlaylistPage({data}) {
@@ -184,7 +189,7 @@ function PlaylistPage({data}) {
 							<br />
 							{year}
 							<br />
-							{tracks.length} Tracks
+							{tracks.length} Track{tracks.length === 1 ? '' : 's'}
 						</Metadata>
 					</Flipped>
 				</PlaylistInfo>
@@ -216,9 +221,10 @@ function PlaylistPage({data}) {
 							onPlay={playTrack}
 						/>
 						{playlistDescription && (
-							<DescriptionWrapper
-								dangerouslySetInnerHTML={{__html: playlistDescription}}
-							/>
+							<DescriptionWrapper>
+								<DescriptionHeading>Album-Info</DescriptionHeading>
+								<div dangerouslySetInnerHTML={{__html: playlistDescription}} />
+							</DescriptionWrapper>
 						)}
 					</Panel>
 				</PlaylistContainer>

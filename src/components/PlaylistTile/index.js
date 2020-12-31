@@ -105,7 +105,7 @@ function PlaylistTile({playlist, link}) {
 						<Dimmed>
 							{year}
 							<br />
-							{tracks.length} tracks
+							{tracks.length} Track{tracks.length === 1 ? '' : 's'}
 							<br />
 						</Dimmed>
 					</Metadata>

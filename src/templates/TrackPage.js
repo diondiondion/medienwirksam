@@ -1,4 +1,4 @@
-import React, {useContext, useRef} from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 import {graphql} from 'gatsby'
 
@@ -108,15 +108,6 @@ const DownloadLink = styled(TextLink).attrs({download: true})`
 	}
 `
 
-function getRandomColor() {
-	const letters = '0123456789ABCDEF'
-	let color = '#'
-	for (let i = 0; i < 6; i++) {
-		color += letters[Math.floor(Math.random() * 16)]
-	}
-	return color
-}
-
 function removeHash(hex) {
 	return hex.slice(1)
 }
@@ -150,10 +141,10 @@ function Artist({data: {track}, location}) {
 	const {state: locState} = location
 	const trackContext = locState?.trackContext
 	const {player} = useContext(AudioPlayerContext)
-	const randomColor = useRef(getRandomColor())
 	const hasMounted = useHasMounted()
 
-	const trackColor = trackContext?.playlist.color || randomColor.current
+	const {randomColor} = track.fields
+	const trackColor = trackContext?.playlist.color || randomColor
 	const imageFilename = getImageLinkFromMp3Link(filename)
 	const imageUrl = `https://${CDN_ROOT_AUDIO}q_auto,h_${wavformHeight},w_${waveformWidth},fl_waveform,co_rgb:${removeHash(
 		trackColor
@@ -270,6 +261,7 @@ export const query = graphql`
 			filename
 			fields {
 				slug
+				randomColor
 			}
 		}
 	}

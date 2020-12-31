@@ -1,7 +1,7 @@
 import React, {useContext} from 'react'
 import styled from 'styled-components'
 import {Link} from 'gatsby'
-import {Flipped} from 'react-flip-toolkit'
+import {motion} from 'framer-motion'
 
 import {getPlaylistLink} from '@utils/getLink'
 import friendlyList from '@utils/friendlyList'
@@ -18,7 +18,7 @@ const Wrapper = styled.article`
 	width: 100%;
 `
 
-const ImageContainer = styled.div`
+const ImageContainer = styled(motion.div)`
 	flex: 1 0 140px;
 
 	@media (min-width: ${p => p.theme.breakpoints.m}) {
@@ -31,11 +31,11 @@ const Info = styled.div`
 	padding-left: 1.25rem;
 `
 
-const Metadata = styled.div`
+const Metadata = styled(motion.div)`
 	display: inline-block;
 `
 
-const Heading = styled.header`
+const Header = styled.header`
 	margin-top: 1rem;
 	margin-left: -2.5rem;
 	margin-bottom: 1rem;
@@ -84,32 +84,30 @@ function PlaylistTile({playlist, link}) {
 
 	return (
 		<Wrapper>
-			<Flipped stagger flipId={`playlistImage-${slug}`}>
-				<ImageContainer>
-					{imageUrl && <img src={imageUrl} alt="" width="235" height="235" />}
-				</ImageContainer>
-			</Flipped>
+			<ImageContainer layoutId={`playlistImage-${slug}`} initial={false}>
+				{imageUrl && <img src={imageUrl} alt="" width="235" height="235" />}
+			</ImageContainer>
 			<Info>
-				<Heading>
-					<Flipped stagger flipId={`playlistTitle-${slug}`}>
-						<TitleLabel color={color}>
-							{isPlaying && <PlayingIndicator />}
-							{title}
-						</TitleLabel>
-					</Flipped>
-				</Heading>
-				<Flipped stagger flipId={`playlistInfo-${slug}`}>
-					<Metadata>
-						<strong>{friendlyList(artists)}</strong>
+				<Header
+					as={motion.header}
+					layoutId={`playlistTitle-${slug}`}
+					initial={false}
+				>
+					<TitleLabel color={color}>
+						{isPlaying && <PlayingIndicator />}
+						{title}
+					</TitleLabel>
+				</Header>
+				<Metadata layoutId={`playlistInfo-${slug}`} initial={false}>
+					<strong>{friendlyList(artists)}</strong>
+					<br />
+					<Dimmed>
+						{year}
 						<br />
-						<Dimmed>
-							{year}
-							<br />
-							{tracks.length} Track{tracks.length === 1 ? '' : 's'}
-							<br />
-						</Dimmed>
-					</Metadata>
-				</Flipped>
+						{tracks.length} Track{tracks.length === 1 ? '' : 's'}
+						<br />
+					</Dimmed>
+				</Metadata>
 				<CoverLink to={playlistLink}>Anhören</CoverLink>
 			</Info>
 		</Wrapper>

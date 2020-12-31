@@ -1,7 +1,7 @@
 import React, {useContext} from 'react'
 import {graphql} from 'gatsby'
 import styled, {keyframes} from 'styled-components'
-import {Flipped} from 'react-flip-toolkit'
+import {motion} from 'framer-motion'
 
 import {getPlaylistLink} from '@utils/getLink'
 import friendlyList from '@utils/friendlyList'
@@ -30,17 +30,9 @@ const fadeInFromTop = keyframes`
 	}
 `
 
-const fadeInFromRight = keyframes`
-	from {
-		opacity: 0;
-		transform: translateX(50px);
-	}
-`
-
-const BackLinkWrapper = styled.span`
+const BackLinkWrapper = styled(motion.span)`
 	display: block;
 	margin-bottom: ${p => p.theme.spacing.m};
-	animation: ${fadeInFromRight} 250ms backwards ease-out 250ms;
 `
 
 const PageLayout = styled.main`
@@ -68,7 +60,7 @@ const Header = styled.header`
 	width: 80%;
 `
 
-const Metadata = styled.p`
+const Metadata = styled(motion.p)`
 	display: inline-block;
 	margin: ${p => p.theme.spacing.m} ${p => p.theme.spacing.s};
 `
@@ -163,35 +155,28 @@ function PlaylistPage({data}) {
 		>
 			<PageLayout>
 				<PlaylistInfo>
-					<BackLinkWrapper>
+					<BackLinkWrapper
+						initial={{opacity: 0, x: 100}}
+						animate={{opacity: 1, x: 0}}
+					>
 						<TextLink as={BackLink} to="/" size="xs">
 							<BackIcon spacingRight="xs" />
 							zurück
 						</TextLink>
 					</BackLinkWrapper>
-					<Flipped stagger="reverse" flipId={`playlistImage-${slug}`}>
-						<figure>
-							{imageUrl && (
-								<img src={imageUrl} alt="" width="340" height="340" />
-							)}
-						</figure>
-					</Flipped>
-					<Header>
-						<Flipped stagger="reverse" flipId={`playlistTitle-${slug}`}>
-							<TitleLabel as="h1" color={color}>
-								{title}
-							</TitleLabel>
-						</Flipped>
+					<motion.figure layoutId={`playlistImage-${slug}`}>
+						{imageUrl && <img src={imageUrl} alt="" width="340" height="340" />}
+					</motion.figure>
+					<Header as={motion.header} layoutId={`playlistTitle-${slug}`}>
+						<TitleLabel color={color}>{title}</TitleLabel>
 					</Header>
-					<Flipped stagger="reverse" flipId={`playlistInfo-${slug}`}>
-						<Metadata>
-							<strong>{playlistArtists}</strong>
-							<br />
-							{year}
-							<br />
-							{tracks.length} Track{tracks.length === 1 ? '' : 's'}
-						</Metadata>
-					</Flipped>
+					<Metadata layoutId={`playlistInfo-${slug}`}>
+						<strong>{playlistArtists}</strong>
+						<br />
+						{year}
+						<br />
+						{tracks.length} Track{tracks.length === 1 ? '' : 's'}
+					</Metadata>
 				</PlaylistInfo>
 				<PlaylistContainer>
 					{!isCurrentPlaylist && (

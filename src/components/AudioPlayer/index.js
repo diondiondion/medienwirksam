@@ -2,6 +2,7 @@ import React, {useContext, useState} from 'react'
 import {Link} from 'gatsby'
 import styled, {css} from 'styled-components'
 import {useMatch} from '@reach/router'
+import {motion} from 'framer-motion'
 
 import {getRgb} from '@utils/hexToRgb'
 import friendlyList from '@utils/friendlyList'
@@ -58,14 +59,6 @@ const Wrapper = styled.div`
 	@media (min-width: ${theme.breakpoints.m}) {
 		font-size: 18px;
 	}
-
-	transition: 0.2s ease-in;
-
-	${p =>
-		!p.isOpen &&
-		`
-		transform: translateY(100%);
-	`}
 
 	.hideOnDesktop {
 		@media (min-width: ${p => p.theme.breakpoints.m}) {
@@ -256,9 +249,11 @@ function SkipButton(props) {
 	)
 }
 
-function MaybeLink({children, to, ...otherProps}) {
-	if (!to) {
-		return <strong>{children}</strong>
+function MaybeLink({children, to, as: Component, ...otherProps}) {
+	if (!to && !Component) {
+		return children
+	} else if (!to && Component) {
+		return <Component>{children}</Component>
 	}
 	return (
 		<TextLink as={Link} to={to} {...otherProps}>
@@ -304,11 +299,11 @@ function AudioPlayer() {
 		}
 	}
 
-	if (!useHasMounted()) return null
+	if (!useHasMounted() || !currentTrack) return null
 
 	return (
 		<ThemeSection color={playlistColor}>
-			<Wrapper isOpen={Boolean(currentTrack)} highlightColor={playlistColor}>
+			<Wrapper as={motion.div} initial={{y: '100%'}} animate={{y: 0}}>
 				<audio
 					ref={audioRef}
 					src={src}
@@ -329,6 +324,7 @@ function AudioPlayer() {
 						<>
 							<MaybeLink
 								to={getTrackLink(currentTrack)}
+								as="strong"
 								state={{
 									trackContext: {
 										playlist,

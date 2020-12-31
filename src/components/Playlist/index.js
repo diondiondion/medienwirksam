@@ -1,7 +1,7 @@
-import React, {useState, useCallback, useRef, useEffect} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import {Link} from 'gatsby'
 import styled, {keyframes} from 'styled-components'
-import {Flipper, Flipped} from 'react-flip-toolkit'
+import {motion} from 'framer-motion'
 import invert from 'invert-color'
 
 import {getTrackLink} from '@utils/getLink'
@@ -50,12 +50,6 @@ const TracklistItem = styled.li.attrs({
 
 	list-style: none;
 	counter-increment: track-counter;
-
-	${p =>
-		p.isHidden &&
-		`
-		display: none;
-	`}
 `
 
 const TrackNameWrapper = styled.span`
@@ -102,13 +96,21 @@ const TrackTitle = styled.span`
 	}
 `
 
-const TrackHighlight = styled.span.withConfig(filterStyleProps)`
+const TrackHighlightWrapper = styled(motion.span).withConfig(filterStyleProps)`
 	position: absolute;
 	top: 0;
 	left: -${p => p.theme.spacing.xl};
 	right: -${p => p.theme.spacing.s};
 	bottom: 0;
 	z-index: -1;
+`
+
+const TrackHighlight = styled.span`
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 
 	display: flex;
 	padding-left: ${p => p.theme.spacing.s};
@@ -128,7 +130,7 @@ const MenuButton = styled(ReachMenuButton).withConfig(filterStyleProps)`
 	margin-left: ${p => p.theme.spacing.xs};
 
 	font-size: ${p => p.theme.typeScale.xxs};
-	opacity: 0.3;
+	opacity: 0.75;
 	transition: opacity 250ms ease-in-out;
 
 	${p =>
@@ -185,7 +187,7 @@ const ExpandListLink = styled(TextLink)`
 `
 
 function Playlist({
-	id,
+	id: listId,
 	data,
 	maxTrackCount = Infinity,
 	color,
@@ -193,19 +195,17 @@ function Playlist({
 	shouldExcludeArtist = () => false,
 	onPlay,
 }) {
-	const playTrack = useCallback(
-		(e, trackIndex) => {
-			e.preventDefault()
-			onPlay(trackIndex)
-		},
-		[onPlay]
-	)
+	function playTrack(e, trackIndex) {
+		e.preventDefault()
+		onPlay(trackIndex)
+	}
 
 	const firstExpandedTrackRef = useRef()
 	const toggleButtonRef = useRef()
 	const shouldHandleFocus = useRef(false)
 	const isExpandable = data?.tracks?.length > maxTrackCount
 	const [showAll, setShowAll] = useState(!isExpandable)
+
 	function toggleShowAll() {
 		setShowAll(prevShowAll => !prevShowAll)
 		shouldHandleFocus.current = true
@@ -222,104 +222,108 @@ function Playlist({
 		}
 	}, [showAll])
 
-	const listId = id
-
 	return (
 		<>
-			<Flipper flipKey={currentTrack && currentTrack.title}>
-				<Tracklist id={listId}>
-					{data.tracks.map((track, index) => {
-						if (!track)
-							return (
-								<TracklistItem key={index}>
-									Track {index + 1} nicht gefunden
-								</TracklistItem>
-							)
-
-						const shouldTrackBeHidden = !showAll && index + 1 > maxTrackCount
-						const shouldTrackBeFocusedAfterExpanding = index === maxTrackCount
-
-						const mainArtist =
-							track.artistsAlias ||
-							(track.artists.length === 1 ? track.artists[0] : null)
-						const showMainArtist = !shouldExcludeArtist(mainArtist)
-
-						const isPlaying = currentTrack && currentTrack.title === track.title
+			<Tracklist id={listId}>
+				{data.tracks.map((track, index) => {
+					if (!track) {
 						return (
-							<TracklistItem
-								key={track.title}
-								isHidden={shouldTrackBeHidden}
-								isPlaying={isPlaying}
-								contrastColor={color}
-							>
-								<TrackNameWrapper>
-									<TrackButton
-										ref={
-											shouldTrackBeFocusedAfterExpanding
-												? firstExpandedTrackRef
-												: undefined
-										}
-										onClick={e => playTrack(e, index)}
-									>
-										<TrackTitle>
-											{track.title}{' '}
-											<span style={{opacity: 0.6}}>
-												{showMainArtist && (
-													<>
-														{track.artistsAlias || friendlyList(track.artists)}{' '}
-													</>
-												)}
-												{track.artistsFeat && (
-													<>ft. {friendlyList(track.artistsFeat)}</>
-												)}
-											</span>
-										</TrackTitle>
-									</TrackButton>
-								</TrackNameWrapper>
-								<Menu>
-									<MenuButton isPlaying={isPlaying}>
-										<VisuallyHidden>Mehr Optionen</VisuallyHidden>
-										<MoreIcon scale={0.666} />
-									</MenuButton>
-									<MenuList color={color} isPlaying={isPlaying}>
-										<MenuLink
-											forwardedAs={Link}
-											to={getTrackLink(track)}
-											state={{
-												trackContext: {
-													playlist: data,
-													index,
-												},
-											}}
-											isPlaying={isPlaying}
-											color={color}
-										>
-											<WaveformIcon scale={0.666} spacingRight="xs" />
-											Track Info
-										</MenuLink>
-										<MenuLink
-											download
-											href={`https://${CDN_ROOT_AUDIO}${track.filename}`}
-											isPlaying={isPlaying}
-											color={color}
-										>
-											<DownloadIcon scale={0.666} spacingRight="xs" />
-											Mp3 runterladen
-										</MenuLink>
-									</MenuList>
-								</Menu>
-								{isPlaying && (
-									<Flipped flipId="trackHighlight">
-										<TrackHighlight color={color}>
-											<IsPlayingIcon scale={0.75} />
-										</TrackHighlight>
-									</Flipped>
-								)}
+							<TracklistItem key={index}>
+								Track {index + 1} nicht gefunden
 							</TracklistItem>
 						)
-					})}
-				</Tracklist>
-			</Flipper>
+					}
+
+					const shouldTrackBeHidden = !showAll && index + 1 > maxTrackCount
+					const shouldTrackBeFocusedAfterExpanding = index === maxTrackCount
+
+					if (shouldTrackBeHidden) {
+						return null
+					}
+
+					const mainArtist =
+						track.artistsAlias ||
+						(track.artists.length === 1 ? track.artists[0] : null)
+					const showMainArtist = !shouldExcludeArtist(mainArtist)
+
+					const isPlaying =
+						currentTrack &&
+						currentTrack.title === track.title &&
+						!shouldTrackBeHidden
+
+					return (
+						<TracklistItem
+							key={track.title}
+							isPlaying={isPlaying}
+							contrastColor={color}
+						>
+							<TrackNameWrapper>
+								<TrackButton
+									ref={
+										shouldTrackBeFocusedAfterExpanding
+											? firstExpandedTrackRef
+											: undefined
+									}
+									onClick={e => playTrack(e, index)}
+								>
+									<TrackTitle>
+										{track.title}{' '}
+										<span style={{opacity: 0.6}}>
+											{showMainArtist && (
+												<>
+													{track.artistsAlias || friendlyList(track.artists)}{' '}
+												</>
+											)}
+											{track.artistsFeat && (
+												<>ft. {friendlyList(track.artistsFeat)}</>
+											)}
+										</span>
+									</TrackTitle>
+								</TrackButton>
+							</TrackNameWrapper>
+							<Menu>
+								<MenuButton isPlaying={isPlaying}>
+									<VisuallyHidden>Mehr Optionen</VisuallyHidden>
+									<MoreIcon scale={0.666} />
+								</MenuButton>
+								<MenuList color={color} isPlaying={isPlaying}>
+									<MenuLink
+										forwardedAs={Link}
+										to={getTrackLink(track)}
+										state={{
+											trackContext: {
+												playlist: data,
+												index,
+											},
+										}}
+										isPlaying={isPlaying}
+										color={color}
+									>
+										<WaveformIcon scale={0.666} spacingRight="xs" />
+										Track Info
+									</MenuLink>
+									<MenuLink
+										download
+										href={`https://${CDN_ROOT_AUDIO}${track.filename}`}
+										isPlaying={isPlaying}
+										color={color}
+									>
+										<DownloadIcon scale={0.666} spacingRight="xs" />
+										Mp3 runterladen
+									</MenuLink>
+								</MenuList>
+							</Menu>
+							{isPlaying && (
+								<TrackHighlightWrapper layoutId={`${listId}-trackHighlight`}>
+									<TrackHighlight color={color}>
+										<IsPlayingIcon scale={0.75} />
+									</TrackHighlight>
+								</TrackHighlightWrapper>
+							)}
+						</TracklistItem>
+					)
+				})}
+			</Tracklist>
 			{isExpandable && (
 				<ExpandListLink
 					as="button"

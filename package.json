@@ -3,12 +3,21 @@
 	"description": "Medienwirksam",
 	"version": "1.0.0",
 	"author": "Dion Dajka <diondiondion@gmail.com>",
+	"scripts": {
+		"build": "gatsby build",
+		"develop": "gatsby develop",
+		"lint": "eslint src/**/*.js src/**/*.jsx",
+		"start": "npm run develop",
+		"format": "prettier --write \"src/**/*.js\"",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
 	"dependencies": {
 		"@reach/menu-button": "^0.10.1",
 		"babel-plugin-styled-components": "^1.10.0",
 		"focus-visible": "^5.0.2",
+		"framer-motion": "^2.9.3",
 		"gatsby": "^2.20.2",
-		"gatsby-cli": "^2.11.7",
+		"gatsby-cli": "^2.12.69",
 		"gatsby-image": "^2.2.17",
 		"gatsby-plugin-alias-imports": "^1.0.5",
 		"gatsby-plugin-layout": "^1.2.0",
@@ -27,23 +36,10 @@
 		"prop-types": "^15.7.2",
 		"react": "^16.9.0",
 		"react-dom": "^16.9.0",
-		"react-flip-toolkit": "^7.0.6",
 		"react-helmet": "^6.0.0-beta",
 		"react-storage-hooks": "^4.0.1",
 		"styled-components": "^5.1.0",
 		"uglifyjs-webpack-plugin": "^2.2.0"
-	},
-	"keywords": [
-		"gatsby"
-	],
-	"license": "MIT",
-	"scripts": {
-		"build": "gatsby build",
-		"develop": "gatsby develop",
-		"lint": "eslint src/**/*.js src/**/*.jsx",
-		"start": "npm run develop",
-		"format": "prettier --write \"src/**/*.js\"",
-		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"devDependencies": {
 		"babel-eslint": "^10.1.0",
@@ -58,9 +54,5 @@
 		"gatsby-plugin-eslint": "^2.0.8",
 		"netlify-cms-app": "^2.11.32",
 		"prettier": "^2.0.5"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/gatsbyjs/gatsby-starter-default"
 	}
 }

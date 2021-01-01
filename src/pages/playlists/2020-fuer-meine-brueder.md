@@ -6,6 +6,7 @@ artists:
   - Master Maxxx
 tracks:
   - Schnitzeljagd
+  - Drei Dinge
 year: '2015-2020'
 isFeatured: true
 ---

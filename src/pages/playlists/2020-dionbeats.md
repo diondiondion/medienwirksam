@@ -9,5 +9,6 @@ tracks:
   - Rose Hip (Instrumental)
   - Spielplatz (Instrumental)
   - Hornet (Instrumental)
+  - Wonderful (Instrumental)
 year: '2020'
 ---

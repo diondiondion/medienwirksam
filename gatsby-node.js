@@ -41,6 +41,7 @@ exports.createPages = ({graphql, actions}) => {
 			allArtistsYaml(sort: {fields: title, order: ASC}) {
 				nodes {
 					title
+					alias
 					fields {
 						slug
 					}
@@ -63,11 +64,22 @@ exports.createPages = ({graphql, actions}) => {
 				context: {slug: node.fields.slug},
 			})
 		})
+
 		result.data.allArtistsYaml.nodes.forEach(artist => {
+			const {
+				fields: {slug},
+				title,
+				alias,
+			} = artist
+			const artistFilter =
+				alias && alias.length ? [title, ...artist.alias] : [title]
 			createPage({
-				path: `/artist${artist.fields.slug}`,
+				path: `/artist${slug}`,
 				component: path.resolve(`./src/templates/ArtistPage.js`),
-				context: {artistFilter: [artist.title], slug: artist.fields.slug},
+				context: {
+					artistFilter,
+					slug,
+				},
 			})
 		})
 		result.data.allTracksYaml.nodes.forEach(track => {

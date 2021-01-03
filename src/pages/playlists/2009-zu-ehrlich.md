@@ -5,7 +5,7 @@ backCover: zu-ehrlich/zu-ehrlich-cover-back.jpg
 downloadLink: zu-ehrlich.zip
 color: '#FCDB48'
 artists:
-  - Master Maxxx
+  - Reefer Maxxx
 tracks:
   - Rapsuperstar
   - Wenn ich dich seh

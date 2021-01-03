@@ -7,6 +7,7 @@ artists:
 tracks:
   - Schnitzeljagd
   - Drei Dinge
+  - Ewiger Winter
 year: '2015-2020'
 isFeatured: true
 ---
@@ -17,5 +18,10 @@ Ich hätte trotzdem gerne ein Album gemacht, aber mir nicht die notwendige Zeit 
 
 Diese Lieder sind für „Meine Brüder“ im engeren und weiteren Sinne.
 
-**Song 1:**
-„Schnitzeljagd“ – der Name ist Programm, diejenigen die wie ich in den 80ern geboren und aufgewachsen sind werden es verstehen. Eine verrückte Zeit.
+**„Schnitzeljagd“** – der Name ist Programm, wer wie ich in den 80ern geboren und aufgewachsen ist, wird es verstehen. Eine verrückte Zeit.
+
+**„Drei Dinge“** – ein Konzept-Song gemeinsam mit Eno Sunshine (ehemals EMC). Irgendwie passt das Lied zur jetzigen Situation, für all diejenigen, die zur Zeit wirklich auf einer Art Insel leben…
+
+Der Beat ist übrigens von SizeOne. Dieser unglaubliche Typ hat echt unfassbar gute MW-Songs zu verantworten - z.B. [Wenn ich dich seh](/track/wenn-ich-dich-seh/) und [Tu Es](/track/tu-es/). Wo ist SizeOne jetzt eigentlich und was macht er?
+
+**„Ewiger Winter“** – ein Lied ohne Refrain. Geschrieben in einer nachdenklichen Phase, in einer speziellen Nacht, nach einem Treffen mit einem nachdenklichen Freund.

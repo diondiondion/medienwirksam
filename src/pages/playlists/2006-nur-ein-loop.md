@@ -4,7 +4,7 @@ frontCover: nur-ein-loop/front-cover.jpg
 downloadLink: nur-ein-loop.zip
 color: '#f9a13b'
 artists:
-  - Master Maxxx
+  - Reefer Maxxx
 tracks:
   - Pass auf
   - Du bist der King

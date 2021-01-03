@@ -26,7 +26,10 @@ function ArtistPlaylist({currentArtist, title, tracks}) {
 		PlaylistContext
 	)
 
-	const {slug} = currentArtist.fields
+	const {
+		alias: artistAliases,
+		fields: {slug},
+	} = currentArtist
 	const artistPlaylist = {
 		slug,
 		title: `${title} von ${currentArtist.title}`,
@@ -43,6 +46,13 @@ function ArtistPlaylist({currentArtist, title, tracks}) {
 	const isCurrentPlaylist =
 		currentPlaylist && currentPlaylist.title === artistPlaylist.title
 
+	const artistNames =
+		artistAliases && artistAliases.length
+			? [currentArtist.title, ...artistAliases]
+			: [currentArtist.title]
+
+	console.log(artistNames)
+
 	return (
 		<>
 			<Heading as="h2">
@@ -54,7 +64,7 @@ function ArtistPlaylist({currentArtist, title, tracks}) {
 					id={title.replace(' ', '_').toLowerCase()}
 					data={artistPlaylist}
 					currentTrack={currentTrack}
-					shouldExcludeArtist={artist => currentArtist.title === artist}
+					shouldExcludeArtist={artist => artistNames.includes(artist)}
 					maxTrackCount={5}
 					color={artistPlaylist.color}
 					onPlay={playTrack}
@@ -124,6 +134,7 @@ export const query = graphql`
 	query($slug: String!, $artistFilter: [String!]) {
 		currentArtist: artistsYaml(fields: {slug: {eq: $slug}}) {
 			title
+			alias
 			fields {
 				slug
 			}

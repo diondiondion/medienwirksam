@@ -21,7 +21,6 @@ import {
 	MenuButton as ReachMenuButton,
 	MenuLink as ReachMenuLink,
 } from '@reach/menu-button'
-import {CDN_ROOT_AUDIO} from '@constants'
 
 const filterStyleProps = {
 	shouldForwardProp: prop => !['color', 'isPlaying'].includes(prop),
@@ -304,7 +303,7 @@ function Playlist({
 									</MenuLink>
 									<MenuLink
 										download
-										href={`https://${CDN_ROOT_AUDIO}${track.filename}`}
+										href={`/download/${track.filename}`}
 										isPlaying={isPlaying}
 										color={color}
 									>

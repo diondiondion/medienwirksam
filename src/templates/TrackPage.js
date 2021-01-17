@@ -150,7 +150,6 @@ function Artist({data: {track}, location}) {
 		trackColor
 	)},b_transparent/${imageFilename}`
 	const seoImageUrl = `https://${CDN_ROOT_AUDIO}q_auto,h_512,w_512,fl_waveform,co_rgb:a6a8b6,b_rgb:030926/${imageFilename}`
-	const mp3Link = `https://${CDN_ROOT_AUDIO}${filename}`
 
 	const artistsList = artistsAlias || friendlyList(artists)
 	const featureList = artistsFeat ? ` ft. ${friendlyList(artistsFeat)}` : ''
@@ -222,7 +221,7 @@ function Artist({data: {track}, location}) {
 							</Stack>
 						</Subtitle>
 					</SongDetails>
-					<DownloadLink size="xs" href={mp3Link}>
+					<DownloadLink size="xs" href={`/download/${filename}`}>
 						<span>Download</span>
 						<DownloadIcon spacingLeft="xxs" />
 					</DownloadLink>

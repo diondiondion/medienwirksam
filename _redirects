@@ -1,0 +1,3 @@
+# Alias CDN download & image paths to local domain
+/download/*  res.cloudinary.com/medienwirksam/video/upload/:splat 200
+/cdn-images/*  res.cloudinary.com/medienwirksam/image/upload/:splat 200

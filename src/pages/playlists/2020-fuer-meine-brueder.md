@@ -8,6 +8,7 @@ tracks:
   - Schnitzeljagd
   - Drei Dinge
   - Ewiger Winter
+  - Gefühl an
 year: '2015-2020'
 isFeatured: true
 ---
@@ -25,3 +26,7 @@ Diese Lieder sind für „Meine Brüder“ im engeren und weiteren Sinne.
 Der Beat ist übrigens von SizeOne. Dieser unglaubliche Typ hat echt unfassbar gute MW-Songs zu verantworten - z.B. [Wenn ich dich seh](/track/wenn-ich-dich-seh/) und [Tu Es](/track/tu-es/). Wo ist SizeOne jetzt eigentlich und was macht er?
 
 **„Ewiger Winter“** – ein Lied ohne Refrain. Geschrieben in einer nachdenklichen Phase, in einer speziellen Nacht, nach einem Treffen mit einem nachdenklichen Freund.
+
+**Gefühl an** - "Materielles wird gleichgesetzt mit Glückseligkeit, einige wissen anscheinend, was man braucht, um glücklich zu sein." Ich habe an der FU Berlin Politikwissenschaft studiert und war erschrocken über die Einfältigkeit einiger Professor\*innen und Dozent\*innen.
+
+Natürlich sind wir in Deutschland privilegiert, dennoch ist das Glücksempfinden nicht ausschließlich abhängig von materiellen Gütern. Das hat mich bewogen dieses Lied zu schreiben: Gefühl an.

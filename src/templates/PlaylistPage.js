@@ -164,9 +164,15 @@ function PlaylistPage({data}) {
 							zurück
 						</TextLink>
 					</BackLinkWrapper>
-					<motion.figure layoutId={`playlistImage-${slug}`}>
-						{imageUrl && <img src={imageUrl} alt="" width="340" height="340" />}
-					</motion.figure>
+					{imageUrl && (
+						<motion.img
+							layoutId={`playlistImage-${slug}`}
+							src={imageUrl}
+							alt=""
+							width="340"
+							height="340"
+						/>
+					)}
 					<Header as={motion.header} layoutId={`playlistTitle-${slug}`}>
 						<TitleLabel color={color}>{title}</TitleLabel>
 					</Header>

@@ -18,7 +18,7 @@ const Wrapper = styled.article`
 	width: 100%;
 `
 
-const ImageContainer = styled(motion.div)`
+const ImageContainer = styled.div`
 	flex: 1 0 140px;
 
 	@media (min-width: ${p => p.theme.breakpoints.m}) {
@@ -31,7 +31,7 @@ const Info = styled.div`
 	padding-left: 1.25rem;
 `
 
-const Metadata = styled(motion.div)`
+const Metadata = styled.div`
 	display: inline-block;
 `
 
@@ -84,21 +84,25 @@ function PlaylistTile({playlist, link}) {
 
 	return (
 		<Wrapper>
-			<ImageContainer layoutId={`playlistImage-${slug}`} initial={false}>
-				{imageUrl && <img src={imageUrl} alt="" width="235" height="235" />}
-			</ImageContainer>
+			{imageUrl && (
+				<ImageContainer>
+					<motion.img
+						layoutId={`playlistImage-${slug}`}
+						src={imageUrl}
+						alt=""
+						width="235"
+						height="235"
+					/>
+				</ImageContainer>
+			)}
 			<Info>
-				<Header
-					as={motion.header}
-					layoutId={`playlistTitle-${slug}`}
-					initial={false}
-				>
+				<Header as={motion.header} layoutId={`playlistTitle-${slug}`}>
 					<TitleLabel color={color}>
 						{isPlaying && <PlayingIndicator />}
 						{title}
 					</TitleLabel>
 				</Header>
-				<Metadata layoutId={`playlistInfo-${slug}`} initial={false}>
+				<Metadata as={motion.div} layoutId={`playlistInfo-${slug}`}>
 					<strong>{friendlyList(artists)}</strong>
 					<br />
 					<Dimmed>

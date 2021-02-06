@@ -18,14 +18,12 @@ function IndexPage({data}) {
 	return (
 		<Layout>
 			<Filter artists={artists.nodes} />
-			<main>
-				<PlaylistGrid>
-					<HomepageHeading as="h2">Alben</HomepageHeading>
-					{playlists.edges.map(({node: playlist}) => (
-						<PlaylistTile key={playlist.id} playlist={playlist} />
-					))}
-				</PlaylistGrid>
-			</main>
+			<PlaylistGrid as="main">
+				<HomepageHeading as="h2">Alben</HomepageHeading>
+				{playlists.edges.map(({node: playlist}) => (
+					<PlaylistTile key={playlist.id} playlist={playlist} />
+				))}
+			</PlaylistGrid>
 		</Layout>
 	)
 }

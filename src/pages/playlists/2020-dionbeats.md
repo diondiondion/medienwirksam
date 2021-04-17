@@ -11,5 +11,6 @@ tracks:
   - Hornet (Instrumental)
   - Wonderful (Instrumental)
   - Cantata Cantina (Instrumental)
+  - Trees (Instrumental)
 year: '2020–2021'
 ---

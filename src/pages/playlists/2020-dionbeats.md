@@ -5,6 +5,7 @@ frontCover: dionbeats-2020/font-cover.png
 artists:
   - Dion
 tracks:
+  - The Ring (Instrumental)
   - Schmucks & Doubters (Instrumental)
   - Cantata Cantina (Instrumental)
   - Trees (Instrumental)

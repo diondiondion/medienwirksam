@@ -22,9 +22,11 @@ const PlayIcon = styled(IsPlayingIcon)`
 `
 
 function ArtistPlaylist({currentArtist, title, tracks}) {
-	const {currentTrack, changeTrack, playlist: currentPlaylist} = useContext(
-		PlaylistContext
-	)
+	const {
+		currentTrack,
+		changeTrack,
+		playlist: currentPlaylist,
+	} = useContext(PlaylistContext)
 
 	const {
 		alias: artistAliases,
@@ -131,7 +133,7 @@ function Artist({data}) {
 export default Artist
 
 export const query = graphql`
-	query($slug: String!, $artistFilter: [String!]) {
+	query ($slug: String!, $artistFilter: [String!]) {
 		currentArtist: artistsYaml(fields: {slug: {eq: $slug}}) {
 			title
 			alias

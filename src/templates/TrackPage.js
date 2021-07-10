@@ -249,7 +249,7 @@ function Artist({data: {track}, location}) {
 export default Artist
 
 export const query = graphql`
-	query($slug: String!) {
+	query ($slug: String!) {
 		track: tracksYaml(fields: {slug: {eq: $slug}}) {
 			id
 			title

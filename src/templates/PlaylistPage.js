@@ -108,9 +108,11 @@ const DescriptionHeading = styled.h3`
 `
 
 function PlaylistPage({data}) {
-	const {currentTrack, changeTrack, playlist: currentPlaylist} = useContext(
-		PlaylistContext
-	)
+	const {
+		currentTrack,
+		changeTrack,
+		playlist: currentPlaylist,
+	} = useContext(PlaylistContext)
 	const {
 		html: playlistDescription,
 		excerpt: descriptionExcerpt,
@@ -124,15 +126,8 @@ function PlaylistPage({data}) {
 		slug,
 		path,
 	}
-	const {
-		title,
-		artists,
-		year,
-		tracks,
-		frontCover,
-		downloadLink,
-		color,
-	} = playlist
+	const {title, artists, year, tracks, frontCover, downloadLink, color} =
+		playlist
 	const isCurrentPlaylist = currentPlaylist?.title === title
 
 	function playTrack(index) {
@@ -227,7 +222,7 @@ function PlaylistPage({data}) {
 export default PlaylistPage
 
 export const query = graphql`
-	query($slug: String!) {
+	query ($slug: String!) {
 		markdownRemark(fields: {slug: {eq: $slug}}) {
 			html
 			excerpt

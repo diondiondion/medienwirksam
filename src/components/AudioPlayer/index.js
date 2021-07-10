@@ -266,9 +266,8 @@ function AudioPlayer() {
 	const [isMobileDrawerOpen, setMobileDrawerOpenState] = useState(false)
 	const {autoPlay, currentIndex} = useContext(PlaylistContext)
 	const {audioRef, player} = useContext(AudioPlayerContext)
-	const {currentTrack, playlist, goToNextTrack, goToPrevTrack} = useContext(
-		PlaylistContext
-	)
+	const {currentTrack, playlist, goToNextTrack, goToPrevTrack} =
+		useContext(PlaylistContext)
 	const playlistColor = playlist?.color || theme.background
 	const isUserOnCurrentPlaylist = Boolean(
 		useMatch(playlist?.path || '/notMatching')

@@ -5,6 +5,7 @@ frontCover: dionbeats-2020/font-cover.png
 artists:
   - Dion
 tracks:
+  - Der Automat (Instrumental)
   - Futter (Instrumental)
   - Pablo (Instrumental)
   - The Ring (Instrumental)

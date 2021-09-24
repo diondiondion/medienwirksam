@@ -1,10 +1,11 @@
 ---
-title: Beats 2020
+title: Beats 2020/2021
 color: '#e1557c'
 frontCover: dionbeats-2020/font-cover.png
 artists:
   - Dion
 tracks:
+  - Phase Bird (Instrumental)
   - Der Automat (Instrumental)
   - Futter (Instrumental)
   - Pablo (Instrumental)

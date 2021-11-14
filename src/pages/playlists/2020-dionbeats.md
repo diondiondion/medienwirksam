@@ -5,6 +5,7 @@ frontCover: dionbeats-2020/font-cover.png
 artists:
   - Dion
 tracks:
+  - Typewriter (Instrumental)
   - Phase Bird (Instrumental)
   - Der Automat (Instrumental)
   - Futter (Instrumental)

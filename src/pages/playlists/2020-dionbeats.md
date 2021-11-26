@@ -5,6 +5,7 @@ frontCover: dionbeats-2020/font-cover.png
 artists:
   - Dion
 tracks:
+  - Maxi Cosi (Instrumental)
   - Typewriter (Instrumental)
   - Phase Bird (Instrumental)
   - Der Automat (Instrumental)

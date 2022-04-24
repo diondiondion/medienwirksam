@@ -1,5 +1,5 @@
 ---
-title: Beats 2020/2021
+title: Beats 2020–2022
 color: '#e1557c'
 frontCover: dionbeats-2020/font-cover.png
 artists:
@@ -21,5 +21,5 @@ tracks:
   - Rose Hip (Instrumental)
   - The Chase (Instrumental)
   - Spielplatz (Instrumental)
-year: '2020–2021'
+year: '2020–2022'
 ---

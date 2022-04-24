@@ -5,6 +5,7 @@ frontCover: dionbeats-2020/font-cover.png
 artists:
   - Dion
 tracks:
+  - April Eyes (Instrumental)
   - Maxi Cosi (Instrumental)
   - Typewriter (Instrumental)
   - Phase Bird (Instrumental)

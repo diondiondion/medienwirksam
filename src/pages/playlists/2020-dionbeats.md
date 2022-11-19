@@ -1,5 +1,6 @@
 ---
 title: Beats 2020–2022
+type: instrumental
 color: '#e1557c'
 frontCover: dionbeats-2020/font-cover.png
 artists:

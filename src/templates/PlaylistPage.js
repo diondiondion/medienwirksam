@@ -237,6 +237,7 @@ export const query = graphql`
 				backCover
 				downloadLink
 				color
+				type
 				tracks {
 					title
 					artists
@@ -244,6 +245,7 @@ export const query = graphql`
 					artistsFeat
 					producers
 					filename
+					year
 					fields {
 						slug
 					}

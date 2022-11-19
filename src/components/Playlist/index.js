@@ -91,7 +91,7 @@ const TrackTitle = styled.span`
 	&::before {
 		display: inline-block;
 		content: counter(track-counter) ' ';
-		width: 3ch;
+		width: 4ch;
 	}
 `
 
@@ -179,11 +179,17 @@ const MenuLink = styled(ReachMenuLink).withConfig(filterStyleProps)`
 `
 
 const ExpandListLink = styled(TextLink)`
-	padding: 0.5rem 1.5rem;
+	padding: 0.5rem 4ch;
 	margin-bottom: -0.5rem;
 	width: 100%;
 	text-align: left;
 `
+
+function stripInstrumentalFromTitle(title) {
+	if (!title) return ''
+
+	return title.replace(' (Instrumental)', '')
+}
 
 function Playlist({
 	id: listId,
@@ -240,6 +246,11 @@ function Playlist({
 						return null
 					}
 
+					const trackTitle =
+						data.type === 'instrumental'
+							? stripInstrumentalFromTitle(track.title)
+							: track.title
+
 					const mainArtist =
 						track.artistsAlias ||
 						(track.artists.length === 1 ? track.artists[0] : null)
@@ -266,16 +277,15 @@ function Playlist({
 									onClick={e => playTrack(e, index)}
 								>
 									<TrackTitle>
-										{track.title}{' '}
+										{trackTitle}{' '}
 										<span style={{opacity: 0.6}}>
 											{showMainArtist && (
-												<>
-													{track.artistsAlias || friendlyList(track.artists)}{' '}
-												</>
+												<>{track.artistsAlias || friendlyList(track.artists)}</>
 											)}
 											{track.artistsFeat && (
-												<>ft. {friendlyList(track.artistsFeat)}</>
+												<> ft. {friendlyList(track.artistsFeat)}</>
 											)}
+											{data.type === 'instrumental' && <> {track.year}</>}
 										</span>
 									</TrackTitle>
 								</TrackButton>

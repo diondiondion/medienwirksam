@@ -1,5 +1,5 @@
 ---
-title: Lost Beats 03-05
+title: 'Lost Beats I'
 type: instrumental
 color: '#174416'
 frontCover: dionbeats-archive/front-cover-trex.jpg
